@@ -39,6 +39,7 @@ namespace Glitch_Wobble
             Dead
         }
         LongSwordState currentLongSwordState;
+        /* The Extra Sword States
         enum DaggerState
         {
             Attack,
@@ -59,29 +60,33 @@ namespace Glitch_Wobble
             Dead
         }
         BlasterState currentBlasterState;
-        enum EnemyState
+        */
+        enum SlimeState
+        {
+            Move,
+            Hurt,
+            Dead
+        }
+        SlimeState currentEnemyState;
+
+        /* Extra Enemy States
+        enum LaserEyeState
         {
             Attack,
             Move,
             Hurt,
             Dead
         }
-        EnemyState currentEnemyState;
-        /*
-        enum CharacterState
+        SlimeState currentEnemyState;
+        enum EMPState
         {
-            LongSword,
-            Dagger,
-            Blaster,
+            Attack,
             Move,
-            Jump,
-            Stand,
-            Dead,
-            Hurt
+            Hurt,
+            Dead
         }
-        CharacterState currentCharacterState;
+        SlimeState currentEnemyState;
         */
-
 
         public Game1()
         {

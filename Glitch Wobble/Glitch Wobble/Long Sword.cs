@@ -5,8 +5,7 @@ using System.Text;
 
 namespace Glitch_Wobble
 {
-    class Slime:Enemy
+    class Long_Sword:Sword
     {
-        //Basic Enemy
     }
 }
