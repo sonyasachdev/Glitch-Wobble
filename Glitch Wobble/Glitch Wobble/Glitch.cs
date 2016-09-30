@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System.Timers;
+
+namespace Glitch_Wobble
+{
+    class Glitch : Beings
+    {
+        //Fields
+        Timer JumpTimer;
+        SpriteBatch spriteBatch;
+        KeyboardState key = Keyboard.GetState();
+
+        //Constructor
+        public Glitch (Vector2 p)
+        {
+            this.position = p;
+            JumpTimer = new Timer();
+            JumpTimer.Interval = 2000;
+            JumpTimer.Elapsed += EndJump;
+        }
+
+        //Timer Function
+        private void EndJump(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            EndJump();
+        }
+
+        //Glitch State
+        enum GlitchState
+        {
+            Move,
+            JumpStart,
+            JumpEnd,
+            Idle,
+            Hurt,
+            Dead
+        }
+        GlitchState currentGlitchState;
+        //Monogame Methods
+        public void Initialize()
+        {
+
+        }
+        public void Draw()
+        {
+
+        }
+        //Main Methods
+        public void Move()
+        {
+            if (key.IsKeyDown(Keys.Left) == true)
+            {
+                position.X -= 3;
+            }
+            if (key.IsKeyDown(Keys.Right) == true)
+            {
+                position.X += 3;
+            }
+        }
+        public void StartJump()
+        {
+            if (key.IsKeyDown(Keys.Up) == true)
+            {
+                JumpTimer.Start();
+                currentGlitchState = GlitchState.JumpStart;
+                position.Y += 1;
+            }
+        }
+        public void EndJump()
+        {
+            position.Y -= 1;
+            JumpTimer.Stop();
+            currentGlitchState = GlitchState.JumpEnd;
+        }
+
+    }
+}

@@ -1,7 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
+using System.Timers;
 
 namespace Glitch_Wobble
 {
@@ -13,8 +17,13 @@ namespace Glitch_Wobble
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        //Variables
-        private Vector2 characterLocation;
+        //Object initializations
+        Glitch glitch = new Glitch();
+        //Can just make slime1 and position them at different locations
+        Enemy slime = new Enemy();
+        Sword longSword = new Sword();
+        Vertical_Platform vert = new Vertical_Platform();
+        Horizontal_Platform horz = new Horizontal_Platform();
 
         enum GameState
         {
@@ -29,64 +38,6 @@ namespace Glitch_Wobble
             GameOver
         }
         GameState currentGameState;
-        enum LongSwordState
-        {
-            Attack,
-            Move,
-            Jump,
-            Stand,
-            Hurt,
-            Dead
-        }
-        LongSwordState currentLongSwordState;
-        /* The Extra Sword States
-        enum DaggerState
-        {
-            Attack,
-            Move,
-            Jump,
-            Stand,
-            Hurt,
-            Dead
-        }
-        DaggerState currentDaggerState;
-        enum BlasterState
-        {
-            Attack,
-            Move,
-            Jump,
-            Stand,
-            Hurt,
-            Dead
-        }
-        BlasterState currentBlasterState;
-        */
-        enum SlimeState
-        {
-            Move,
-            Hurt,
-            Dead
-        }
-        SlimeState currentEnemyState;
-
-        /* Extra Enemy States
-        enum LaserEyeState
-        {
-            Attack,
-            Move,
-            Hurt,
-            Dead
-        }
-        SlimeState currentEnemyState;
-        enum EMPState
-        {
-            Attack,
-            Move,
-            Hurt,
-            Dead
-        }
-        SlimeState currentEnemyState;
-        */
 
         public Game1()
         {
@@ -103,7 +54,7 @@ namespace Glitch_Wobble
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
@@ -138,7 +89,9 @@ namespace Glitch_Wobble
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Move();
+            glitch.Move();
+            vert.Switch();
+            horz.Switch();
 
             base.Update(gameTime);
         }
@@ -152,26 +105,13 @@ namespace Glitch_Wobble
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            glitch.Draw();
+            slime.Draw();
+            longSword.Draw();
+            vert.Draw();
+            horz.Draw();
 
             base.Draw(gameTime);
-        }
-
-        //Keyboard Input Method
-        public void Move()
-        {
-            KeyboardState key = Keyboard.GetState();
-            if (key.IsKeyDown(Keys.Up) == true)
-            {
-                //Code to make character Jump, maybe have some physics?
-            }
-            if (key.IsKeyDown(Keys.Left) == true)
-            {
-                characterLocation.X -= 3;
-            }
-            if (key.IsKeyDown(Keys.Right) == true)
-            {
-                characterLocation.X += 3;
-            }
         }
 
     }
