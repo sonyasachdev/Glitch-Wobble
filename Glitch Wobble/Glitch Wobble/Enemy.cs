@@ -14,73 +14,47 @@ namespace Glitch_Wobble
     {
         //Fields
         Timer SpawnTimer;
-        int timesHit;
+        protected bool active;
+        protected int timesHit;
+        
+        //Properties
+        public bool Active
+        {
+            get { return active; }
+            set { active = value; }
+        }
+        public int TimesHit
+        {
+            get { return timesHit; }
+            set { timesHit = value; }
+        }
 
         //Constructor
-        public Enemy(Vector2 p)
+        public Enemy()
         {
-            this.position = p;
             SpawnTimer = new Timer();
             SpawnTimer.Interval = 4000;
             timesHit = 0;
-        }
-        //SlimeStates
-        enum SlimeState
-        {
-            Move,
-            Hurt,
-            Dead
-        }
-        SlimeState currentEnemyState;
-
-        //Monogame Methods
-        public void Initialize()
-        {
-
-        }
-        public void Draw()
-        {
-            switch (currentEnemyState)
-            {
-                case SlimeState.Move:
-                    //Move Animation
-                    break;
-                case SlimeState.Hurt:
-                    //Hurt Animation
-                    break;
-                case SlimeState.Dead:
-                    //Dead Animation
-                    break;
-                default:
-                    break;
-            }
+            active = true;
         }
 
         //Methods
-        public void Switch()
+        //Checks Collision
+        public bool CheckCollision(Long_Sword weapon)
         {
-            switch (currentEnemyState)
+            if (this.Position.Intersects(weapon.Position) == true)
             {
-                case SlimeState.Move:
-
-                    break;
-                case SlimeState.Hurt:
-                    Hurt();
-                    break;
-                case SlimeState.Dead:
-                    Dead();
-                    break;
-                default:
-                    break;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
-        public void Hurt()
-        {
-            
-        }
+        //Makes Enemy despawn
         public void Dead()
         {
-
+            active = false;
         }
     }
 }

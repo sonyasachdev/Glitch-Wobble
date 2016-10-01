@@ -5,29 +5,40 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 using System.Timers;
+using System.IO;
 
 namespace Glitch_Wobble
 {
     class Vertical_Platform : Platform
     {
         //Fields
+        Rectangle hitBox;
+
+        //States
         enum PlatformState
         {
             Up,
             Down,
         }
         PlatformState currentPlatformState;
+
         //Constructor
-        public Vertical_Platform(Vector2 p)
+        public Vertical_Platform(Rectangle p, Texture2D s)
         {
             this.position = p;
+            this.skin = s;
         }
 
         //Monogame Methods
         public void Initialize()
         {
 
+        }
+        public void LoadContent()
+        {
+            //skin = Content.Load<Texture2D>("vertPlatform.png");
         }
         public void Draw()
         {
@@ -59,7 +70,7 @@ namespace Glitch_Wobble
                     break;
             }
         }
-        public void MoveUp(Vector2 pos)
+        public void MoveUp(Rectangle pos)
         {
             while (position.Y <= pos.Y )
             {
@@ -69,9 +80,8 @@ namespace Glitch_Wobble
             {
                 currentPlatformState = PlatformState.Down;
             }
-            
         }
-        public void MoveDown(Vector2 pos)
+        public void MoveDown(Rectangle pos)
         {
             while (position.Y >= pos.Y)
             {

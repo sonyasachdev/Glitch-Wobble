@@ -15,13 +15,19 @@ namespace Glitch_Wobble
         Timer SpawnTimer;
         Timer MoveTimer;
         SpriteBatch spriteBatch;
-        protected Vector2 position;
+        protected Rectangle position;
+        protected Texture2D skin;
 
         //Properties
-        public Vector2 Position
+        public Rectangle Position
         {
             get { return position; }
             set { position = value; }
+        }
+        public Texture2D Skin
+        {
+            get { return skin; }
+            set { skin = value; }
         }
 
         //Constructors
@@ -36,7 +42,7 @@ namespace Glitch_Wobble
             Despawn();
         }
         
-        //Other Methods
+        //Methods
         public void Spawn()
         {
             SpawnTimer.Start();

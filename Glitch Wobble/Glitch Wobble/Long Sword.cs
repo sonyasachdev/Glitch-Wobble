@@ -13,13 +13,16 @@ namespace Glitch_Wobble
     {
         //Fields
         Timer JumpTimer;
+        Rectangle hitBox;
 
         //Constructor
-        public Long_Sword(Vector2 p)
+        public Long_Sword(Rectangle p, Texture2D s)
         {
             this.position = p;
+            this.skin = s;
         }
 
+        //Different States
         enum LongSwordState
         {
             Idle,
@@ -29,6 +32,45 @@ namespace Glitch_Wobble
             Attack,
             Hurt,
             Dead
+        }
+        LongSwordState currentLongSwordState;
+
+        //Monogame Methods
+        public void Initialize()
+        {
+
+        }
+        public void LoadContent()
+        {
+
+        }
+        public void Draw()
+        {
+
+        }
+
+        //Methods
+        public void Switch()
+        {
+            switch (currentLongSwordState)
+            {
+                case LongSwordState.Idle:
+                    break;
+                case LongSwordState.Run:
+                    break;
+                case LongSwordState.StartJump:
+                    break;
+                case LongSwordState.EndJump:
+                    break;
+                case LongSwordState.Attack:
+                    break;
+                case LongSwordState.Hurt:
+                    break;
+                case LongSwordState.Dead:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

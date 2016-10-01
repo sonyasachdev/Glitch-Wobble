@@ -12,6 +12,7 @@ namespace Glitch_Wobble
     class Horizontal_Platform : Platform
     {
         //Fields
+        Rectangle hitBox;
 
         //Platform States
         enum PlatformState
@@ -22,13 +23,18 @@ namespace Glitch_Wobble
         PlatformState currentPlatformState;
 
         //Constructor
-        public Horizontal_Platform(Vector2 p)
+        public Horizontal_Platform(Rectangle p, Texture2D s)
         {
             this.position = p;
+            this.skin = s;
         }
 
         //Monogame Methods
         public void Initialize()
+        {
+
+        }
+        public void LoadContent()
         {
 
         }
@@ -61,7 +67,7 @@ namespace Glitch_Wobble
             }
         }
         //Methods
-        public void MoveRight(Vector2 pos)
+        public void MoveRight(Rectangle pos)
         {
             while (position.X <= pos.X)
             {
@@ -73,7 +79,7 @@ namespace Glitch_Wobble
             }
 
         }
-        public void MoveLeft(Vector2 pos)
+        public void MoveLeft(Rectangle pos)
         {
             while (position.X >= pos.X)
             {
@@ -84,5 +90,6 @@ namespace Glitch_Wobble
                 currentPlatformState = PlatformState.Right;
             }
         }
+        //Hitbox Method
     }
 }

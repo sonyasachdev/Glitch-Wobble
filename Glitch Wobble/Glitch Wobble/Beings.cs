@@ -12,13 +12,19 @@ namespace Glitch_Wobble
     class Beings
     {
         //Fields
-        protected Vector2 position;
+        protected Rectangle position;
+        protected Texture2D skin;
 
         //Properties
-        public Vector2 Position
+        public Rectangle Position
         {
             get { return position; }
             set { position = value; }
+        }
+        public Texture2D Skin
+        {
+            get { return skin; }
+            set { skin = value; }
         }
 
     }

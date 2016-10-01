@@ -15,11 +15,13 @@ namespace Glitch_Wobble
         Timer JumpTimer;
         SpriteBatch spriteBatch;
         KeyboardState key = Keyboard.GetState();
+        Rectangle hitBox;
 
         //Constructor
-        public Glitch (Vector2 p)
+        public Glitch (Rectangle p, Texture2D s)
         {
             this.position = p;
+            this.skin = s;
             JumpTimer = new Timer();
             JumpTimer.Interval = 2000;
             JumpTimer.Elapsed += EndJump;
@@ -34,7 +36,8 @@ namespace Glitch_Wobble
         //Glitch State
         enum GlitchState
         {
-            Move,
+            MoveRight,
+            MoveLeft,
             JumpStart,
             JumpEnd,
             Idle,
@@ -47,11 +50,64 @@ namespace Glitch_Wobble
         {
 
         }
-        public void Draw()
+        public void LoadContent()
         {
 
         }
+        public void Draw()
+        {
+            switch (currentGlitchState)
+            {
+                case GlitchState.MoveRight:
+                    //Animation
+                    break;
+                case GlitchState.MoveLeft:
+                    //Flip Image
+                    break;
+                case GlitchState.JumpStart:
+                    //JumpBegin
+                    break;
+                case GlitchState.JumpEnd:
+                    //JumpEnd
+                    break;
+                case GlitchState.Idle:
+                    //see if you need a left and right idle
+                    break;
+                case GlitchState.Hurt:
+                    break;
+                case GlitchState.Dead:
+                    break;
+                default:
+                    break;
+            }
+        }
         //Main Methods
+        public void Switch()
+        {
+            switch (currentGlitchState)
+            {
+                case GlitchState.MoveRight:
+                    Move();
+                    break;
+                case GlitchState.MoveLeft:
+                    Move();
+                    break;
+                case GlitchState.JumpStart:
+                    StartJump();
+                    break;
+                case GlitchState.JumpEnd:
+                    EndJump();
+                    break;
+                case GlitchState.Idle:
+                    break;
+                case GlitchState.Hurt:
+                    break;
+                case GlitchState.Dead:
+                    break;
+                default:
+                    break;
+            }
+        }
         public void Move()
         {
             if (key.IsKeyDown(Keys.Left) == true)

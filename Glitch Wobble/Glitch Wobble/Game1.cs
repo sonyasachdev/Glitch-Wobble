@@ -14,31 +14,58 @@ namespace Glitch_Wobble
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
-        //Object initializations
-        Glitch glitch = new Glitch();
-        //Can just make slime1 and position them at different locations
-        Enemy slime = new Enemy();
-        Sword longSword = new Sword();
-        Vertical_Platform vert = new Vertical_Platform();
-        Horizontal_Platform horz = new Horizontal_Platform();
-
-        enum GameState
+        //Enums
+        //Menu
+        enum MenuState
         {
             //SplashScreen,
-            Menu,
+            //LoadScreen,
+            Main,
             Options,
+            Play
+        }
+        MenuState currentMenuState;
+        //Actual Game
+        enum PlayState
+        {
             Pause,
-            HowToPlay,
-            Game,
+            Play,
             Win,
+            Reset
             //NextLevel,
-            GameOver
+        }
+        PlayState currentPlayState;
+        //Changes between menu and game
+        enum GameState
+        {
+            Menu,
+            Game,
+            Gameover
         }
         GameState currentGameState;
 
+        //Fields
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+
+        //Starting Positions
+        //Rectangle is x, y, width and height
+        Rectangle glitchPos = new Rectangle(100,100, 100, 100);
+        Rectangle longSwordPos = new Rectangle(100, 100, 100, 100);
+        Rectangle slimePos1 = new Rectangle(100, 100, 100, 100);
+        Rectangle vertPos1 = new Rectangle(100, 100, 100, 100);
+        Rectangle horzPos1 = new Rectangle(100, 100, 100, 100);
+
+        //Object initializations
+        Glitch glitch = new Glitch(glitchPos);
+        Long_Sword longSword = new Long_Sword(longSwordPos);
+        //Can just make slime1, slime2, etc and position them at different locations according to level map
+        Slime slime1 = new Slime(slimePos1);
+        Vertical_Platform vert1 = new Vertical_Platform(vertPos1);
+        Horizontal_Platform horz1 = new Horizontal_Platform(horzPos1);
+            
+
+        //Monogame Methods
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -54,8 +81,13 @@ namespace Glitch_Wobble
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            currentGameState = GameState.Menu;
+            //If you get a splashscreen, use:
+            //currentMenuState = MenuState.SplashScreen;
+            currentMenuState = MenuState.Main;
+            //currentPlayState = PlayState.Play;
             base.Initialize();
+
         }
 
         /// <summary>
@@ -88,10 +120,14 @@ namespace Glitch_Wobble
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            //Main Switches
 
-            glitch.Move();
-            vert.Switch();
-            horz.Switch();
+
+            //External Switches
+            glitch.Switch();
+            slime1.Switch();
+            vert1.Switch();
+            horz1.Switch();
 
             base.Update(gameTime);
         }
@@ -106,10 +142,10 @@ namespace Glitch_Wobble
 
             // TODO: Add your drawing code here
             glitch.Draw();
-            slime.Draw();
+            slime1.Draw();
             longSword.Draw();
-            vert.Draw();
-            horz.Draw();
+            vert1.Draw();
+            horz1.Draw();
 
             base.Draw(gameTime);
         }

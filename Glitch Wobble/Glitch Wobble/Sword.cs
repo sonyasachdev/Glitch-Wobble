@@ -12,22 +12,19 @@ namespace Glitch_Wobble
     class Sword
     {
         //Fields
-        protected Vector2 position;
+        protected Rectangle position;
+        protected Texture2D skin;
 
         //Properties
-        public Vector2 Position
+        public Rectangle Position
         {
             get { return position; }
+            set { position = value; }
         }
-
-        //Monogame Methods
-        public void Initialize()
+        public Texture2D Skin
         {
-
-        }
-        public void Draw()
-        {
-
+            get { return skin; }
+            set { skin = value; }
         }
     }
 }
