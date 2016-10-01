@@ -47,23 +47,27 @@ namespace Glitch_Wobble
         //Fields
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        //Starting Positions
+        //Textures
+        Texture2D glitchSkin;
+        Texture2D longSwordSkin;
+        Texture2D slimeSkin;
+        Texture2D vertSkin;
+        Texture2D horzSkin;
+        //Classes
+        Glitch glitch;
+        Long_Sword longSword;
+        Slime slime1;
+        Vertical_Platform vert1;
+        Horizontal_Platform horz1;
+        //Rectangles
+        Rectangle glitchPos;
+        Rectangle longSwordPos;
+        Rectangle slimePos1;
+        Rectangle vertPos1;
+        Rectangle horzPos1;
         //Rectangle is x, y, width and height
-        Rectangle glitchPos = new Rectangle(100,100, 100, 100);
-        Rectangle longSwordPos = new Rectangle(100, 100, 100, 100);
-        Rectangle slimePos1 = new Rectangle(100, 100, 100, 100);
-        Rectangle vertPos1 = new Rectangle(100, 100, 100, 100);
-        Rectangle horzPos1 = new Rectangle(100, 100, 100, 100);
 
-        //Object initializations
-        Glitch glitch = new Glitch(glitchPos);
-        Long_Sword longSword = new Long_Sword(longSwordPos);
-        //Can just make slime1, slime2, etc and position them at different locations according to level map
-        Slime slime1 = new Slime(slimePos1);
-        Vertical_Platform vert1 = new Vertical_Platform(vertPos1);
-        Horizontal_Platform horz1 = new Horizontal_Platform(horzPos1);
-            
+
 
         //Monogame Methods
         public Game1()
@@ -98,7 +102,24 @@ namespace Glitch_Wobble
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            //Textures
+            glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
+            longSwordSkin = Content.Load<Texture2D>("longSwordSkin.png");
+            slimeSkin = Content.Load<Texture2D>("slimeSkin.png");
+            vertSkin = Content.Load<Texture2D>("vertSkin.png");
+            horzSkin = Content.Load<Texture2D>("horzSkin.png");
+            //Starting Positions Rectangles
+            glitchPos = new Rectangle(100, 100, 100, 100);
+            longSwordPos = new Rectangle(100, 100, 100, 100);
+            slimePos1 = new Rectangle(100, 100, 100, 100);
+            vertPos1 = new Rectangle(100, 100, 100, 100);
+            horzPos1 = new Rectangle(100, 100, 100, 100);
+            //Class Initializations
+            glitch = new Glitch(glitchPos, glitchSkin);
+            longSword = new Long_Sword(longSwordPos, longSwordSkin);
+            slime1 = new Slime(slimePos1, slimeSkin, 0);
+            vert1 = new Vertical_Platform(vertPos1, vertSkin);
+            horz1 = new Horizontal_Platform(horzPos1, horzSkin);
             // TODO: use this.Content to load your game content here
         }
 
