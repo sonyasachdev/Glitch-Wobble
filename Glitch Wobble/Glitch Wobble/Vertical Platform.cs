@@ -21,6 +21,8 @@ namespace Glitch_Wobble
         {
             Up,
             Down,
+            Spawn,
+            Despawn
         }
         PlatformState currentPlatformState;
 
@@ -50,11 +52,16 @@ namespace Glitch_Wobble
                 case PlatformState.Down:
                     //Blue Platform
                     break;
+                case PlatformState.Spawn:
+                    //Blue Platform
+                    break;
+                case PlatformState.Despawn:
+                    //Blue Platform
+                    break;
                 default:
                     break;
             }
         }
-
         //Methods
         public void Switch()
         {
@@ -66,7 +73,11 @@ namespace Glitch_Wobble
                 case PlatformState.Down:
                     MoveDown(position);
                     break;
-                default:
+                case PlatformState.Spawn:
+                    Spawn();
+                    break;
+                case PlatformState.Despawn:
+                    Despawn();
                     break;
             }
         }

@@ -16,31 +16,40 @@ namespace Glitch_Wobble
     {
         //Enums
         //Menu
-        enum MenuState
+        enum MenuButtonState
         {
-            //SplashScreen,
-            //LoadScreen,
-            Main,
-            Options,
-            Play
+            ActivePlayButton,
+            ActiveOptionButton,
+
+            IdlePlayButton,
+            IdleOptionButton
         }
-        MenuState currentMenuState;
-        //Actual Game
-        enum PlayState
+        MenuButtonState currentMenuButtonState;
+
+        enum OptionButtonState
         {
-            Pause,
-            Play,
-            Win,
-            Reset
-            //NextLevel,
+            ActiveEasy,
+            ActiveMedium,
+            ActiveHard,
+            ActiveCancel,
+
+            IdleEasy,
+            IdleMedium,
+            IdleHard,
+            IdleCancel
         }
-        PlayState currentPlayState;
+        OptionButtonState currentOptionButtonState;
         //Changes between menu and game
         enum GameState
         {
             Menu,
-            Game,
-            Gameover
+            Options,
+            PlayGame,
+            Pause,
+            Win,
+            GameOver
+            //SplashScreen,
+            //LoadScreen
         }
         GameState currentGameState;
         enum SlimeState
@@ -53,9 +62,11 @@ namespace Glitch_Wobble
             Dead
         }
         SlimeState currentSlimeState;
+
         //Fields
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        KeyboardState key;
         //Textures
         Texture2D glitchSkin;
         Texture2D longSwordSkin;
@@ -98,11 +109,10 @@ namespace Glitch_Wobble
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            currentGameState = GameState.Menu;
             //If you get a splashscreen, use:
-            //currentMenuState = MenuState.SplashScreen;
-            currentMenuState = MenuState.Main;
-            //currentPlayState = PlayState.Play;
+            //currentMenuState = GameState.SplashScreen;
+            currentGameState = GameState.Menu;
+            currentMenuButtonState = MenuButtonState.ActivePlayButton;
             base.Initialize();
 
         }
@@ -166,9 +176,114 @@ namespace Glitch_Wobble
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            key = Keyboard.GetState();
             //Main Switches
+            //Menu Button Switch
+            switch (currentMenuButtonState)
+            {
+                case MenuButtonState.ActivePlayButton:
+                    if (key.IsKeyDown(Keys.Down))
+                    {
+                        currentMenuButtonState = MenuButtonState.ActiveOptionButton;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter))
+                    {
+                        currentGameState = GameState.PlayGame;
+                    }
+                    break;
+                case MenuButtonState.ActiveOptionButton:
 
+                    if (key.IsKeyDown(Keys.Up))
+                    {
+                        currentMenuButtonState = MenuButtonState.ActivePlayButton;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter))
+                    {
+                        currentGameState = GameState.Options;
+                    }
+                    break;
+            }
+            //Options Button Switch
+            switch (currentOptionButtonState)
+            {
+                case OptionButtonState.ActiveEasy:
+                    if (key.IsKeyDown(Keys.Down))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveMedium;
+                    }
+                    else if (key.IsKeyDown(Keys.Up))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveCancel;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter))
+                    {
+                        //Put code to switch difficulty
+                        currentGameState = GameState.Menu;
+                    }
+                    break;
+                case OptionButtonState.ActiveMedium:
+                    if (key.IsKeyDown(Keys.Down))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveHard;
+                    }
+                    else if (key.IsKeyDown(Keys.Up))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveEasy;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter))
+                    {
+                        //Put code to switch difficulty
+                        currentGameState = GameState.Menu;
+                    }
+                    break;
+                case OptionButtonState.ActiveHard:
+                    if (key.IsKeyDown(Keys.Down))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveCancel;
+                    }
+                    else if (key.IsKeyDown(Keys.Up))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveMedium;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter))
+                    {
+                        //Put code to switch difficulty
+                        currentGameState = GameState.Menu;
+                    }
+                    break;
+                case OptionButtonState.ActiveCancel:
+                    if (key.IsKeyDown(Keys.Down))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveEasy;
+                    }
+                    else if (key.IsKeyDown(Keys.Up))
+                    {
+                        currentOptionButtonState = OptionButtonState.ActiveHard;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter))
+                    {
+                        currentGameState = GameState.Menu;
+                    }
+                    break;
+            }
+            //Game Switch
+            switch (currentGameState)
+            {
+                case GameState.Menu:
+                    break;
+                case GameState.Options:
 
+                    break;
+                case GameState.PlayGame:
+                    //Each time this runs, have a reset level method. Also, put all game logic into this part
+                    break;
+                case GameState.Pause:
+                    break;
+                case GameState.Win:
+                    break;
+                case GameState.GameOver:
+                    break;
+            }
 
             //External Switches
             glitch.Switch();
@@ -189,7 +304,47 @@ namespace Glitch_Wobble
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
+            //Main Draw Switches
+            //Menu Button Switches
+            switch (currentMenuButtonState)
+            {
+                case MenuButtonState.ActivePlayButton:
+                    //spriteBatch.Draw(playActiveButtonSkin, playActiveButtonRectangle, Color.White)
+                    break;
+                case MenuButtonState.ActiveOptionButton:
+                    //spriteBatch.Draw(playActiveOptionButtonSkin, playActiveButtonRectangle, Color.White)
+                    break;
+                case MenuButtonState.IdlePlayButton:
+                    //spriteBatch.Draw(playIdleButtonSkin, playActiveButtonRectangle, Color.White)
+                    break;
+                case MenuButtonState.IdleOptionButton:
+                    //spriteBatch.Draw(playIdleOptionButtonSkin, playActiveButtonRectangle, Color.White)
+                    break;
+                default:
+                    break;
+            }
+            //OptionButtonSwitches
+            switch (currentOptionButtonState)
+            {
+                case OptionButtonState.ActiveEasy:
+                    break;
+                case OptionButtonState.ActiveMedium:
+                    break;
+                case OptionButtonState.ActiveHard:
+                    break;
+                case OptionButtonState.ActiveCancel:
+                    break;
+                case OptionButtonState.IdleEasy:
+                    break;
+                case OptionButtonState.IdleMedium:
+                    break;
+                case OptionButtonState.IdleHard:
+                    break;
+                case OptionButtonState.IdleCancel:
+                    break;
+                default:
+                    break;
+            }
             spriteBatch.Draw(slime1.Skin, slime1.Position, Color.White);
             switch (currentSlimeState)
             {
