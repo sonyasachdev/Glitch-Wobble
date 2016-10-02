@@ -45,6 +45,17 @@ namespace Glitch_Wobble
             Dead
         }
         GlitchState currentGlitchState;
+
+        enum keyState
+        {
+            MoveRight,
+            MoveLeft,
+            JumpStart,
+            JumpEnd,
+            IdleLeft,
+            IdleRight
+        }
+        keyState currentKeyState;
         //Monogame Methods
         public void Initialize()
         {
@@ -60,9 +71,11 @@ namespace Glitch_Wobble
             {
                 case GlitchState.MoveRight:
                     //Animation
+                    PlayerImage(SpriteEffects.None);
                     break;
                 case GlitchState.MoveLeft:
-                    //Flip Image
+                    //Flip Image using SpriteEffects
+                    PlayerImage(SpriteEffects.FlipHorizontally);
                     break;
                 case GlitchState.JumpStart:
                     //JumpBegin
@@ -110,13 +123,15 @@ namespace Glitch_Wobble
         }
         public void Move()
         {
-            if (key.IsKeyDown(Keys.Left) == true)
-            {
-                position.X -= 3;
-            }
+            key = Keyboard.GetState();
+            
             if (key.IsKeyDown(Keys.Right) == true)
             {
                 position.X += 3;
+            }
+            else if (key.IsKeyDown(Keys.Left) == true)
+            {
+                position.X -= 3;
             }
         }
         public void StartJump()
@@ -134,6 +149,9 @@ namespace Glitch_Wobble
             JumpTimer.Stop();
             currentGlitchState = GlitchState.JumpEnd;
         }
-
+        private void PlayerImage(SpriteEffects flipSprite)
+        {
+            spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
+        }
     }
 }

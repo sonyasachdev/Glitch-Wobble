@@ -43,7 +43,16 @@ namespace Glitch_Wobble
             Gameover
         }
         GameState currentGameState;
-
+        enum SlimeState
+        {
+            MoveLeft,
+            MoveRight,
+            //IdleLeft,
+            //IdleRight,
+            Hurt,
+            Dead
+        }
+        SlimeState currentSlimeState;
         //Fields
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -74,6 +83,10 @@ namespace Glitch_Wobble
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            //Sets Window Size
+            graphics.PreferredBackBufferWidth = 1024;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 720;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -109,17 +122,29 @@ namespace Glitch_Wobble
             vertSkin = Content.Load<Texture2D>("vertSkin.png");
             horzSkin = Content.Load<Texture2D>("horzSkin.png");
             //Starting Positions Rectangles
-            glitchPos = new Rectangle(100, 100, 100, 100);
-            longSwordPos = new Rectangle(100, 100, 100, 100);
-            slimePos1 = new Rectangle(100, 100, 100, 100);
-            vertPos1 = new Rectangle(100, 100, 100, 100);
-            horzPos1 = new Rectangle(100, 100, 100, 100);
+            glitchPos = new Rectangle(0, 0, 100, 100);
+            longSwordPos = new Rectangle(0, 0, 100, 100);
+            slimePos1 = new Rectangle(100, 100, 350, 200);
+            vertPos1 = new Rectangle(100, 300, 400, 100);
+            horzPos1 = new Rectangle(100, 500, 400, 100);
             //Class Initializations
             glitch = new Glitch(glitchPos, glitchSkin);
             longSword = new Long_Sword(longSwordPos, longSwordSkin);
-            slime1 = new Slime(slimePos1, slimeSkin, 0);
+            slime1 = new Slime(slimePos1, slimeSkin, true, 0);
             vert1 = new Vertical_Platform(vertPos1, vertSkin);
             horz1 = new Horizontal_Platform(horzPos1, horzSkin);
+            //Assigning Textures
+            glitch.Skin = glitchSkin;
+            longSword.Skin = longSwordSkin;
+            slime1.Skin = slimeSkin;
+            vert1.Skin = vertSkin;
+            horz1.Skin = horzSkin;
+            //Assigning Locations
+            glitch.Position = glitchPos;
+            longSword.Position = longSwordPos;
+            slime1.Position = slimePos1;
+            vert1.Position = vertPos1;
+            horz1.Position = horzPos1;
             // TODO: use this.Content to load your game content here
         }
 
@@ -144,6 +169,7 @@ namespace Glitch_Wobble
             //Main Switches
 
 
+
             //External Switches
             glitch.Switch();
             slime1.Switch();
@@ -159,17 +185,40 @@ namespace Glitch_Wobble
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            spriteBatch.Draw(slime1.Skin, slime1.Position, Color.White);
+            switch (currentSlimeState)
+            {
+                case SlimeState.MoveLeft:
+                    SlimeIdle(SpriteEffects.FlipHorizontally);
+                    break;
+                case SlimeState.MoveRight:
+                    SlimeIdle(SpriteEffects.None);
+                    break;
+                case SlimeState.Hurt:
+                    //Hurt Animation
+                    break;
+                case SlimeState.Dead:
+                    //Dead Animation
+                    break;
+            }
+
             glitch.Draw();
-            slime1.Draw();
+            //slime1.Draw(slime1.Skin, slime1.Position, Color.White);
             longSword.Draw();
             vert1.Draw();
             horz1.Draw();
 
             base.Draw(gameTime);
+            spriteBatch.End();
         }
-
+        private void SlimeIdle(SpriteEffects flipSprite)
+        {
+            spriteBatch.Draw(slime1.Skin, new Vector2(0, 0), slime1.Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
+        }
     }
 }
