@@ -84,8 +84,8 @@ namespace Glitch_Wobble
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             //Sets Window Size
-            graphics.PreferredBackBufferWidth = 1024;  // set this value to the desired width of your window
-            graphics.PreferredBackBufferHeight = 720;   // set this value to the desired height of your window
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
         }
 
