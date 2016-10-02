@@ -17,6 +17,7 @@ namespace Glitch_Wobble
         SpriteBatch spriteBatch;
         protected Rectangle position;
         protected Texture2D skin;
+        protected bool active;
 
         //Properties
         public Rectangle Position
@@ -29,6 +30,11 @@ namespace Glitch_Wobble
             get { return skin; }
             set { skin = value; }
         }
+        public bool Active
+        {
+            get { return active; }
+            set { active = value; }
+        }
 
         //Constructors
         public Platform()
@@ -36,6 +42,7 @@ namespace Glitch_Wobble
             SpawnTimer = new Timer();
             SpawnTimer.Interval = 4000;
             SpawnTimer.Elapsed += Despawn;
+            active = false;
         }
         private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {
@@ -46,10 +53,12 @@ namespace Glitch_Wobble
         public void Spawn()
         {
             SpawnTimer.Start();
+            active = true;
         }
         public void Despawn()
         {
             SpawnTimer.Stop();
+            active = false;
         }
 
     }

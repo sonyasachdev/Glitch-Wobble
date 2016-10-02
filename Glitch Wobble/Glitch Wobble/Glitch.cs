@@ -14,7 +14,7 @@ namespace Glitch_Wobble
         //Fields
         Timer JumpTimer;
         SpriteBatch spriteBatch;
-        KeyboardState key = Keyboard.GetState();
+        KeyboardState key;
         Rectangle hitBox;
 
         //Constructor
