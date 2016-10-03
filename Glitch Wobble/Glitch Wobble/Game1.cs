@@ -276,6 +276,10 @@ namespace Glitch_Wobble
                     break;
                 case GameState.PlayGame:
                     //Each time this runs, have a reset level method. Also, put all game logic into this part
+                    glitch.Switch();
+                    slime1.Switch();
+                    vert1.Switch();
+                    horz1.Switch();
                     break;
                 case GameState.Pause:
                     break;
@@ -286,10 +290,7 @@ namespace Glitch_Wobble
             }
 
             //External Switches
-            glitch.Switch();
-            slime1.Switch();
-            vert1.Switch();
-            horz1.Switch();
+            
 
             base.Update(gameTime);
         }
