@@ -25,20 +25,22 @@ namespace Glitch_Wobble
             this.skin = s;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(100, 100, 0, 0);
-            RightBound = new Rectangle(100, 700, 0, 0);
+            LeftBound = new Rectangle(100, 100, 10, 10);
+            RightBound = new Rectangle(700, 100, 10, 10);
             isHurt = null;
-
+            currentSlimeState = SlimeState.MoveRight;
+            /*
             hurtTimer = new Timer();
             hurtTimer.Interval = 2000;
-            hurtTimer.Elapsed += ChangeState;
+            hurtTimer.Elapsed += ChangeState;*/
         }
         //Timer Function
+        /*
         private void ChangeState(Object source, System.Timers.ElapsedEventArgs e)
         {
             ChangeState(isHurt);
         }
-
+        */
 
         //SlimeStates
         enum SlimeState
@@ -61,25 +63,29 @@ namespace Glitch_Wobble
         {
             
         }
-        public void Draw()
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(ski, pos, w);
-            
-            switch (currentSlimeState)
+            if (active == true)
             {
-                case SlimeState.MoveLeft:
-                    SlimeIdle(SpriteEffects.FlipHorizontally);
-                    break;
-                case SlimeState.MoveRight:
-                    SlimeIdle(SpriteEffects.None);
-                    break;
-                case SlimeState.Hurt:
-                    //Hurt Animation
-                    break;
-                case SlimeState.Dead:
-                    //Dead Animation
-                    break;
+                switch (currentSlimeState)
+                {
+                    case SlimeState.MoveLeft:
+                        //SlimeIdle(SpriteEffects.FlipHorizontally);
+                        base.Draw(spriteBatch);
+                        break;
+                    case SlimeState.MoveRight:
+                        //SlimeIdle(SpriteEffects.None);
+                        base.Draw(spriteBatch);
+                        break;
+                    case SlimeState.Hurt:
+                        //Hurt Animation
+                        break;
+                    case SlimeState.Dead:
+                        //Dead Animation
+                        break;
+                }
             }
+            //else, it won't draw
         }
 
         //Methods
@@ -88,10 +94,10 @@ namespace Glitch_Wobble
             switch (currentSlimeState)
             {
                 case SlimeState.MoveLeft:
-                    MoveLeft(RightBound);
+                    MoveLeft(LeftBound);
                     break;
                 case SlimeState.MoveRight:
-                    MoveRight(LeftBound);
+                    MoveRight(RightBound);
                     break;
                 case SlimeState.Hurt:
                     break;
@@ -101,6 +107,7 @@ namespace Glitch_Wobble
                     break;
             }
         }
+        /*
         //Takes count how many times hitbox has been touched by the weapon's attack state
         //maybe make this return a bool so that with the timer, it will know if the slime was hurt. If true, set state to hurt, if false, set state to dead.
         public bool? Hurt(Long_Sword longSword)
@@ -151,36 +158,37 @@ namespace Glitch_Wobble
                 currentSlimeState = SlimeState.MoveRight;
             }
         }
-
+        */
 
         //Basic AI Code that makes it go left and right
         public void MoveRight(Rectangle RightBound)
         {
-            while (position.X <= RightBound.X)
+            if (position.X < RightBound.X)
             {
-                position.X += 1;
+                position.X += 10;
             }
-            if (position.X == RightBound.X)
+            else if (position.X >= RightBound.X)
             {
                 currentSlimeState = SlimeState.MoveLeft;
             }
         }
         public void MoveLeft(Rectangle LeftBound)
         {
-            while (position.X >= LeftBound.X)
+            if (position.X > LeftBound.X)
             {
-                position.X -= 1;
+                position.X -= 10;
             }
-            if (position.X == LeftBound.X)
+            else if (position.X <= LeftBound.X)
             {
                 currentSlimeState = SlimeState.MoveRight;
             }
         }
+        /*
         private void SlimeIdle(SpriteEffects flipSprite)
         {
             spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
         }
-        /*
+        
         public void Move(Vector2 start, Vector2 end)
         {
             //right

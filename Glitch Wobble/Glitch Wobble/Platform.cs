@@ -42,7 +42,7 @@ namespace Glitch_Wobble
             SpawnTimer = new Timer();
             SpawnTimer.Interval = 4000;
             SpawnTimer.Elapsed += Despawn;
-            active = false;
+            active = true;
         }
         private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {
@@ -60,6 +60,9 @@ namespace Glitch_Wobble
             SpawnTimer.Stop();
             active = false;
         }
-
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(skin, position, Color.White);
+        }
     }
 }

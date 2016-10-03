@@ -52,16 +52,6 @@ namespace Glitch_Wobble
             //LoadScreen
         }
         GameState currentGameState;
-        enum SlimeState
-        {
-            MoveLeft,
-            MoveRight,
-            //IdleLeft,
-            //IdleRight,
-            Hurt,
-            Dead
-        }
-        SlimeState currentSlimeState;
 
         //Fields
         GraphicsDeviceManager graphics;
@@ -111,7 +101,7 @@ namespace Glitch_Wobble
             // TODO: Add your initialization logic here
             //If you get a splashscreen, use:
             //currentMenuState = GameState.SplashScreen;
-            currentGameState = GameState.Menu;
+            currentGameState = GameState.PlayGame;
             currentMenuButtonState = MenuButtonState.ActivePlayButton;
             base.Initialize();
 
@@ -356,35 +346,20 @@ namespace Glitch_Wobble
                 default:
                     break;
             }
-            spriteBatch.Draw(slime1.Skin, slime1.Position, Color.White);
-            switch (currentSlimeState)
-            {
-                case SlimeState.MoveLeft:
-                    SlimeIdle(SpriteEffects.FlipHorizontally);
-                    break;
-                case SlimeState.MoveRight:
-                    SlimeIdle(SpriteEffects.None);
-                    break;
-                case SlimeState.Hurt:
-                    //Hurt Animation
-                    break;
-                case SlimeState.Dead:
-                    //Dead Animation
-                    break;
-            }
 
-            glitch.Draw();
-            //slime1.Draw(slime1.Skin, slime1.Position, Color.White);
-            longSword.Draw();
-            vert1.Draw();
-            horz1.Draw();
+            glitch.Draw(spriteBatch);
+            slime1.Draw(spriteBatch);
+            longSword.Draw(spriteBatch);
+            vert1.Draw(spriteBatch);
+            horz1.Draw(spriteBatch);
 
             base.Draw(gameTime);
             spriteBatch.End();
         }
+        /*
         private void SlimeIdle(SpriteEffects flipSprite)
         {
             spriteBatch.Draw(slime1.Skin, new Vector2(0, 0), slime1.Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
-        }
+        }*/
     }
 }

@@ -18,7 +18,7 @@ namespace Glitch_Wobble
         enum PlatformState
         {
             Left,
-            Right,
+            Right
         }
         PlatformState currentPlatformState;
 
@@ -38,18 +38,23 @@ namespace Glitch_Wobble
         {
 
         }
-        public void Draw()
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            switch (currentPlatformState)
+            if(active == true)
             {
-                case PlatformState.Left:
-                    //Purple Platform
-                    break;
-                case PlatformState.Right:
-                    //Purple Platform
-                    break;
-                default:
-                    break;
+                //base.Draw(spriteBatch);
+
+                switch (currentPlatformState)
+                {
+                    case PlatformState.Left:
+                        //Purple Platform
+                        base.Draw(spriteBatch);
+                        break;
+                    case PlatformState.Right:
+                        //Purple Platform
+                        base.Draw(spriteBatch);
+                        break;
+                }
             }
         }
         public void Switch()
@@ -62,30 +67,27 @@ namespace Glitch_Wobble
                 case PlatformState.Right:
                     MoveLeft(position);
                     break;
-                default:
-                    break;
             }
         }
         //Methods
         public void MoveRight(Rectangle pos)
         {
-            while (position.X <= pos.X)
+            if (position.X < pos.X)
             {
                 position.X += 1;
             }
-            if (position.X == pos.X)
+            else if (position.X >= pos.X)
             {
                 currentPlatformState = PlatformState.Left;
             }
-
         }
         public void MoveLeft(Rectangle pos)
         {
-            while (position.X >= pos.X)
+            if (position.X > pos.X)
             {
                 position.X -= 1;
             }
-            if (position.X == pos.X)
+            else if (position.X <= pos.X)
             {
                 currentPlatformState = PlatformState.Right;
             }

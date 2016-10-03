@@ -74,17 +74,18 @@ namespace Glitch_Wobble
         {
 
         }
-        public void Draw()
+        public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:
                     //Animation
-                    PlayerImage(SpriteEffects.None);
+                    //PlayerImage(SpriteEffects.None);
                     break;
                 case GlitchState.MoveLeft:
                     //Flip Image using SpriteEffects
-                    PlayerImage(SpriteEffects.FlipHorizontally);
+                    //PlayerImage(SpriteEffects.FlipHorizontally);
                     break;
                 case GlitchState.JumpStart:
                     //JumpBegin
@@ -156,10 +157,12 @@ namespace Glitch_Wobble
             jumpTimer.Stop();
             currentGlitchState = GlitchState.JumpEnd;
         }
+        /*
         private void PlayerImage(SpriteEffects flipSprite)
         {
             spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
         }
+        */
         //Hurt Code is in main method because it needs to change the gamestate
     }
 }

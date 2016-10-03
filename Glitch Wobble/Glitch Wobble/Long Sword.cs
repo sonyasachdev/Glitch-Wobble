@@ -44,9 +44,26 @@ namespace Glitch_Wobble
         {
 
         }
-        public void Draw()
+        public override void Draw(SpriteBatch spriteBatch)
         {
-
+            base.Draw(spriteBatch);
+            switch (currentLongSwordState)
+            {
+                case LongSwordState.Idle:
+                    break;
+                case LongSwordState.Run:
+                    break;
+                case LongSwordState.StartJump:
+                    break;
+                case LongSwordState.EndJump:
+                    break;
+                case LongSwordState.Attack:
+                    break;
+                case LongSwordState.Hurt:
+                    break;
+                case LongSwordState.Dead:
+                    break;
+            }
         }
 
         //Methods
@@ -67,8 +84,6 @@ namespace Glitch_Wobble
                 case LongSwordState.Hurt:
                     break;
                 case LongSwordState.Dead:
-                    break;
-                default:
                     break;
             }
         }

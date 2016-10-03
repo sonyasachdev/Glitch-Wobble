@@ -26,5 +26,11 @@ namespace Glitch_Wobble
             get { return skin; }
             set { skin = value; }
         }
+
+        //Methods
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(skin, position, Color.White);
+        }
     }
 }

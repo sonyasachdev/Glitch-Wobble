@@ -20,9 +20,7 @@ namespace Glitch_Wobble
         enum PlatformState
         {
             Up,
-            Down,
-            Spawn,
-            Despawn
+            Down
         }
         PlatformState currentPlatformState;
 
@@ -42,26 +40,23 @@ namespace Glitch_Wobble
         {
             //skin = Content.Load<Texture2D>("vertPlatform.png");
         }
-        public void Draw()
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            switch (currentPlatformState)
+            if (active == true)
             {
-                case PlatformState.Up:
-                    //Blue Platform
-                    break;
-                case PlatformState.Down:
-                    //Blue Platform
-                    break;
-                case PlatformState.Spawn:
-                    //Blue Platform
-                    break;
-                case PlatformState.Despawn:
-                    //Blue Platform
-                    break;
-                default:
-                    break;
+                switch (currentPlatformState)
+                {
+                    case PlatformState.Up:
+                        base.Draw(spriteBatch);
+                        break;
+                    case PlatformState.Down:
+                        base.Draw(spriteBatch);
+                        break;
+                }
             }
+            
         }
+
         //Methods
         public void Switch()
         {
@@ -73,32 +68,26 @@ namespace Glitch_Wobble
                 case PlatformState.Down:
                     MoveDown(position);
                     break;
-                case PlatformState.Spawn:
-                    Spawn();
-                    break;
-                case PlatformState.Despawn:
-                    Despawn();
-                    break;
             }
         }
         public void MoveUp(Rectangle pos)
         {
-            while (position.Y <= pos.Y )
+            if (position.Y < pos.Y )
             {
                 position.Y += 1;
             }
-            if (position.Y == pos.Y)
+            else if (position.Y >= pos.Y)
             {
                 currentPlatformState = PlatformState.Down;
             }
         }
         public void MoveDown(Rectangle pos)
         {
-            while (position.Y >= pos.Y)
+            if (position.Y > pos.Y)
             {
                 position.Y -= 1;
             }
-            if (position.Y == pos.Y)
+            else if (position.Y <= pos.Y)
             {
                 currentPlatformState = PlatformState.Up;
             }
