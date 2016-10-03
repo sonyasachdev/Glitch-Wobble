@@ -9,7 +9,7 @@ using System.Timers;
 
 namespace Glitch_Wobble
 {
-    class Sword
+    public class Sword
     {
         //Fields
         protected Rectangle position;

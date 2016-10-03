@@ -10,7 +10,7 @@ using System.Timers;
 
 namespace Glitch_Wobble
 {
-    class Enemy : Beings
+    public class Enemy : Beings
     {
         //Fields
         Timer SpawnTimer;
@@ -39,18 +39,6 @@ namespace Glitch_Wobble
         }
 
         //Methods
-        //Checks Collision
-        public bool CheckCollision(Long_Sword weapon)
-        {
-            if (this.Position.Intersects(weapon.Position) == true)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         //Makes Enemy despawn
         public void Dead()
         {

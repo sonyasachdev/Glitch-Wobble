@@ -143,18 +143,6 @@ namespace Glitch_Wobble
             slime1 = new Slime(slimePos1, slimeSkin, true, 0);
             vert1 = new Vertical_Platform(vertPos1, vertSkin);
             horz1 = new Horizontal_Platform(horzPos1, horzSkin);
-            //Assigning Textures
-            glitch.Skin = glitchSkin;
-            longSword.Skin = longSwordSkin;
-            slime1.Skin = slimeSkin;
-            vert1.Skin = vertSkin;
-            horz1.Skin = horzSkin;
-            //Assigning Locations
-            glitch.Position = glitchPos;
-            longSword.Position = longSwordPos;
-            slime1.Position = slimePos1;
-            vert1.Position = vertPos1;
-            horz1.Position = horzPos1;
             // TODO: use this.Content to load your game content here
         }
 
@@ -276,10 +264,14 @@ namespace Glitch_Wobble
                     break;
                 case GameState.PlayGame:
                     //Each time this runs, have a reset level method. Also, put all game logic into this part
+                    //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this
+                    GlitchHurt(slime1);
+
                     glitch.Switch();
                     slime1.Switch();
                     vert1.Switch();
                     horz1.Switch();
+
                     break;
                 case GameState.Pause:
                     break;
@@ -294,6 +286,24 @@ namespace Glitch_Wobble
 
             base.Update(gameTime);
         }
+
+        //Methods for Game
+        //Collision Code
+        public void GlitchHurt(Slime slime)
+        {
+            if (glitch.Position.Intersects(slime.Position) == true)
+            {
+                if (glitch.Lives < 4 && glitch.Lives > 0)
+                {
+                    glitch.Lives--;
+                }
+                else if (glitch.Lives == 0)
+                {
+                    currentGameState = GameState.GameOver;
+                }
+            }
+        }
+
 
         /// <summary>
         /// This is called when the game should draw itself.

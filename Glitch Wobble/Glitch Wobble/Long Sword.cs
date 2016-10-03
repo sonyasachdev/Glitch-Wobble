@@ -9,7 +9,7 @@ using System.Timers;
 
 namespace Glitch_Wobble
 {
-    class Long_Sword:Sword
+    public class Long_Sword:Sword
     {
         //Fields
         Timer JumpTimer;

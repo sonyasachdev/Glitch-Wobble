@@ -12,19 +12,28 @@ namespace Glitch_Wobble
     class Glitch : Beings
     {
         //Fields
-        Timer JumpTimer;
+        Timer jumpTimer;
         SpriteBatch spriteBatch;
         KeyboardState key;
         Rectangle hitBox;
+        private int lives;
+
+        //Properties
+        public int Lives
+        {
+            get { return lives; }
+            set { lives = value; }
+        }
 
         //Constructor
         public Glitch (Rectangle p, Texture2D s)
         {
             this.position = p;
             this.skin = s;
-            JumpTimer = new Timer();
-            JumpTimer.Interval = 2000;
-            JumpTimer.Elapsed += EndJump;
+            jumpTimer = new Timer();
+            jumpTimer.Interval = 2000;
+            jumpTimer.Elapsed += EndJump;
+            lives = 3;
         }
 
         //Timer Function
@@ -90,8 +99,6 @@ namespace Glitch_Wobble
                     break;
                 case GlitchState.Dead:
                     break;
-                default:
-                    break;
             }
         }
         //Main Methods
@@ -117,10 +124,9 @@ namespace Glitch_Wobble
                     break;
                 case GlitchState.Dead:
                     break;
-                default:
-                    break;
             }
         }
+        //Movement
         public void Move()
         {
             key = Keyboard.GetState();
@@ -134,11 +140,12 @@ namespace Glitch_Wobble
                 position.X -= 3;
             }
         }
+        //Jump
         public void StartJump()
         {
             if (key.IsKeyDown(Keys.Up) == true)
             {
-                JumpTimer.Start();
+                jumpTimer.Start();
                 currentGlitchState = GlitchState.JumpStart;
                 position.Y += 1;
             }
@@ -146,12 +153,13 @@ namespace Glitch_Wobble
         public void EndJump()
         {
             position.Y -= 1;
-            JumpTimer.Stop();
+            jumpTimer.Stop();
             currentGlitchState = GlitchState.JumpEnd;
         }
         private void PlayerImage(SpriteEffects flipSprite)
         {
             spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
         }
+        //Hurt Code is in main method because it needs to change the gamestate
     }
 }
