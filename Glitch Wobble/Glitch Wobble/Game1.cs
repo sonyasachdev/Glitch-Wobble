@@ -39,6 +39,17 @@ namespace Glitch_Wobble
             IdleCancel
         }
         OptionButtonState currentOptionButtonState;
+
+        enum PauseButtonState
+        {
+            ActiveResume,
+            ActiveQuit,
+
+            IdleResume,
+            IdleQuit
+        }
+        PauseButtonState currentPauseButtonState;
+
         //Changes between menu and game
         enum GameState
         {
@@ -158,22 +169,22 @@ namespace Glitch_Wobble
             switch (currentMenuButtonState)
             {
                 case MenuButtonState.ActivePlayButton:
-                    if (key.IsKeyDown(Keys.Down))
+                    if (key.IsKeyDown(Keys.Down) == true)
                     {
                         currentMenuButtonState = MenuButtonState.ActiveOptionButton;
                     }
-                    else if (key.IsKeyDown(Keys.Enter))
+                    else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         currentGameState = GameState.PlayGame;
                     }
                     break;
                 case MenuButtonState.ActiveOptionButton:
 
-                    if (key.IsKeyDown(Keys.Up))
+                    if (key.IsKeyDown(Keys.Up) == true)
                     {
                         currentMenuButtonState = MenuButtonState.ActivePlayButton;
                     }
-                    else if (key.IsKeyDown(Keys.Enter))
+                    else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         currentGameState = GameState.Options;
                     }
@@ -183,62 +194,85 @@ namespace Glitch_Wobble
             switch (currentOptionButtonState)
             {
                 case OptionButtonState.ActiveEasy:
-                    if (key.IsKeyDown(Keys.Down))
+                    if (key.IsKeyDown(Keys.Down) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveMedium;
                     }
-                    else if (key.IsKeyDown(Keys.Up))
+                    else if (key.IsKeyDown(Keys.Up) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveCancel;
                     }
-                    else if (key.IsKeyDown(Keys.Enter))
+                    else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         //Put code to switch difficulty
                         currentGameState = GameState.Menu;
                     }
                     break;
                 case OptionButtonState.ActiveMedium:
-                    if (key.IsKeyDown(Keys.Down))
+                    if (key.IsKeyDown(Keys.Down) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveHard;
                     }
-                    else if (key.IsKeyDown(Keys.Up))
+                    else if (key.IsKeyDown(Keys.Up) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveEasy;
                     }
-                    else if (key.IsKeyDown(Keys.Enter))
+                    else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         //Put code to switch difficulty
                         currentGameState = GameState.Menu;
                     }
                     break;
                 case OptionButtonState.ActiveHard:
-                    if (key.IsKeyDown(Keys.Down))
+                    if (key.IsKeyDown(Keys.Down) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveCancel;
                     }
-                    else if (key.IsKeyDown(Keys.Up))
+                    else if (key.IsKeyDown(Keys.Up) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveMedium;
                     }
-                    else if (key.IsKeyDown(Keys.Enter))
+                    else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         //Put code to switch difficulty
                         currentGameState = GameState.Menu;
                     }
                     break;
                 case OptionButtonState.ActiveCancel:
-                    if (key.IsKeyDown(Keys.Down))
+                    if (key.IsKeyDown(Keys.Down) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveEasy;
                     }
-                    else if (key.IsKeyDown(Keys.Up))
+                    else if (key.IsKeyDown(Keys.Up) == true)
                     {
                         currentOptionButtonState = OptionButtonState.ActiveHard;
                     }
-                    else if (key.IsKeyDown(Keys.Enter))
+                    else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         currentGameState = GameState.Menu;
+                    }
+                    break;
+            }
+            switch (currentPauseButtonState)
+            {
+                case PauseButtonState.ActiveResume:
+                    if (key.IsKeyDown(Keys.Right) == true)
+                    {
+                        currentPauseButtonState = PauseButtonState.ActiveQuit;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        currentGameState = GameState.PlayGame;
+                    }
+                    break;
+                case PauseButtonState.ActiveQuit:
+                    if (key.IsKeyDown(Keys.Left) == true)
+                    {
+                        currentPauseButtonState = PauseButtonState.ActiveResume;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        //take to Warning Button state. Create one.
                     }
                     break;
             }
@@ -262,6 +296,7 @@ namespace Glitch_Wobble
 
                     break;
                 case GameState.Pause:
+                    //Draw Pause Screen
                     break;
                 case GameState.Win:
                     break;
