@@ -13,6 +13,8 @@ namespace Glitch_Wobble
     {
         //Fields
         Rectangle hitBox;
+        Rectangle LeftBound;
+        Rectangle RightBound;
 
         //Platform States
         enum PlatformState
@@ -23,16 +25,21 @@ namespace Glitch_Wobble
         PlatformState currentPlatformState;
 
         //Constructor
-        public Horizontal_Platform(Rectangle p, Texture2D s)
+        public Horizontal_Platform(Rectangle p, Texture2D s /*, Rectangle l, Rectangle r */)
         {
             this.position = p;
             this.skin = s;
+            LeftBound = new Rectangle(100, 100, 10, 10);
+            RightBound = new Rectangle(400, 100, 10, 10);
+            //LeftBound = l;
+            //RightBound = r;
+
         }
 
         //Monogame Methods
         public void Initialize()
         {
-
+            currentPlatformState = PlatformState.Right;
         }
         public void LoadContent()
         {
@@ -42,16 +49,12 @@ namespace Glitch_Wobble
         {
             if(active == true)
             {
-                //base.Draw(spriteBatch);
-
                 switch (currentPlatformState)
                 {
                     case PlatformState.Left:
-                        //Purple Platform
                         base.Draw(spriteBatch);
                         break;
                     case PlatformState.Right:
-                        //Purple Platform
                         base.Draw(spriteBatch);
                         break;
                 }
@@ -62,32 +65,32 @@ namespace Glitch_Wobble
             switch (currentPlatformState)
             {
                 case PlatformState.Left:
-                    MoveRight(position);
+                    MoveLeft(LeftBound);
                     break;
                 case PlatformState.Right:
-                    MoveLeft(position);
+                    MoveRight(RightBound);
                     break;
             }
         }
         //Methods
-        public void MoveRight(Rectangle pos)
+        public void MoveRight(Rectangle RightBound)
         {
-            if (position.X < pos.X)
+            if (position.X < RightBound.X)
             {
-                position.X += 1;
+                position.X += 10;
             }
-            else if (position.X >= pos.X)
+            else if (position.X >= RightBound.X)
             {
                 currentPlatformState = PlatformState.Left;
             }
         }
-        public void MoveLeft(Rectangle pos)
+        public void MoveLeft(Rectangle LeftBound)
         {
-            if (position.X > pos.X)
+            if (position.X > LeftBound.X)
             {
-                position.X -= 1;
+                position.X -= 10;
             }
-            else if (position.X <= pos.X)
+            else if (position.X <= LeftBound.X)
             {
                 currentPlatformState = PlatformState.Right;
             }

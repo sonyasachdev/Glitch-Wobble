@@ -70,11 +70,10 @@ namespace Glitch_Wobble
                 switch (currentSlimeState)
                 {
                     case SlimeState.MoveLeft:
-                        //SlimeIdle(SpriteEffects.FlipHorizontally);
+                        //see how to flip the image
                         base.Draw(spriteBatch);
                         break;
                     case SlimeState.MoveRight:
-                        //SlimeIdle(SpriteEffects.None);
                         base.Draw(spriteBatch);
                         break;
                     case SlimeState.Hurt:
@@ -105,6 +104,30 @@ namespace Glitch_Wobble
                     //Code for this method is in enemy
                     Dead();
                     break;
+            }
+        }
+
+        //Basic AI Code that makes it go left and right
+        public void MoveRight(Rectangle RightBound)
+        {
+            if (position.X < RightBound.X)
+            {
+                position.X += 10;
+            }
+            else if (position.X >= RightBound.X)
+            {
+                currentSlimeState = SlimeState.MoveLeft;
+            }
+        }
+        public void MoveLeft(Rectangle LeftBound)
+        {
+            if (position.X > LeftBound.X)
+            {
+                position.X -= 10;
+            }
+            else if (position.X <= LeftBound.X)
+            {
+                currentSlimeState = SlimeState.MoveRight;
             }
         }
         /*
@@ -160,29 +183,7 @@ namespace Glitch_Wobble
         }
         */
 
-        //Basic AI Code that makes it go left and right
-        public void MoveRight(Rectangle RightBound)
-        {
-            if (position.X < RightBound.X)
-            {
-                position.X += 10;
-            }
-            else if (position.X >= RightBound.X)
-            {
-                currentSlimeState = SlimeState.MoveLeft;
-            }
-        }
-        public void MoveLeft(Rectangle LeftBound)
-        {
-            if (position.X > LeftBound.X)
-            {
-                position.X -= 10;
-            }
-            else if (position.X <= LeftBound.X)
-            {
-                currentSlimeState = SlimeState.MoveRight;
-            }
-        }
+
         /*
         private void SlimeIdle(SpriteEffects flipSprite)
         {

@@ -15,6 +15,8 @@ namespace Glitch_Wobble
     {
         //Fields
         Rectangle hitBox;
+        Rectangle UpperBound;
+        Rectangle LowerBound;
 
         //States
         enum PlatformState
@@ -25,20 +27,26 @@ namespace Glitch_Wobble
         PlatformState currentPlatformState;
 
         //Constructor
-        public Vertical_Platform(Rectangle p, Texture2D s)
+        public Vertical_Platform(Rectangle p, Texture2D s /*, Rectangle u, Rectangle l */)
         {
             this.position = p;
             this.skin = s;
+            UpperBound = new Rectangle(100, 0, 10, 10);
+            LowerBound = new Rectangle(100, 700, 10, 10);
+
+            //remember that the upper bound will be small (closer to 0) and lower will be big
+            //UpperBound = u;
+            //LowerBound = l;
         }
 
         //Monogame Methods
         public void Initialize()
         {
-
+            currentPlatformState = PlatformState.Down;
         }
         public void LoadContent()
         {
-            //skin = Content.Load<Texture2D>("vertPlatform.png");
+
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -54,7 +62,6 @@ namespace Glitch_Wobble
                         break;
                 }
             }
-            
         }
 
         //Methods
@@ -63,34 +70,34 @@ namespace Glitch_Wobble
             switch (currentPlatformState)
             {
                 case PlatformState.Up:
-                    MoveUp(position);
+                    MoveUp(UpperBound);
                     break;
                 case PlatformState.Down:
-                    MoveDown(position);
+                    MoveDown(LowerBound);
                     break;
             }
         }
-        public void MoveUp(Rectangle pos)
+        public void MoveUp(Rectangle UpperBound)
         {
-            if (position.Y < pos.Y )
+            if (position.Y > UpperBound.Y )
             {
-                position.Y += 1;
+                position.Y -= 10;
             }
-            else if (position.Y >= pos.Y)
+            else if (position.Y <= UpperBound.Y)
             {
                 currentPlatformState = PlatformState.Down;
             }
         }
-        public void MoveDown(Rectangle pos)
+        public void MoveDown(Rectangle LowerBound)
         {
-            if (position.Y > pos.Y)
+            if (position.Y < LowerBound.Y)
             {
-                position.Y -= 1;
+                position.Y += 10;
             }
-            else if (position.Y <= pos.Y)
+            else if (position.Y >= LowerBound.Y)
             {
                 currentPlatformState = PlatformState.Up;
             }
-        }  
+        }
     }
 }

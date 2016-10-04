@@ -48,8 +48,6 @@ namespace Glitch_Wobble
             Pause,
             Win,
             GameOver
-            //SplashScreen,
-            //LoadScreen
         }
         GameState currentGameState;
 
