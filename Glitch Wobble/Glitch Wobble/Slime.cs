@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
+using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
@@ -18,11 +19,12 @@ namespace Glitch_Wobble
         Timer hurtTimer;
         bool? isHurt;
 
+        Texture2D slimeSkin;
+
         //Constructor
-        public Slime(Rectangle p, Texture2D s, bool a,int t)
+        public Slime(Rectangle p, bool a,int t)
         {
             this.position = p;
-            this.skin = s;
             this.timesHit = t;
             this.active = a;
             LeftBound = new Rectangle(100, 100, 10, 10);
@@ -59,9 +61,9 @@ namespace Glitch_Wobble
         {
             currentSlimeState = SlimeState.MoveRight;
         }
-        public void LoadContent()
+        public void LoadContent(ContentManager Content)
         {
-            
+            slimeSkin = Content.Load<Texture2D>("slimeSkin.png");
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

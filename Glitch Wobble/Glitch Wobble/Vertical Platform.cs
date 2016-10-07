@@ -18,6 +18,7 @@ namespace Glitch_Wobble
         Rectangle UpperBound;
         Rectangle LowerBound;
 
+        Texture2D vertSkin;
         //States
         enum PlatformState
         {
@@ -27,10 +28,9 @@ namespace Glitch_Wobble
         PlatformState currentPlatformState;
 
         //Constructor
-        public Vertical_Platform(Rectangle p, Texture2D s /*, Rectangle u, Rectangle l */)
+        public Vertical_Platform(Rectangle p /*, Rectangle u, Rectangle l */)
         {
             this.position = p;
-            this.skin = s;
             UpperBound = new Rectangle(100, 0, 10, 10);
             LowerBound = new Rectangle(100, 700, 10, 10);
 
@@ -44,9 +44,9 @@ namespace Glitch_Wobble
         {
             currentPlatformState = PlatformState.Down;
         }
-        public void LoadContent()
+        public void LoadContent(ContentManager Content)
         {
-
+            vertSkin = Content.Load<Texture2D>("vertSkin.png");
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

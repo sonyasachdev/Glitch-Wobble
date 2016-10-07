@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
+using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
@@ -16,6 +17,8 @@ namespace Glitch_Wobble
         Rectangle LeftBound;
         Rectangle RightBound;
 
+        Texture2D horzSkin;
+
         //Platform States
         enum PlatformState
         {
@@ -25,10 +28,9 @@ namespace Glitch_Wobble
         PlatformState currentPlatformState;
 
         //Constructor
-        public Horizontal_Platform(Rectangle p, Texture2D s /*, Rectangle l, Rectangle r */)
+        public Horizontal_Platform(Rectangle p /*, Rectangle l, Rectangle r */)
         {
             this.position = p;
-            this.skin = s;
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(400, 100, 10, 10);
             //LeftBound = l;
@@ -41,9 +43,9 @@ namespace Glitch_Wobble
         {
             currentPlatformState = PlatformState.Right;
         }
-        public void LoadContent()
+        public void LoadContent(ContentManager Content)
         {
-
+            horzSkin = Content.Load<Texture2D>("horzSkin.png");
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

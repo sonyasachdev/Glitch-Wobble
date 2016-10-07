@@ -6,11 +6,25 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
+using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
     class Buttons
     {
+        //Fields
+        //Button Textures
+        Texture2D playIdle;
+        Texture2D playActive;
+        Texture2D optionsIdle;
+        Texture2D optionsActive;
+        //Button Rectangles
+        Rectangle playIdleRect;
+        Rectangle playActiveRect;
+        Rectangle optionsIdleRect;
+        Rectangle optionsActiveRect;
+
+        KeyboardState key;
         //Enums
         enum MenuButtonState
         {
@@ -35,6 +49,16 @@ namespace Glitch_Wobble
         }
         OptionButtonState currentOptionButtonState;
 
+        enum PauseButtonState
+        {
+            ActiveResume,
+            ActiveQuit,
+
+            IdleResume,
+            IdleQuit
+        }
+        PauseButtonState currentPauseButtonState;
+        
         //Constructors
         public Buttons()
         {
@@ -42,11 +66,70 @@ namespace Glitch_Wobble
             currentOptionButtonState = OptionButtonState.ActiveEasy;
         }
 
+        public void Initialize()
+        {
+            
+        }
+        public void LoadContent(ContentManager Content)
+        {
+            playIdle = Content.Load<Texture2D>("playidle.png");
+            playActive = Content.Load<Texture2D>("playactive.png");
+            optionsIdle = Content.Load<Texture2D>("optionsidle.png");
+            optionsActive = Content.Load<Texture2D>("optionsactive.png");
+
+            playIdleRect = new Rectangle(100, 300, 300, 100);
+            playActiveRect = new Rectangle(100, 300, 300, 100);
+            optionsIdleRect = new Rectangle(100, 500, 300, 100);
+            optionsActiveRect = new Rectangle(100, 500, 300, 100);
+        }
+        public void DrawMenu(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(optionsIdle, optionsIdleRect, Color.White);
+            spriteBatch.Draw(playIdle, playIdleRect, Color.White);
+
+            switch (currentMenuButtonState)
+            {
+                case MenuButtonState.ActivePlayButton:
+                    spriteBatch.Draw(playActive, playActiveRect, Color.White);
+                    break;
+                case MenuButtonState.ActiveOptionButton:
+                    spriteBatch.Draw(optionsActive, optionsActiveRect, Color.White);
+                    break;
+                case MenuButtonState.IdlePlayButton:
+                    spriteBatch.Draw(playIdle, playIdleRect, Color.White);
+                    break;
+                case MenuButtonState.IdleOptionButton:
+                    spriteBatch.Draw(optionsIdle, optionsIdleRect, Color.White);
+                    break;
+            }
+        }
+        public void DrawOptions(SpriteBatch spriteBatch)
+        {
+
+            switch (currentOptionButtonState)
+            {
+                case OptionButtonState.ActiveEasy:
+                    break;
+                case OptionButtonState.ActiveMedium:
+                    break;
+                case OptionButtonState.ActiveHard:
+                    break;
+                case OptionButtonState.ActiveCancel:
+                    break;
+                case OptionButtonState.IdleEasy:
+                    break;
+                case OptionButtonState.IdleMedium:
+                    break;
+                case OptionButtonState.IdleHard:
+                    break;
+                case OptionButtonState.IdleCancel:
+                    break;
+            }
+        }
+
         //Ask how to switch another class' gamestate externally
         //Menu Button Switch
-
-        /*
-        public void MenuButtonSwitch(KeyboardState key, Game1 gameState)
+        public void MenuButtonSwitch(KeyboardState key)
         {
             switch (currentMenuButtonState)
             {
@@ -57,7 +140,7 @@ namespace Glitch_Wobble
                     }
                     else if (key.IsKeyDown(Keys.Enter))
                     {
-                        currentGameState = GameState.PlayGame;
+                        Game1.currentGameState = GameState.PlayGame;
                     }
                     break;
                 case MenuButtonState.ActiveOptionButton:
@@ -68,14 +151,16 @@ namespace Glitch_Wobble
                     }
                     else if (key.IsKeyDown(Keys.Enter))
                     {
-                        currentGameState = GameState.Options;
+                        Game1.currentGameState = GameState.Options;
                     }
                     break;
             }
         }
+
         //Options Button Switch
-        public void OptionButtonSwitch()
+        public void OptionButtonSwitch(KeyboardState key)
         {
+            
             switch (currentOptionButtonState)
             {
                 case OptionButtonState.ActiveEasy:
@@ -90,7 +175,7 @@ namespace Glitch_Wobble
                     else if (key.IsKeyDown(Keys.Enter))
                     {
                         //Put code to switch difficulty
-                        currentGameState = GameState.Menu;
+                        Game1.currentGameState = GameState.Menu;
                     }
                     break;
                 case OptionButtonState.ActiveMedium:
@@ -105,7 +190,7 @@ namespace Glitch_Wobble
                     else if (key.IsKeyDown(Keys.Enter))
                     {
                         //Put code to switch difficulty
-                        currentGameState = GameState.Menu;
+                        Game1.currentGameState = GameState.Menu;
                     }
                     break;
                 case OptionButtonState.ActiveHard:
@@ -120,7 +205,7 @@ namespace Glitch_Wobble
                     else if (key.IsKeyDown(Keys.Enter))
                     {
                         //Put code to switch difficulty
-                        currentGameState = GameState.Menu;
+                        Game1.currentGameState = GameState.Menu;
                     }
                     break;
                 case OptionButtonState.ActiveCancel:
@@ -134,11 +219,38 @@ namespace Glitch_Wobble
                     }
                     else if (key.IsKeyDown(Keys.Enter))
                     {
-                        currentGameState = GameState.Menu;
+                        Game1.currentGameState = GameState.Menu;
                     }
                     break;
             }
         }
-            */
+
+        //Pause Button Switch
+        public void PauseButtonSwitch(KeyboardState key)
+        {
+            switch (currentPauseButtonState)
+            {
+                case PauseButtonState.ActiveResume:
+                    if (key.IsKeyDown(Keys.Right) == true)
+                    {
+                        currentPauseButtonState = PauseButtonState.ActiveQuit;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        Game1.currentGameState = GameState.PlayGame;
+                    }
+                    break;
+                case PauseButtonState.ActiveQuit:
+                    if (key.IsKeyDown(Keys.Left) == true)
+                    {
+                        currentPauseButtonState = PauseButtonState.ActiveResume;
+                    }
+                    else if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        //take to Warning Button state. Create one.
+                    }
+                    break;
+            }
+        }
     }
 }

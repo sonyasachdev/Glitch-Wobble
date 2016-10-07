@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
+using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
@@ -15,11 +16,12 @@ namespace Glitch_Wobble
         Timer JumpTimer;
         Rectangle hitBox;
 
+        Texture2D longSwordSkin;
+
         //Constructor
-        public Long_Sword(Rectangle p, Texture2D s)
+        public Long_Sword(Rectangle p)
         {
             this.position = p;
-            this.skin = s;
         }
 
         //Different States
@@ -40,9 +42,9 @@ namespace Glitch_Wobble
         {
 
         }
-        public void LoadContent()
+        public void LoadContent(ContentManager Content)
         {
-
+            longSwordSkin = Content.Load<Texture2D>("longSwordSkin.png");
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
