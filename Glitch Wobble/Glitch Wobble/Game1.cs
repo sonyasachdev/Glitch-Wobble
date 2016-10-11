@@ -41,8 +41,8 @@ namespace Glitch_Wobble
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
         Buttons button;
+
         //Rectangles
-        Rectangle longSwordPos;
         Rectangle slimePos1;
         Rectangle vertPos1;
         Rectangle horzPos1;
@@ -52,14 +52,13 @@ namespace Glitch_Wobble
         //Menu Rectangles
         Rectangle menuPos;
 
-       
-
 
         //Monogame Methods
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
             //Sets Window Size
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 720;
@@ -78,14 +77,15 @@ namespace Glitch_Wobble
             //If you get a splashscreen, use:
             //currentMenuState = GameState.SplashScreen;
             currentGameState = GameState.Menu;
-            
+
             //Class Initializations
-            glitch.Initialize();
-            horz1.Initialize();
-            vert1.Initialize();
             button.Initialize();
+            glitch.Initialize();
             longSword.Initialize();
             slime1.Initialize();
+            horz1.Initialize();
+            vert1.Initialize();
+
             base.Initialize();
 
         }
@@ -99,28 +99,24 @@ namespace Glitch_Wobble
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            //Starting Positions Rectangles
-            glitchPos = new Rectangle(0, 0, 100, 100);
-            longSwordPos = new Rectangle(0, 0, 100, 100);
+            //Starting Position Rectangles
             slimePos1 = new Rectangle(100, 100, 350, 200);
             vertPos1 = new Rectangle(100, 300, 400, 100);
             horzPos1 = new Rectangle(100, 500, 400, 100);
+
             //Class Initializations
-            glitch = new Glitch(glitchPos);
-            longSword = new Long_Sword(longSwordPos);
+            glitch = new Glitch();
+            longSword = new Long_Sword();
             slime1 = new Slime(slimePos1, true, 0);
             vert1 = new Vertical_Platform(vertPos1);
             horz1 = new Horizontal_Platform(horzPos1);
             button = new Buttons();
-            //Button Textures
-            
-            //Button Rectangles
-            
 
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("mainmenu.png");
-            //Menu Rectangles
+            //Menu Rectangle
             menuPos = new Rectangle(0, 0, 1024, 720);
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -164,7 +160,7 @@ namespace Glitch_Wobble
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this
                     GlitchHurt(slime1);
 
-
+                    //Class switches
                     glitch.Switch();
                     slime1.Switch();
                     vert1.Switch();
@@ -221,11 +217,9 @@ namespace Glitch_Wobble
                 case GameState.Menu:
                     spriteBatch.Draw(menuSkin, menuPos, Color.White);
                     button.DrawMenu(spriteBatch);
-                    
                     break;
                 case GameState.Options:
                     button.DrawOptions(spriteBatch);
-
                     break;
                 case GameState.PlayGame:
                     glitch.Draw(spriteBatch);

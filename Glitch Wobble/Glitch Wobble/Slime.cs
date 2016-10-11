@@ -12,12 +12,26 @@ namespace Glitch_Wobble
 {
     public class Slime:Enemy
     {
+        //SlimeStates
+        enum SlimeState
+        {
+            MoveLeft,
+            MoveRight,
+            IdleLeft,
+            IdleRight,
+            Hurt,
+            Dead
+        }
+        SlimeState currentSlimeState;
+        SlimeState previousSlimeState;
+
         //Fields
         Rectangle LeftBound;
         Rectangle RightBound;
         SpriteBatch spriteBatch;
         Timer hurtTimer;
-        bool? isHurt;
+        bool face;
+        //bool? isHurt;
 
         Texture2D slimeSkin;
 
@@ -29,32 +43,35 @@ namespace Glitch_Wobble
             this.active = a;
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
-            isHurt = null;
+            //Makes it face right. True = right and False = left
+            //face = true;
+            //isHurt = null;
             currentSlimeState = SlimeState.MoveRight;
-            /*
+            //Ask if this is right?
+            previousSlimeState = currentSlimeState;
+           
+            //At the end of the hurt animation, it will revert to the previous Slime State it was in (Moving left or right)
             hurtTimer = new Timer();
             hurtTimer.Interval = 2000;
-            hurtTimer.Elapsed += ChangeState;*/
+            hurtTimer.Elapsed += HurtTimerState;
         }
         //Timer Function
-        /*
-        private void ChangeState(Object source, System.Timers.ElapsedEventArgs e)
+        
+        private void HurtTimerState(Object source, System.Timers.ElapsedEventArgs e)
         {
-            ChangeState(isHurt);
+            //or you can have a bool. Check notes for full explanation.
+            /*
+            if (face == true)
+            {
+                currentSlimeState = SlimeState.MoveRight;
+            }
+            else
+            {
+                currentSlimeState = SlimeState.MoveLeft;
+            }*/
+            
+            currentSlimeState = previousSlimeState;
         }
-        */
-
-        //SlimeStates
-        enum SlimeState
-        {
-            MoveLeft,
-            MoveRight,
-            //IdleLeft,
-            //IdleRight,
-            Hurt,
-            Dead
-        }
-        SlimeState currentSlimeState;
 
         //Monogame Methods
         public void Initialize()
@@ -95,12 +112,15 @@ namespace Glitch_Wobble
             switch (currentSlimeState)
             {
                 case SlimeState.MoveLeft:
+                    //face = false;
                     MoveLeft(LeftBound);
                     break;
                 case SlimeState.MoveRight:
+                    //face = true;
                     MoveRight(RightBound);
                     break;
                 case SlimeState.Hurt:
+                    //Add the timer in here
                     break;
                 case SlimeState.Dead:
                     //Code for this method is in enemy
@@ -132,6 +152,24 @@ namespace Glitch_Wobble
                 currentSlimeState = SlimeState.MoveRight;
             }
         }
+
+        public void Hurt(Long_Sword longsword)
+        {
+            if (this.Position.Intersects(longsword.Position) == true)
+            {
+                if (timesHit < 2)
+                {
+                    timesHit++;
+                    //set a timer that makes the slime hurt for 1-2 seconds
+                    currentSlimeState = SlimeState.Hurt;
+                }
+                else
+                {
+                    Dead();
+                }
+            }
+        }
+
         /*
         //Takes count how many times hitbox has been touched by the weapon's attack state
         //maybe make this return a bool so that with the timer, it will know if the slime was hurt. If true, set state to hurt, if false, set state to dead.
@@ -192,19 +230,6 @@ namespace Glitch_Wobble
             spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
         }
         
-        public void Move(Vector2 start, Vector2 end)
-        {
-            //right
-            while (position.X <= end.X)
-            {
-                position.X += 1;
-            }
-            //left
-            while (position.X >= start.X)
-            {
-                position.X -= 1;
-            }
-        }
         */
 
 

@@ -18,6 +18,7 @@ namespace Glitch_Wobble
         Texture2D playActive;
         Texture2D optionsIdle;
         Texture2D optionsActive;
+
         //Button Rectangles
         Rectangle playIdleRect;
         Rectangle playActiveRect;
@@ -30,9 +31,9 @@ namespace Glitch_Wobble
         {
             ActivePlayButton,
             ActiveOptionButton,
-
+            /*
             IdlePlayButton,
-            IdleOptionButton
+            IdleOptionButton*/
         }
         MenuButtonState currentMenuButtonState;
         enum OptionButtonState
@@ -41,11 +42,11 @@ namespace Glitch_Wobble
             ActiveMedium,
             ActiveHard,
             ActiveCancel,
-
+            /*
             IdleEasy,
             IdleMedium,
             IdleHard,
-            IdleCancel
+            IdleCancel*/
         }
         OptionButtonState currentOptionButtonState;
 
@@ -53,9 +54,9 @@ namespace Glitch_Wobble
         {
             ActiveResume,
             ActiveQuit,
-
+            /*Don't need the idles anymore because both buttos will be drawn on the menu and depending on the state, a button will go over the existing ones.
             IdleResume,
-            IdleQuit
+            IdleQuit*/
         }
         PauseButtonState currentPauseButtonState;
         
@@ -72,14 +73,14 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            playIdle = Content.Load<Texture2D>("playidle.png");
+            //playIdle = Content.Load<Texture2D>("playidle.png");
             playActive = Content.Load<Texture2D>("playactive.png");
-            optionsIdle = Content.Load<Texture2D>("optionsidle.png");
+            //optionsIdle = Content.Load<Texture2D>("optionsidle.png");
             optionsActive = Content.Load<Texture2D>("optionsactive.png");
 
-            playIdleRect = new Rectangle(100, 300, 300, 100);
+            //playIdleRect = new Rectangle(100, 300, 300, 100);
             playActiveRect = new Rectangle(100, 300, 300, 100);
-            optionsIdleRect = new Rectangle(100, 500, 300, 100);
+            //optionsIdleRect = new Rectangle(100, 500, 300, 100);
             optionsActiveRect = new Rectangle(100, 500, 300, 100);
         }
         public void DrawMenu(SpriteBatch spriteBatch)
@@ -95,12 +96,12 @@ namespace Glitch_Wobble
                 case MenuButtonState.ActiveOptionButton:
                     spriteBatch.Draw(optionsActive, optionsActiveRect, Color.White);
                     break;
-                case MenuButtonState.IdlePlayButton:
+                /*case MenuButtonState.IdlePlayButton:
                     spriteBatch.Draw(playIdle, playIdleRect, Color.White);
                     break;
                 case MenuButtonState.IdleOptionButton:
                     spriteBatch.Draw(optionsIdle, optionsIdleRect, Color.White);
-                    break;
+                    break;*/
             }
         }
         public void DrawOptions(SpriteBatch spriteBatch)
@@ -116,18 +117,17 @@ namespace Glitch_Wobble
                     break;
                 case OptionButtonState.ActiveCancel:
                     break;
-                case OptionButtonState.IdleEasy:
+                /*case OptionButtonState.IdleEasy:
                     break;
                 case OptionButtonState.IdleMedium:
                     break;
                 case OptionButtonState.IdleHard:
                     break;
                 case OptionButtonState.IdleCancel:
-                    break;
+                    break;*/
             }
         }
-
-        //Ask how to switch another class' gamestate externally
+        
         //Menu Button Switch
         public void MenuButtonSwitch(KeyboardState key)
         {

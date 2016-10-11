@@ -17,11 +17,8 @@ namespace Glitch_Wobble
         SpriteBatch spriteBatch;
         KeyboardState key;
         KeyboardState previousKeyState;
-        Rectangle hitBox;
         private int lives;
-
         Texture2D glitchSkin;
-        Rectangle glitchPos;
 
         //Properties
         public int Lives
@@ -31,12 +28,12 @@ namespace Glitch_Wobble
         }
 
         //Constructor
-        public Glitch (Rectangle p)
+        public Glitch ()
         {
-            this.position = p;
             jumpTimer = new Timer();
             jumpTimer.Interval = 2000;
             jumpTimer.Elapsed += EndJump;
+            this.position = new Rectangle(0, 0, 100, 100);
             lives = 3;
         }
 
@@ -109,6 +106,7 @@ namespace Glitch_Wobble
                     base.Draw(spriteBatch);
                     break;
                 case GlitchState.Hurt:
+                    //Put hurt animation, also reduce the GUI hearts by one
                     break;
                 case GlitchState.Dead:
                     break;

@@ -19,9 +19,9 @@ namespace Glitch_Wobble
         Texture2D longSwordSkin;
 
         //Constructor
-        public Long_Sword(Rectangle p)
+        public Long_Sword()
         {
-            this.position = p;
+            this.position = new Rectangle(0, 0, 100, 100);
         }
 
         //Different States
@@ -45,6 +45,7 @@ namespace Glitch_Wobble
         public void LoadContent(ContentManager Content)
         {
             longSwordSkin = Content.Load<Texture2D>("longSwordSkin.png");
+            
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
