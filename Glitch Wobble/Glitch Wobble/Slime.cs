@@ -10,29 +10,25 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
+    enum SlimeState
+    {
+        MoveLeft,
+        MoveRight,
+        IdleLeft,
+        IdleRight,
+        Hurt,
+        Dead
+    }
     public class Slime:Enemy
     {
-        //SlimeStates
-        enum SlimeState
-        {
-            MoveLeft,
-            MoveRight,
-            IdleLeft,
-            IdleRight,
-            Hurt,
-            Dead
-        }
+        //Enum Variables
         SlimeState currentSlimeState;
         SlimeState previousSlimeState;
 
         //Fields
         Rectangle LeftBound;
         Rectangle RightBound;
-        SpriteBatch spriteBatch;
         Timer hurtTimer;
-        bool face;
-        //bool? isHurt;
-
         Texture2D slimeSkin;
 
         //Constructor
@@ -43,11 +39,9 @@ namespace Glitch_Wobble
             this.active = a;
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
-            //Makes it face right. True = right and False = left
-            //face = true;
-            //isHurt = null;
             currentSlimeState = SlimeState.MoveRight;
-            //Ask if this is right?
+            slimeSkin = skin;
+
             previousSlimeState = currentSlimeState;
            
             //At the end of the hurt animation, it will revert to the previous Slime State it was in (Moving left or right)
@@ -59,17 +53,6 @@ namespace Glitch_Wobble
         
         private void HurtTimerState(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //or you can have a bool. Check notes for full explanation.
-            /*
-            if (face == true)
-            {
-                currentSlimeState = SlimeState.MoveRight;
-            }
-            else
-            {
-                currentSlimeState = SlimeState.MoveLeft;
-            }*/
-            
             currentSlimeState = previousSlimeState;
         }
 

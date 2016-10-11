@@ -10,33 +10,34 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
+    enum LongSwordState
+    {
+        Idle,
+        MoveLeft,
+        MoveRight,
+        StartJump,
+        EndJump,
+        Attack,
+        Hurt,
+        Dead
+    }
+
     public class Long_Sword:Sword
     {
-        //Fields
-        Timer JumpTimer;
-        Rectangle hitBox;
 
+        //Fields
+        LongSwordState currentLongSwordState;
+        Timer JumpTimer;
         Texture2D longSwordSkin;
 
         //Constructor
         public Long_Sword()
         {
-            this.position = new Rectangle(0, 0, 100, 100);
+            position = new Rectangle(0, 0, 100, 100);
+            longSwordSkin = skin;
         }
 
-        //Different States
-        enum LongSwordState
-        {
-            Idle,
-            Run,
-            StartJump,
-            EndJump,
-            Attack,
-            Hurt,
-            Dead
-        }
-        LongSwordState currentLongSwordState;
-
+        
         //Monogame Methods
         public void Initialize()
         {
@@ -54,7 +55,9 @@ namespace Glitch_Wobble
             {
                 case LongSwordState.Idle:
                     break;
-                case LongSwordState.Run:
+                case LongSwordState.MoveLeft:
+                    break;
+                case LongSwordState.MoveRight:
                     break;
                 case LongSwordState.StartJump:
                     break;
@@ -76,7 +79,9 @@ namespace Glitch_Wobble
             {
                 case LongSwordState.Idle:
                     break;
-                case LongSwordState.Run:
+                case LongSwordState.MoveLeft:
+                    break;
+                case LongSwordState.MoveRight:
                     break;
                 case LongSwordState.StartJump:
                     break;

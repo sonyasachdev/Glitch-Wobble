@@ -11,6 +11,11 @@ using System.IO;
 
 namespace Glitch_Wobble
 {
+    public enum VerticalPlatformState
+    {
+        Up,
+        Down
+    }
     class Vertical_Platform : Platform
     {
         //Fields
@@ -19,13 +24,7 @@ namespace Glitch_Wobble
         Rectangle LowerBound;
 
         Texture2D vertSkin;
-        //States
-        enum PlatformState
-        {
-            Up,
-            Down
-        }
-        PlatformState currentPlatformState;
+        VerticalPlatformState currentPlatformState;
 
         //Constructor
         public Vertical_Platform(Rectangle p /*, Rectangle u, Rectangle l */)
@@ -33,7 +32,8 @@ namespace Glitch_Wobble
             this.position = p;
             UpperBound = new Rectangle(100, 0, 10, 10);
             LowerBound = new Rectangle(100, 700, 10, 10);
-
+            //check if it has to be skin = vert or vert = skin
+            skin = vertSkin;
             //remember that the upper bound will be small (closer to 0) and lower will be big
             //UpperBound = u;
             //LowerBound = l;
@@ -42,7 +42,7 @@ namespace Glitch_Wobble
         //Monogame Methods
         public void Initialize()
         {
-            currentPlatformState = PlatformState.Down;
+            currentPlatformState = VerticalPlatformState.Down;
         }
         public void LoadContent(ContentManager Content)
         {
@@ -54,10 +54,10 @@ namespace Glitch_Wobble
             {
                 switch (currentPlatformState)
                 {
-                    case PlatformState.Up:
+                    case VerticalPlatformState.Up:
                         base.Draw(spriteBatch);
                         break;
-                    case PlatformState.Down:
+                    case VerticalPlatformState.Down:
                         base.Draw(spriteBatch);
                         break;
                 }
@@ -69,10 +69,10 @@ namespace Glitch_Wobble
         {
             switch (currentPlatformState)
             {
-                case PlatformState.Up:
+                case VerticalPlatformState.Up:
                     MoveUp(UpperBound);
                     break;
-                case PlatformState.Down:
+                case VerticalPlatformState.Down:
                     MoveDown(LowerBound);
                     break;
             }
@@ -85,7 +85,7 @@ namespace Glitch_Wobble
             }
             else if (position.Y <= UpperBound.Y)
             {
-                currentPlatformState = PlatformState.Down;
+                currentPlatformState = VerticalPlatformState.Down;
             }
         }
         public void MoveDown(Rectangle LowerBound)
@@ -96,7 +96,7 @@ namespace Glitch_Wobble
             }
             else if (position.Y >= LowerBound.Y)
             {
-                currentPlatformState = PlatformState.Up;
+                currentPlatformState = VerticalPlatformState.Up;
             }
         }
     }

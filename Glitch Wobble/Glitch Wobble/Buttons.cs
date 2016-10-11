@@ -10,8 +10,33 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
+    //Enums
+    public enum MenuButtonState
+    {
+        ActivePlayButton,
+        ActiveOptionButton,
+    }
+    public enum OptionButtonState
+    {
+        ActiveEasy,
+        ActiveMedium,
+        ActiveHard,
+        ActiveCancel
+    }
+
+    public enum PauseButtonState
+    {
+        ActiveResume,
+        ActiveQuit,
+        /*Don't need the idles anymore because both buttos will be drawn on the menu and depending on the state, a button will go over the existing ones.*/
+    }
     class Buttons
     {
+
+        //Enum Variable
+        PauseButtonState currentPauseButtonState;
+        OptionButtonState currentOptionButtonState;
+        MenuButtonState currentMenuButtonState;
         //Fields
         //Button Textures
         Texture2D playIdle;
@@ -26,39 +51,6 @@ namespace Glitch_Wobble
         Rectangle optionsActiveRect;
 
         KeyboardState key;
-        //Enums
-        enum MenuButtonState
-        {
-            ActivePlayButton,
-            ActiveOptionButton,
-            /*
-            IdlePlayButton,
-            IdleOptionButton*/
-        }
-        MenuButtonState currentMenuButtonState;
-        enum OptionButtonState
-        {
-            ActiveEasy,
-            ActiveMedium,
-            ActiveHard,
-            ActiveCancel,
-            /*
-            IdleEasy,
-            IdleMedium,
-            IdleHard,
-            IdleCancel*/
-        }
-        OptionButtonState currentOptionButtonState;
-
-        enum PauseButtonState
-        {
-            ActiveResume,
-            ActiveQuit,
-            /*Don't need the idles anymore because both buttos will be drawn on the menu and depending on the state, a button will go over the existing ones.
-            IdleResume,
-            IdleQuit*/
-        }
-        PauseButtonState currentPauseButtonState;
         
         //Constructors
         public Buttons()
@@ -73,18 +65,19 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            //playIdle = Content.Load<Texture2D>("playidle.png");
+            playIdle = Content.Load<Texture2D>("playidle.png");
             playActive = Content.Load<Texture2D>("playactive.png");
-            //optionsIdle = Content.Load<Texture2D>("optionsidle.png");
+            optionsIdle = Content.Load<Texture2D>("optionsidle.png");
             optionsActive = Content.Load<Texture2D>("optionsactive.png");
 
-            //playIdleRect = new Rectangle(100, 300, 300, 100);
+            playIdleRect = new Rectangle(100, 300, 300, 100);
             playActiveRect = new Rectangle(100, 300, 300, 100);
-            //optionsIdleRect = new Rectangle(100, 500, 300, 100);
+            optionsIdleRect = new Rectangle(100, 500, 300, 100);
             optionsActiveRect = new Rectangle(100, 500, 300, 100);
         }
         public void DrawMenu(SpriteBatch spriteBatch)
         {
+            //Draws the static idle buttons
             spriteBatch.Draw(optionsIdle, optionsIdleRect, Color.White);
             spriteBatch.Draw(playIdle, playIdleRect, Color.White);
 
@@ -96,12 +89,6 @@ namespace Glitch_Wobble
                 case MenuButtonState.ActiveOptionButton:
                     spriteBatch.Draw(optionsActive, optionsActiveRect, Color.White);
                     break;
-                /*case MenuButtonState.IdlePlayButton:
-                    spriteBatch.Draw(playIdle, playIdleRect, Color.White);
-                    break;
-                case MenuButtonState.IdleOptionButton:
-                    spriteBatch.Draw(optionsIdle, optionsIdleRect, Color.White);
-                    break;*/
             }
         }
         public void DrawOptions(SpriteBatch spriteBatch)
@@ -117,14 +104,6 @@ namespace Glitch_Wobble
                     break;
                 case OptionButtonState.ActiveCancel:
                     break;
-                /*case OptionButtonState.IdleEasy:
-                    break;
-                case OptionButtonState.IdleMedium:
-                    break;
-                case OptionButtonState.IdleHard:
-                    break;
-                case OptionButtonState.IdleCancel:
-                    break;*/
             }
         }
         

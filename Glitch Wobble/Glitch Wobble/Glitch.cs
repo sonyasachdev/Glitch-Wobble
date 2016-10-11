@@ -10,6 +10,29 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
+    //Glitch State
+    public enum GlitchState
+    {
+        MoveRight,
+        MoveLeft,
+        JumpStart,
+        JumpEnd,
+        IdleLeft,
+        IdleRight,
+        Hurt,
+        Dead
+    }
+
+    public enum keyState
+    {
+        MoveRight,
+        MoveLeft,
+        JumpStart,
+        JumpEnd,
+        IdleLeft,
+        IdleRight
+    }
+
     class Glitch : Beings
     {
         //Fields
@@ -19,6 +42,10 @@ namespace Glitch_Wobble
         KeyboardState previousKeyState;
         private int lives;
         Texture2D glitchSkin;
+        //Enum Variables
+        GlitchState currentGlitchState;
+        GlitchState previousGlitchState;
+        keyState currentKeyState;
 
         //Properties
         public int Lives
@@ -35,6 +62,7 @@ namespace Glitch_Wobble
             jumpTimer.Elapsed += EndJump;
             this.position = new Rectangle(0, 0, 100, 100);
             lives = 3;
+            glitchSkin = skin;
         }
 
         //Timer Function
@@ -42,31 +70,7 @@ namespace Glitch_Wobble
         {
             EndJump();
         }
-
-        //Glitch State
-        enum GlitchState
-        {
-            MoveRight,
-            MoveLeft,
-            JumpStart,
-            JumpEnd,
-            IdleLeft,
-            IdleRight,
-            Hurt,
-            Dead
-        }
-        GlitchState currentGlitchState;
-
-        enum keyState
-        {
-            MoveRight,
-            MoveLeft,
-            JumpStart,
-            JumpEnd,
-            IdleLeft,
-            IdleRight
-        }
-        keyState currentKeyState;
+        
         //Monogame Methods
         public void Initialize()
         {
@@ -89,6 +93,7 @@ namespace Glitch_Wobble
                 case GlitchState.MoveLeft:
                     //Flip Image using SpriteEffects
                     //PlayerImage(SpriteEffects.FlipHorizontally);
+                    //Have the Fliphorizontal in Beings class, and have it inherit. Maybe make a 2nd drawmethod?
                     base.Draw(spriteBatch);
                     break;
                 case GlitchState.JumpStart:
@@ -109,6 +114,7 @@ namespace Glitch_Wobble
                     //Put hurt animation, also reduce the GUI hearts by one
                     break;
                 case GlitchState.Dead:
+                    //Run dead animation and change state to GameOver
                     break;
             }
         }
@@ -138,6 +144,8 @@ namespace Glitch_Wobble
                 case GlitchState.Hurt:
                     break;
                 case GlitchState.Dead:
+                    //Run dead animation and change state to GameOver
+                    Game1.currentGameState = GameState.GameOver;
                     break;
             }
         }
@@ -183,12 +191,5 @@ namespace Glitch_Wobble
             jumpTimer.Stop();
             currentGlitchState = GlitchState.JumpEnd;
         }
-        /*
-        private void PlayerImage(SpriteEffects flipSprite)
-        {
-            spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
-        }
-        */
-        //Hurt Code is in main method because it needs to change the gamestate
     }
 }

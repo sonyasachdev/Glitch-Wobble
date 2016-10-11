@@ -10,6 +10,12 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
+    //Platform States
+    public enum HorizontalPlatformState
+    {
+        Left,
+        Right
+    }
     class Horizontal_Platform : Platform
     {
         //Fields
@@ -18,14 +24,7 @@ namespace Glitch_Wobble
         Rectangle RightBound;
 
         Texture2D horzSkin;
-
-        //Platform States
-        enum PlatformState
-        {
-            Left,
-            Right
-        }
-        PlatformState currentPlatformState;
+        HorizontalPlatformState currentPlatformState;
 
         //Constructor
         public Horizontal_Platform(Rectangle p /*, Rectangle l, Rectangle r */)
@@ -33,6 +32,7 @@ namespace Glitch_Wobble
             this.position = p;
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(400, 100, 10, 10);
+            horzSkin = skin;
             //LeftBound = l;
             //RightBound = r;
 
@@ -41,7 +41,7 @@ namespace Glitch_Wobble
         //Monogame Methods
         public void Initialize()
         {
-            currentPlatformState = PlatformState.Right;
+            currentPlatformState = HorizontalPlatformState.Right;
         }
         public void LoadContent(ContentManager Content)
         {
@@ -53,10 +53,10 @@ namespace Glitch_Wobble
             {
                 switch (currentPlatformState)
                 {
-                    case PlatformState.Left:
+                    case HorizontalPlatformState.Left:
                         base.Draw(spriteBatch);
                         break;
-                    case PlatformState.Right:
+                    case HorizontalPlatformState.Right:
                         base.Draw(spriteBatch);
                         break;
                 }
@@ -66,10 +66,10 @@ namespace Glitch_Wobble
         {
             switch (currentPlatformState)
             {
-                case PlatformState.Left:
+                case HorizontalPlatformState.Left:
                     MoveLeft(LeftBound);
                     break;
-                case PlatformState.Right:
+                case HorizontalPlatformState.Right:
                     MoveRight(RightBound);
                     break;
             }
@@ -83,7 +83,7 @@ namespace Glitch_Wobble
             }
             else if (position.X >= RightBound.X)
             {
-                currentPlatformState = PlatformState.Left;
+                currentPlatformState = HorizontalPlatformState.Left;
             }
         }
         public void MoveLeft(Rectangle LeftBound)
@@ -94,7 +94,7 @@ namespace Glitch_Wobble
             }
             else if (position.X <= LeftBound.X)
             {
-                currentPlatformState = PlatformState.Right;
+                currentPlatformState = HorizontalPlatformState.Right;
             }
         }
         //Hitbox Method

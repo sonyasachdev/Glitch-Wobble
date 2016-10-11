@@ -79,12 +79,13 @@ namespace Glitch_Wobble
             currentGameState = GameState.Menu;
 
             //Class Initializations
+            /*
             button.Initialize();
             glitch.Initialize();
             longSword.Initialize();
             slime1.Initialize();
             horz1.Initialize();
-            vert1.Initialize();
+            vert1.Initialize();*/
 
             base.Initialize();
 
@@ -157,7 +158,7 @@ namespace Glitch_Wobble
                     break;
                 case GameState.PlayGame:
                     //Each time this runs, have a reset level method. Also, put all game logic into this part
-                    //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this
+                    //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
                     GlitchHurt(slime1);
 
                     //Class switches
@@ -166,7 +167,6 @@ namespace Glitch_Wobble
                     vert1.Switch();
                     horz1.Switch();
                     longSword.Switch();
-
                     break;
                 case GameState.Pause:
                     //Draw Pause Screen
@@ -176,9 +176,6 @@ namespace Glitch_Wobble
                 case GameState.GameOver:
                     break;
             }
-
-            //External Switches
-            
 
             base.Update(gameTime);
         }
