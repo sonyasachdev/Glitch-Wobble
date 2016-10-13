@@ -112,6 +112,7 @@ namespace Glitch_Wobble
             vert1 = new Vertical_Platform(vertPos1);
             horz1 = new Horizontal_Platform(horzPos1);
             button = new Buttons();
+            button.LoadContent(Content);
 
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("mainmenu.png");
