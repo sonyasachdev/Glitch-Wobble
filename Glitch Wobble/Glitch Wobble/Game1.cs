@@ -75,14 +75,12 @@ namespace Glitch_Wobble
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
             //If you get a splashscreen, use:
             //currentMenuState = GameState.SplashScreen;
             currentGameState = GameState.Menu;
 
-            //Class Initializations
-            
-            
-
+            base.Initialize();
         }
 
         /// <summary>
@@ -116,7 +114,6 @@ namespace Glitch_Wobble
             horz1.LoadContent(Content);
             
 
-
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("mainmenu.png");
             //Menu Rectangle
@@ -124,14 +121,14 @@ namespace Glitch_Wobble
 
             // TODO: use this.Content to load your game content here
 
+            /*
             button.Initialize();
             glitch.Initialize();
             longSword.Initialize();
             slime1.Initialize();
             horz1.Initialize();
-            vert1.Initialize();
-
-            base.Initialize();
+            vert1.Initialize();*/
+            
         }
 
         /// <summary>

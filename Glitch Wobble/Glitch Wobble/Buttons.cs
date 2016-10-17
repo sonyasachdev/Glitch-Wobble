@@ -39,9 +39,9 @@ namespace Glitch_Wobble
     {
 
         //Enum Variable
-        PauseButtonState currentPauseButtonState;
-        OptionButtonState currentOptionButtonState;
         MenuButtonState currentMenuButtonState;
+        OptionButtonState currentOptionButtonState;
+        PauseButtonState currentPauseButtonState;
         GameOverState currentGameOverState;
 
         //Fields
