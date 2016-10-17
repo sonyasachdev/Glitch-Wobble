@@ -80,15 +80,8 @@ namespace Glitch_Wobble
             currentGameState = GameState.Menu;
 
             //Class Initializations
-            /*
-            button.Initialize();
-            glitch.Initialize();
-            longSword.Initialize();
-            slime1.Initialize();
-            horz1.Initialize();
-            vert1.Initialize();*/
-
-            base.Initialize();
+            
+            
 
         }
 
@@ -123,12 +116,22 @@ namespace Glitch_Wobble
             horz1.LoadContent(Content);
             
 
+
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("mainmenu.png");
             //Menu Rectangle
             menuPos = new Rectangle(0, 0, 1024, 720);
 
             // TODO: use this.Content to load your game content here
+
+            button.Initialize();
+            glitch.Initialize();
+            longSword.Initialize();
+            slime1.Initialize();
+            horz1.Initialize();
+            vert1.Initialize();
+
+            base.Initialize();
         }
 
         /// <summary>
