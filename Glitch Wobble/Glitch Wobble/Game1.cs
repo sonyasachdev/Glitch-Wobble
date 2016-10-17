@@ -128,12 +128,12 @@ namespace Glitch_Wobble
 
             
             button.LoadContent(Content);
-            /*slime1.LoadContent(Content);
+            slime1.LoadContent(Content);
             glitch.LoadContent(Content);
             longSword.LoadContent(Content);
             vert1.LoadContent(Content);
             horz1.LoadContent(Content);
-            */
+            
 
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("mainmenu.png");

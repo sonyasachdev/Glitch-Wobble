@@ -110,10 +110,12 @@ namespace Glitch_Wobble
                  //   Draw(spriteBatch);
                     break;
                 case GlitchState.IdleLeft:
-                //    Draw(spriteBatch);
+                    //    Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleRight:
-                //    Draw(spriteBatch);
+                    //    Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.Hurt:
                     //Put hurt animation, also reduce the GUI hearts by one
