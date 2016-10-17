@@ -33,7 +33,7 @@ namespace Glitch_Wobble
             UpperBound = new Rectangle(100, 0, 10, 10);
             LowerBound = new Rectangle(100, 700, 10, 10);
             //check if it has to be skin = vert or vert = skin
-            skin = vertSkin;
+            //skin = vertSkin;
             //remember that the upper bound will be small (closer to 0) and lower will be big
             //UpperBound = u;
             //LowerBound = l;
@@ -48,17 +48,19 @@ namespace Glitch_Wobble
         {
             vertSkin = Content.Load<Texture2D>("vertSkin.png");
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (active == true)
             {
                 switch (currentPlatformState)
                 {
                     case VerticalPlatformState.Up:
-                        base.Draw(spriteBatch);
+                        //base.Draw(spriteBatch);
+                        spriteBatch.Draw(vertSkin, position, Color.White);
                         break;
                     case VerticalPlatformState.Down:
-                        base.Draw(spriteBatch);
+                        //base.Draw(spriteBatch);
+                        spriteBatch.Draw(vertSkin, position, Color.White);
                         break;
                 }
             }

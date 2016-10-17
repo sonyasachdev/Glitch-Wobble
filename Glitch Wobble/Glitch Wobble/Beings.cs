@@ -28,10 +28,10 @@ namespace Glitch_Wobble
         }
 
         //Methods
-        public virtual void Draw(SpriteBatch spriteBatch)
+        /*public virtual void Draw(SpriteBatch spriteBatch)
         {
             //Need to add a sprite effects thing here
             spriteBatch.Draw(skin, position, Color.White);
-        }
+        }*/
     }
 }

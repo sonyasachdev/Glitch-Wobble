@@ -40,7 +40,7 @@ namespace Glitch_Wobble
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
             currentSlimeState = SlimeState.MoveRight;
-            slimeSkin = skin;
+            //skin = slimeSkin;
 
             previousSlimeState = currentSlimeState;
            
@@ -65,7 +65,7 @@ namespace Glitch_Wobble
         {
             slimeSkin = Content.Load<Texture2D>("slimeSkin.png");
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (active == true)
             {
@@ -73,10 +73,12 @@ namespace Glitch_Wobble
                 {
                     case SlimeState.MoveLeft:
                         //see how to flip the image
-                        base.Draw(spriteBatch);
+                        spriteBatch.Draw(slimeSkin, position, Color.White);
+                        //Draw(spriteBatch);
                         break;
                     case SlimeState.MoveRight:
-                        base.Draw(spriteBatch);
+                        //Draw(spriteBatch);
+                        spriteBatch.Draw(slimeSkin, position, Color.White);
                         break;
                     case SlimeState.Hurt:
                         //Hurt Animation
