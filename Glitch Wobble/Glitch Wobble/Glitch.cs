@@ -63,7 +63,7 @@ namespace Glitch_Wobble
             jumpTimer = new Timer();
             jumpTimer.Interval = 2000;
             jumpTimer.Elapsed += EndJump;
-            this.position = new Rectangle(0, 0, 100, 100);
+            this.position = new Rectangle(0, 0, 125, 250);
             lives = 3;
             //glitchSkin = skin;
             //skin = glitchSkin;
@@ -82,7 +82,7 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
+            glitchSkin = Content.Load<Texture2D>("glitchSkin.jpg");
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -103,11 +103,13 @@ namespace Glitch_Wobble
                     break;
                 case GlitchState.JumpStart:
                     //JumpBegin
-                   // Draw(spriteBatch);
+                    // Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.JumpEnd:
                     //JumpEnd
-                 //   Draw(spriteBatch);
+                    //   Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleLeft:
                     //    Draw(spriteBatch);
@@ -189,12 +191,12 @@ namespace Glitch_Wobble
             {
                 jumpTimer.Start();
                 currentGlitchState = GlitchState.JumpStart;
-                position.Y += 1;
+                position.Y += 50;
             }
         }
         public void EndJump()
         {
-            position.Y -= 1;
+            position.Y -= 50;
             jumpTimer.Stop();
             currentGlitchState = GlitchState.JumpEnd;
         }

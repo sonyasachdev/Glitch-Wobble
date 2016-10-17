@@ -47,17 +47,6 @@ namespace Glitch_Wobble
         Rectangle vertPos1;
         Rectangle horzPos1;
 
-        //Textures
-        Texture2D glitchSkin;
-        Texture2D slimeSkin;
-        Texture2D vertSkin;
-        Texture2D horzSkin;
-        Texture2D longswordSkin;
-        Texture2D buttonSkin;
-
-
-
-
         //Menu Textures
         Texture2D menuSkin;
         //Menu Rectangles
@@ -112,7 +101,7 @@ namespace Glitch_Wobble
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             //Starting Position Rectangles
-            slimePos1 = new Rectangle(100, 100, 350, 200);
+            slimePos1 = new Rectangle(500, 400, 350, 200);
             vertPos1 = new Rectangle(100, 300, 400, 100);
             horzPos1 = new Rectangle(100, 500, 400, 100);
 
@@ -123,8 +112,6 @@ namespace Glitch_Wobble
             vert1 = new Vertical_Platform(vertPos1);
             horz1 = new Horizontal_Platform(horzPos1);
             button = new Buttons();
-
-            glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
 
             
             button.LoadContent(Content);
