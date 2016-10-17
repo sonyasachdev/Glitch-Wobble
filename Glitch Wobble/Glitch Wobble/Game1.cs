@@ -160,9 +160,11 @@ namespace Glitch_Wobble
                     button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
+                    
                     //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
+
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
-                    GlitchHurt(slime1);
+                    glitch.GlitchHurt(slime1);
 
                     //Class switches
                     glitch.Switch();
@@ -186,21 +188,7 @@ namespace Glitch_Wobble
         }
 
         //Methods for Game
-        //Collision Code
-        public void GlitchHurt(Slime slime)
-        {
-            if (glitch.Position.Intersects(slime.Position) == true)
-            {
-                if (glitch.Lives < 4 && glitch.Lives > 0)
-                {
-                    glitch.Lives--;
-                }
-                else if (glitch.Lives == 0)
-                {
-                    currentGameState = GameState.GameOver;
-                }
-            }
-        }
+        
 
 
         /// <summary>

@@ -151,6 +151,7 @@ namespace Glitch_Wobble
                     Move();
                     break;
                 case GlitchState.Hurt:
+
                     break;
                 case GlitchState.Dead:
                     //Run dead animation and change state to GameOver
@@ -200,5 +201,27 @@ namespace Glitch_Wobble
             jumpTimer.Stop();
             currentGlitchState = GlitchState.JumpEnd;
         }
+        //Enemy Body Collision Code
+        public void GlitchHurt(Slime slime)
+        {
+            //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
+            //Probably need to add a timer.
+
+            //See if you have to put the draw logic in this method?
+            if (position.Intersects(slime.Position) == true)
+            {
+                if (Lives < 4 && Lives > 0)
+                {
+                    Lives--;
+                }
+                else if (Lives == 0)
+                {
+                    Game1.currentGameState = GameState.GameOver;
+                }
+            }
+        }
+
+
+
     }
 }
