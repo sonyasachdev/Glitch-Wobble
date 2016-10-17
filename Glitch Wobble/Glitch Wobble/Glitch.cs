@@ -41,7 +41,7 @@ namespace Glitch_Wobble
         KeyboardState key;
         KeyboardState previousKeyState;
         private int lives;
-        Texture2D glitchSkin;
+        //Texture2D glitchSkin;
         //Enum Variables
         GlitchState currentGlitchState;
         GlitchState previousGlitchState;
@@ -62,7 +62,7 @@ namespace Glitch_Wobble
             jumpTimer.Elapsed += EndJump;
             this.position = new Rectangle(0, 0, 100, 100);
             lives = 3;
-            glitchSkin = skin;
+           // glitchSkin = skin;
         }
 
         //Timer Function
@@ -78,7 +78,7 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
+            skin = Content.Load<Texture2D>("glitchSkin.png");
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

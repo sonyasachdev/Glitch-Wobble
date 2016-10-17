@@ -55,13 +55,14 @@ namespace Glitch_Wobble
         //Constructors
         public Buttons()
         {
-            currentMenuButtonState = MenuButtonState.ActivePlayButton;
-            currentOptionButtonState = OptionButtonState.ActiveEasy;
+           
         }
 
         public void Initialize()
         {
-            
+            currentMenuButtonState = MenuButtonState.ActivePlayButton;
+            currentOptionButtonState = OptionButtonState.ActiveEasy;
+            currentPauseButtonState = PauseButtonState.ActiveResume;
         }
         public void LoadContent(ContentManager Content)
         {
