@@ -41,7 +41,10 @@ namespace Glitch_Wobble
         KeyboardState key;
         KeyboardState previousKeyState;
         private int lives;
-        //Texture2D glitchSkin;
+
+        //Texture
+        Texture2D glitchSkin;
+
         //Enum Variables
         GlitchState currentGlitchState;
         GlitchState previousGlitchState;
@@ -60,9 +63,10 @@ namespace Glitch_Wobble
             jumpTimer = new Timer();
             jumpTimer.Interval = 2000;
             jumpTimer.Elapsed += EndJump;
-            this.position = new Rectangle(0, 0, 100, 100);
+            this.position = new Rectangle(0, 0, 125, 250);
             lives = 3;
-           // glitchSkin = skin;
+            //glitchSkin = skin;
+            //skin = glitchSkin;
         }
 
         //Timer Function
@@ -78,9 +82,9 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            skin = Content.Load<Texture2D>("glitchSkin.png");
+            glitchSkin = Content.Load<Texture2D>("glitchSkin.jpg");
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             
             switch (currentGlitchState)
@@ -88,27 +92,32 @@ namespace Glitch_Wobble
                 case GlitchState.MoveRight:
                     //Animation
                     //PlayerImage(SpriteEffects.None);
-                    base.Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.MoveLeft:
                     //Flip Image using SpriteEffects
                     //PlayerImage(SpriteEffects.FlipHorizontally);
                     //Have the Fliphorizontal in Beings class, and have it inherit. Maybe make a 2nd drawmethod?
-                    base.Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
+                    //Draw(spriteBatch);
                     break;
                 case GlitchState.JumpStart:
                     //JumpBegin
-                    base.Draw(spriteBatch);
+                    // Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.JumpEnd:
                     //JumpEnd
-                    base.Draw(spriteBatch);
+                    //   Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleLeft:
-                    base.Draw(spriteBatch);
+                    //    Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleRight:
-                    base.Draw(spriteBatch);
+                    //    Draw(spriteBatch);
+                    spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.Hurt:
                     //Put hurt animation, also reduce the GUI hearts by one
@@ -182,12 +191,12 @@ namespace Glitch_Wobble
             {
                 jumpTimer.Start();
                 currentGlitchState = GlitchState.JumpStart;
-                position.Y += 1;
+                position.Y += 50;
             }
         }
         public void EndJump()
         {
-            position.Y -= 1;
+            position.Y -= 50;
             jumpTimer.Stop();
             currentGlitchState = GlitchState.JumpEnd;
         }

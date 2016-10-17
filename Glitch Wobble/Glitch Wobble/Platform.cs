@@ -60,9 +60,10 @@ namespace Glitch_Wobble
             SpawnTimer.Stop();
             active = false;
         }
+        /*
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(skin, position, Color.White);
-        }
+        }*/
     }
 }

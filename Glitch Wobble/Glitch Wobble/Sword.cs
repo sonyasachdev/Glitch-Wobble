@@ -29,9 +29,9 @@ namespace Glitch_Wobble
         }
         //Add the extra code to switch it here too.
         //Methods
-        public virtual void Draw(SpriteBatch spriteBatch)
+        /*public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(skin, position, Color.White);
-        }
+            //spriteBatch.Draw(skin, position, Color.White);
+        }*/
     }
 }

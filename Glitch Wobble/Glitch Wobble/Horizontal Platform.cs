@@ -32,7 +32,7 @@ namespace Glitch_Wobble
             this.position = p;
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(400, 100, 10, 10);
-            horzSkin = skin;
+            //horzSkin = skin;
             //LeftBound = l;
             //RightBound = r;
 
@@ -47,17 +47,19 @@ namespace Glitch_Wobble
         {
             horzSkin = Content.Load<Texture2D>("horzSkin.png");
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if(active == true)
             {
                 switch (currentPlatformState)
                 {
                     case HorizontalPlatformState.Left:
-                        base.Draw(spriteBatch);
+                        //base.Draw(spriteBatch);
+                        spriteBatch.Draw(horzSkin, position, Color.White);
                         break;
                     case HorizontalPlatformState.Right:
-                        base.Draw(spriteBatch);
+                        //base.Draw(spriteBatch);
+                        spriteBatch.Draw(horzSkin, position, Color.White);
                         break;
                 }
             }

@@ -26,7 +26,6 @@ namespace Glitch_Wobble
         SlimeState previousSlimeState;
 
         //Fields
-        Beings b;
         Rectangle LeftBound;
         Rectangle RightBound;
         Timer hurtTimer;
@@ -41,7 +40,7 @@ namespace Glitch_Wobble
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
             currentSlimeState = SlimeState.MoveRight;
-            slimeSkin = skin;
+            //skin = slimeSkin;
 
             previousSlimeState = currentSlimeState;
            
@@ -74,10 +73,12 @@ namespace Glitch_Wobble
                 {
                     case SlimeState.MoveLeft:
                         //see how to flip the image
-                        //base.Draw(spriteBatch);
+                        spriteBatch.Draw(slimeSkin, position, Color.White);
+                        //Draw(spriteBatch);
                         break;
                     case SlimeState.MoveRight:
-                        base.Draw(spriteBatch);
+                        //Draw(spriteBatch);
+                        spriteBatch.Draw(slimeSkin, position, Color.White);
                         break;
                     case SlimeState.Hurt:
                         //Hurt Animation

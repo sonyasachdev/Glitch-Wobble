@@ -34,7 +34,8 @@ namespace Glitch_Wobble
         public Long_Sword()
         {
             position = new Rectangle(0, 0, 100, 100);
-            longSwordSkin = skin;
+            //longSwordSkin = skin;
+            //skin = longSwordSkin;
         }
 
         
@@ -48,16 +49,19 @@ namespace Glitch_Wobble
             longSwordSkin = Content.Load<Texture2D>("longSwordSkin.png");
             
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            //Draw(spriteBatch);
+            
             switch (currentLongSwordState)
             {
                 case LongSwordState.Idle:
                     break;
                 case LongSwordState.MoveLeft:
+                    spriteBatch.Draw(skin, position, Color.White);
                     break;
                 case LongSwordState.MoveRight:
+                    spriteBatch.Draw(skin, position, Color.White);
                     break;
                 case LongSwordState.StartJump:
                     break;
