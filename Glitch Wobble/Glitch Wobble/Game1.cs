@@ -60,6 +60,7 @@ namespace Glitch_Wobble
             Content.RootDirectory = "Content";
 
             //Sets Window Size
+            //Subject to change. Camera will be 1024x720. Actual game will be much bigger than that.
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
@@ -113,7 +114,7 @@ namespace Glitch_Wobble
             horz1 = new Horizontal_Platform(horzPos1);
             button = new Buttons();
 
-            
+            //Load Content Logic
             button.LoadContent(Content);
             slime1.LoadContent(Content);
             glitch.LoadContent(Content);
@@ -149,24 +150,17 @@ namespace Glitch_Wobble
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             key = Keyboard.GetState();
-            //Main Switches
-            //Menu Button Switch
-            button.MenuButtonSwitch(key);
-            //Options Button Switch
-            button.OptionButtonSwitch(key);
-            //Pause Button Switch
-            button.PauseButtonSwitch(key);
-
             //Game Switch
             switch (currentGameState)
             {
                 case GameState.Menu:
+                    button.MenuButtonSwitch(key);
                     break;
                 case GameState.Options:
-
+                    button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
-                    //Each time this runs, have a reset level method. Also, put all game logic into this part
+                    //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
                     GlitchHurt(slime1);
 
@@ -179,10 +173,12 @@ namespace Glitch_Wobble
                     break;
                 case GameState.Pause:
                     //Draw Pause Screen
+                    button.PauseButtonSwitch(key);
                     break;
                 case GameState.Win:
                     break;
                 case GameState.GameOver:
+                    button.GameOverSwitch(key);
                     break;
             }
 
@@ -228,17 +224,22 @@ namespace Glitch_Wobble
                     button.DrawOptions(spriteBatch);
                     break;
                 case GameState.PlayGame:
+                    //Note: Order matters! The last thing called is in the front.
+                    //Background sprite goes here
+                    vert1.Draw(spriteBatch);
+                    horz1.Draw(spriteBatch);
                     glitch.Draw(spriteBatch);
                     slime1.Draw(spriteBatch);
                     longSword.Draw(spriteBatch);
-                    vert1.Draw(spriteBatch);
-                    horz1.Draw(spriteBatch);
+                    
                     break;
                 case GameState.Pause:
+                    button.DrawPause(spriteBatch);
                     break;
                 case GameState.Win:
                     break;
                 case GameState.GameOver:
+                    button.DrawGameOver(spriteBatch);
                     break;
             }
             
@@ -246,10 +247,5 @@ namespace Glitch_Wobble
             base.Draw(gameTime);
             spriteBatch.End();
         }
-        /*
-        private void SlimeIdle(SpriteEffects flipSprite)
-        {
-            spriteBatch.Draw(slime1.Skin, new Vector2(0, 0), slime1.Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
-        }*/
     }
 }

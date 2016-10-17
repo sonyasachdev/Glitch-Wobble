@@ -23,12 +23,17 @@ namespace Glitch_Wobble
         ActiveHard,
         ActiveCancel
     }
-
     public enum PauseButtonState
     {
         ActiveResume,
         ActiveQuit,
         /*Don't need the idles anymore because both buttos will be drawn on the menu and depending on the state, a button will go over the existing ones.*/
+    }
+    public enum GameOverState
+    {
+        ActiveRestart,
+        ActiveQuit
+        //Not sure if activequit is needed or not
     }
     class Buttons
     {
@@ -37,6 +42,8 @@ namespace Glitch_Wobble
         PauseButtonState currentPauseButtonState;
         OptionButtonState currentOptionButtonState;
         MenuButtonState currentMenuButtonState;
+        GameOverState currentGameOverState;
+
         //Fields
         //Button Textures
         Texture2D playIdle;
@@ -57,6 +64,8 @@ namespace Glitch_Wobble
         {
             currentMenuButtonState = MenuButtonState.ActivePlayButton;
             currentOptionButtonState = OptionButtonState.ActiveEasy;
+            currentPauseButtonState = PauseButtonState.ActiveResume;
+            currentGameOverState = GameOverState.ActiveRestart;
         }
 
         public void Initialize()
@@ -77,7 +86,7 @@ namespace Glitch_Wobble
         }
         public void DrawMenu(SpriteBatch spriteBatch)
         {
-            //Draws the static idle buttons
+            //Draws the static idle buttons. Eventually this will be deleted since the "idle" will be part of the background
             spriteBatch.Draw(optionsIdle, optionsIdleRect, Color.White);
             spriteBatch.Draw(playIdle, playIdleRect, Color.White);
 
@@ -93,7 +102,7 @@ namespace Glitch_Wobble
         }
         public void DrawOptions(SpriteBatch spriteBatch)
         {
-
+            //Draw Options Background
             switch (currentOptionButtonState)
             {
                 case OptionButtonState.ActiveEasy:
@@ -107,6 +116,29 @@ namespace Glitch_Wobble
             }
         }
         
+        public void DrawGameOver(SpriteBatch spriteBatch)
+        {
+            //Draw Gameover Background
+            switch (currentGameOverState)
+            {
+                case GameOverState.ActiveRestart:
+                    break;
+                case GameOverState.ActiveQuit:
+                    break;
+            }
+        }
+
+        public void DrawPause(SpriteBatch spriteBatch)
+        {
+            //Draw Pause Background
+            switch (currentPauseButtonState)
+            {
+                case PauseButtonState.ActiveResume:
+                    break;
+                case PauseButtonState.ActiveQuit:
+                    break;
+            }
+        }
         //Menu Button Switch
         public void MenuButtonSwitch(KeyboardState key)
         {
@@ -227,6 +259,42 @@ namespace Glitch_Wobble
                     else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         //take to Warning Button state. Create one.
+                    }
+                    break;
+            }
+        }
+
+        //GameOver Button Switch
+        public void GameOverSwitch(KeyboardState key)
+        {
+            switch (currentGameOverState)
+            {
+                case GameOverState.ActiveRestart:
+                    if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        Game1.currentGameState = GameState.Menu;
+                    }
+                    else if (key.IsKeyDown(Keys.Up) == true)
+                    {
+                        currentGameOverState = GameOverState.ActiveQuit;
+                    }
+                    else if (key.IsKeyDown(Keys.Down) == true)
+                    {
+                        currentGameOverState = GameOverState.ActiveQuit;
+                    }
+                    break;
+                case GameOverState.ActiveQuit:
+                    if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        //Have exit code here
+                    }
+                    else if (key.IsKeyDown(Keys.Up) == true)
+                    {
+                        currentGameOverState = GameOverState.ActiveRestart;
+                    }
+                    else if (key.IsKeyDown(Keys.Down) == true)
+                    {
+                        currentGameOverState = GameOverState.ActiveRestart;
                     }
                     break;
             }

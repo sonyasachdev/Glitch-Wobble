@@ -167,12 +167,12 @@ namespace Glitch_Wobble
             if (key.IsKeyDown(Keys.Right) == true)
             {
                 currentGlitchState = GlitchState.MoveRight;
-                position.X += 3;
+                position.X += 7;
             }
             else if (key.IsKeyDown(Keys.Left) == true)
             {
                 currentGlitchState = GlitchState.MoveLeft;
-                position.X -= 3;
+                position.X -= 7;
             }
 
             if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Right) == false)

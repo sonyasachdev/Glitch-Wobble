@@ -119,7 +119,7 @@ namespace Glitch_Wobble
         {
             if (position.X < RightBound.X)
             {
-                position.X += 10;
+                position.X += 3;
             }
             else if (position.X >= RightBound.X)
             {
@@ -130,7 +130,7 @@ namespace Glitch_Wobble
         {
             if (position.X > LeftBound.X)
             {
-                position.X -= 10;
+                position.X -= 3;
             }
             else if (position.X <= LeftBound.X)
             {

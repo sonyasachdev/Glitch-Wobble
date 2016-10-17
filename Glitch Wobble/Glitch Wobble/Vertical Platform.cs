@@ -83,7 +83,7 @@ namespace Glitch_Wobble
         {
             if (position.Y > UpperBound.Y )
             {
-                position.Y -= 10;
+                position.Y -= 5;
             }
             else if (position.Y <= UpperBound.Y)
             {
@@ -94,7 +94,7 @@ namespace Glitch_Wobble
         {
             if (position.Y < LowerBound.Y)
             {
-                position.Y += 10;
+                position.Y += 5;
             }
             else if (position.Y >= LowerBound.Y)
             {
