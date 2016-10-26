@@ -186,13 +186,35 @@ namespace Glitch_Wobble
             }
         }
         //Jump
-        public void StartJump()
+        /*public void StartJump()
         {
             if (key.IsKeyDown(Keys.Up) == true)
             {
                 jumpTimer.Start();
                 currentGlitchState = GlitchState.JumpStart;
                 position.Y += 50;
+            }
+        }*/
+
+        public void StartJump()
+        {
+            Rectangle temp = new Rectangle();
+            position.Y = temp.Y;
+            if (key.IsKeyDown(Keys.Up) == true)
+            {
+                if (position.Y < temp.Y + 15)
+                {
+                    position.Y += 7;
+                }
+                else if (position.Y < temp.Y + 25)
+                {
+                    position.Y += 5;
+                }
+                else if (position.Y < temp.Y + 30)
+                {
+                    position.Y += 3;
+                }
+               
             }
         }
         public void EndJump()
