@@ -22,6 +22,8 @@ namespace Glitch_Wobble
         Rectangle hitBox;
         Rectangle UpperBound;
         Rectangle LowerBound;
+        Timer SpawnTimer;
+        ContentManager Content;
 
         Texture2D vertSkin;
         VerticalPlatformState currentPlatformState;
@@ -101,5 +103,37 @@ namespace Glitch_Wobble
                 currentPlatformState = VerticalPlatformState.Up;
             }
         }
+        public void Spawn()
+        {
+            SpawnTimer.Start();
+            vertSkin = Content.Load<Texture2D>("vertSkin.png");
+            active = true;
+        }
+        public void Despawn()
+        {
+            SpawnTimer.Stop();
+            vertSkin = null;
+            active = false;
+        }
+        /*public void PlatBeat()
+        {
+            int i = 1;
+
+            if (true)
+            {
+                if (i == 1)
+                {
+                    Despawn();
+
+                    i++;
+                }
+                else if (i == 2)
+                {
+                    Spawn();
+
+                    i--;
+                }
+            }
+        }*/
     }
 }
