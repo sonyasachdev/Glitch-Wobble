@@ -41,6 +41,7 @@ namespace Glitch_Wobble
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
         Buttons button;
+        Timer SpawnTimer;
 
         //Rectangles
         Rectangle slimePos1;
@@ -160,8 +161,9 @@ namespace Glitch_Wobble
                     button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
-                    
+
                     //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
+                    
 
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
                     glitch.GlitchHurt(slime1);
