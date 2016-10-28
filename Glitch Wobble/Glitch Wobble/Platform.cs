@@ -40,51 +40,33 @@ namespace Glitch_Wobble
         public Platform()
         {
             SpawnTimer = new Timer();
-            SpawnTimer.Interval = 4000;
+            SpawnTimer.Interval = 2000;
             SpawnTimer.Elapsed += Despawn;
-            active = true;
+            Active = true;
         }
         private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //Despawn();
+            Despawn();
         }
         
         //Methods
-        /*
+        
         public void Spawn()
         {
             SpawnTimer.Start();
-            spriteBatch = LoadContent(Content);
-            active = true;
+            Active = true;
         }
         public void Despawn()
         {
             SpawnTimer.Stop();
-            spriteBatch = null;
             active = false;
-        }
-        
-
-        public void PlatBeat()
-        {
-            int i = 1;
-
-            if(i == 1)
-            {
-                Despawn();
-
-                i++;
-            } else if (i == 2)
-            {
-                Spawn();
-
-                i--;
-            }
         }
         
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(skin, position, Color.White);
-        }*/
+            if (Active == true) {
+                spriteBatch.Draw(skin, position, Color.White);
+            }
+        }
     }
 }

@@ -217,8 +217,8 @@ namespace Glitch_Wobble
                 case GameState.PlayGame:
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
-                    vert1.Draw(spriteBatch);
-                    horz1.Draw(spriteBatch);
+                    /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}
+                    if (horz1.Active == true) {*/ horz1.Draw(spriteBatch); /*}*/
                     glitch.Draw(spriteBatch);
                     slime1.Draw(spriteBatch);
                     longSword.Draw(spriteBatch);
