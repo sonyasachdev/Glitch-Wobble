@@ -174,6 +174,9 @@ namespace Glitch_Wobble
                     vert1.Switch();
                     horz1.Switch();
                     longSword.Switch();
+
+                    //vert1.PlatBeat();
+                    //horz1.PlatBeat();
                     break;
                 case GameState.Pause:
                     //Draw Pause Screen
