@@ -30,6 +30,7 @@ namespace Glitch_Wobble
         Rectangle RightBound;
         Timer hurtTimer;
         Texture2D slimeSkin;
+        SpriteEffects flip;
 
         //Constructor
         public Slime(Rectangle p, bool a,int t)
@@ -40,14 +41,16 @@ namespace Glitch_Wobble
             LeftBound = new Rectangle(100, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
             currentSlimeState = SlimeState.MoveRight;
-            //skin = slimeSkin;
 
+            flip = SpriteEffects.FlipHorizontally;
             previousSlimeState = currentSlimeState;
            
             //At the end of the hurt animation, it will revert to the previous Slime State it was in (Moving left or right)
             hurtTimer = new Timer();
             hurtTimer.Interval = 2000;
             hurtTimer.Elapsed += HurtTimerState;
+
+            
         }
         //Timer Function
         
@@ -63,9 +66,10 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            slimeSkin = Content.Load<Texture2D>("slimeSkin.png");
+            slimeSkin = Content.Load<Texture2D>("Slime-Sheet.png");
+            //sprite = new Sprite(slimeSkin, new Point(108, 108), 4, 45, flip, position);
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (active == true)
             {
@@ -73,12 +77,16 @@ namespace Glitch_Wobble
                 {
                     case SlimeState.MoveLeft:
                         //see how to flip the image
-                        spriteBatch.Draw(slimeSkin, position, Color.White);
+                        flip = SpriteEffects.None;
+                        //sprite.Draw(gameTime, spriteBatch);
+                        //spriteBatch.Draw(slimeSkin, position, Color.White);
                         //Draw(spriteBatch);
                         break;
                     case SlimeState.MoveRight:
                         //Draw(spriteBatch);
-                        spriteBatch.Draw(slimeSkin, position, Color.White);
+                        flip = SpriteEffects.FlipHorizontally;
+                        //sprite.Draw(gameTime, spriteBatch);
+                        //spriteBatch.Draw(slimeSkin, position, Color.White);
                         break;
                     case SlimeState.Hurt:
                         //Hurt Animation
@@ -92,8 +100,9 @@ namespace Glitch_Wobble
         }
 
         //Methods
-        public void Switch()
+        public void Switch(GameTime gameTime)
         {
+            //sprite.Update(gameTime);
             switch (currentSlimeState)
             {
                 case SlimeState.MoveLeft:

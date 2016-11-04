@@ -168,7 +168,7 @@ namespace Glitch_Wobble
 
                     //Class switches
                     glitch.Switch();
-                    slime1.Switch();
+                    slime1.Switch(gameTime);
                     vert1.Switch();
                     horz1.Switch();
                     longSword.Switch();
@@ -220,7 +220,7 @@ namespace Glitch_Wobble
                     /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}
                     if (horz1.Active == true) {*/ horz1.Draw(spriteBatch); /*}*/
                     glitch.Draw(spriteBatch);
-                    slime1.Draw(spriteBatch);
+                    slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
                     
                     break;

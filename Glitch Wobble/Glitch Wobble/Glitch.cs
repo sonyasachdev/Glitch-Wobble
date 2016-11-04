@@ -64,7 +64,7 @@ namespace Glitch_Wobble
         }
 
         //Constructor
-        public Glitch ()
+        public Glitch()
         {
             //Jump Timer
             startJumpTimer1 = new Timer();
