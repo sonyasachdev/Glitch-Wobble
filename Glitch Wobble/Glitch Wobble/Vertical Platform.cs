@@ -50,7 +50,7 @@ namespace Glitch_Wobble
         {
             vertSkin = Content.Load<Texture2D>("vertSkin.png");
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (active == true)
             {

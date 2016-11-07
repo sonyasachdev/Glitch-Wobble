@@ -47,22 +47,28 @@ namespace Glitch_Wobble
         private Vector2 pos;
 
         // property to change display time
-        public int MilliseondsPerFrame
+        /*public int MilliseondsPerFrame
         {
             set { millisecondsPerFrame = value; }
-        }
+        }*/
 
         // constructor
-        public Beings(/*Texture2D img, Point size, int frames, int msPerFrame, SpriteEffects thing, Rectangle p*/)
+        /*public Beings(Texture2D img, Point size, int frames, int msPerFrame, SpriteEffects thing, Rectangle p)
         {
-            /*textureImage = img;
+            textureImage = img;
             frameSize = size;
             numFrames = frames;
             millisecondsPerFrame = msPerFrame;
             currentFrame.X = 0;
             currentFrame.Y = 0;
-            effect = thing;*/
+            effect = thing;
             
+        }*/ 
+        public Beings()
+        {
+            currentFrame.X = 0;
+            currentFrame.Y = 0;
+
         }
 
         public void Update(GameTime gameTime)
@@ -84,7 +90,9 @@ namespace Glitch_Wobble
         }
 
         // called by game1.Draw
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+
+            /*
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             // draw the correct image
             spriteBatch.Draw(textureImage, // spritesheet
@@ -97,6 +105,6 @@ namespace Glitch_Wobble
             effect, // Flip or not
             0  // default layer
             );
-        }
+        }*/
     }
 }

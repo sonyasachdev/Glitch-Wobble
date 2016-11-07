@@ -41,6 +41,7 @@ namespace Glitch_Wobble
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
         Buttons button;
+        Camera cam;
 
         //Rectangles
         Rectangle slimePos1;
@@ -79,6 +80,7 @@ namespace Glitch_Wobble
             //If you get a splashscreen, use:
             //currentMenuState = GameState.SplashScreen;
             currentGameState = GameState.Menu;
+            cam = new Camera(GraphicsDevice.Viewport);
 
             base.Initialize();
         }
@@ -98,8 +100,8 @@ namespace Glitch_Wobble
             horzPos1 = new Rectangle(100, 500, 400, 100);
 
             //Class Initializations
-            glitch = new Glitch();
             longSword = new Long_Sword();
+            glitch = new Glitch();
             slime1 = new Slime(slimePos1, true, 0);
             vert1 = new Vertical_Platform(vertPos1);
             horz1 = new Horizontal_Platform(horzPos1);
@@ -167,7 +169,7 @@ namespace Glitch_Wobble
                     glitch.GlitchHurt(slime1);
 
                     //Class switches
-                    glitch.Switch();
+                    //glitch.Switch();
                     slime1.Switch(gameTime);
                     vert1.Switch();
                     horz1.Switch();
@@ -202,18 +204,20 @@ namespace Glitch_Wobble
             GraphicsDevice.Clear(Color.DarkGray);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
 
             switch (currentGameState)
             {
                 case GameState.Menu:
+                    spriteBatch.Begin();
                     spriteBatch.Draw(menuSkin, menuPos, Color.White);
                     button.DrawMenu(spriteBatch);
                     break;
                 case GameState.Options:
+                    spriteBatch.Begin();
                     button.DrawOptions(spriteBatch);
                     break;
                 case GameState.PlayGame:
+                    spriteBatch.Begin();
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
                     /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}
