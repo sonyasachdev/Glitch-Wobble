@@ -19,7 +19,7 @@ namespace Glitch_Wobble
         Hurt,
         Dead
     }
-    public class Slime:Enemy
+    public class Slime : Enemy
     {
         //Enum Variables
         SlimeState currentSlimeState;
@@ -32,13 +32,28 @@ namespace Glitch_Wobble
         Texture2D slimeSkin;
         SpriteEffects flip;
 
+        //Animation Fields
+        Vector2 pos;
+        private Point currentFrame;
+        private Point frameSize;
+        private int frame;
+        private int numFrames;
+        private int timeSinceLastFrame;
+        private int millisecondsPerFrame;
+
+        //Property
+        public int MilliseondsPerFrame
+        {
+            set { millisecondsPerFrame = value; }
+        }
+
         //Constructor
         public Slime(Rectangle p, bool a,int t)
         {
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(100, 100, 10, 10);
+            LeftBound = new Rectangle(200, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
             currentSlimeState = SlimeState.MoveRight;
 
@@ -50,7 +65,12 @@ namespace Glitch_Wobble
             hurtTimer.Interval = 2000;
             hurtTimer.Elapsed += HurtTimerState;
 
-            
+            //Animation Initializers
+            frameSize.X = 108;
+            frameSize.Y = 108;
+            currentFrame.X = 0;
+            currentFrame.Y = 0;
+
         }
         //Timer Function
         
@@ -78,6 +98,18 @@ namespace Glitch_Wobble
                     case SlimeState.MoveLeft:
                         //see how to flip the image
                         flip = SpriteEffects.None;
+
+                        spriteBatch.Draw(slimeSkin, // spritesheet
+                        pos = new Vector2(position.X, position.Y), // where to draw in window
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // pick out a section of spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        1f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0);
+
+
                         //sprite.Draw(gameTime, spriteBatch);
                         //spriteBatch.Draw(slimeSkin, position, Color.White);
                         //Draw(spriteBatch);
@@ -85,6 +117,17 @@ namespace Glitch_Wobble
                     case SlimeState.MoveRight:
                         //Draw(spriteBatch);
                         flip = SpriteEffects.FlipHorizontally;
+
+                        spriteBatch.Draw(slimeSkin, // spritesheet
+                        pos = new Vector2(position.X, position.Y), // where to draw in window
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // pick out a section of spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        1f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0);
+
                         //sprite.Draw(gameTime, spriteBatch);
                         //spriteBatch.Draw(slimeSkin, position, Color.White);
                         break;
@@ -102,6 +145,22 @@ namespace Glitch_Wobble
         //Methods
         public void Switch(GameTime gameTime)
         {
+            //Animation Logic
+            timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+            if (timeSinceLastFrame > millisecondsPerFrame) // time for a new frame
+            {
+                timeSinceLastFrame = 0;
+                frame++;
+                if (frame >= numFrames) // go back to start
+                {
+                    frame = 0;
+                }
+
+                // set the upper left corner of new frame
+                currentFrame.X = frameSize.X * frame;
+            }
+
+
             //sprite.Update(gameTime);
             switch (currentSlimeState)
             {

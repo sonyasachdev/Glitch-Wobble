@@ -47,7 +47,7 @@ namespace Glitch_Wobble
         {
             horzSkin = Content.Load<Texture2D>("horzSkin.png");
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if(active == true)
             {
