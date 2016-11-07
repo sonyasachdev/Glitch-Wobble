@@ -70,6 +70,7 @@ namespace Glitch_Wobble
             frameSize.Y = 108;
             currentFrame.X = 0;
             currentFrame.Y = 0;
+            numFrames = 4;
 
         }
         //Timer Function
@@ -87,7 +88,6 @@ namespace Glitch_Wobble
         public void LoadContent(ContentManager Content)
         {
             slimeSkin = Content.Load<Texture2D>("Slime-Sheet.png");
-            //sprite = new Sprite(slimeSkin, new Point(108, 108), 4, 45, flip, position);
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
@@ -99,15 +99,16 @@ namespace Glitch_Wobble
                         //see how to flip the image
                         flip = SpriteEffects.None;
 
-                        spriteBatch.Draw(slimeSkin, // spritesheet
-                        pos = new Vector2(position.X, position.Y), // where to draw in window
-                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // pick out a section of spritesheet
+                        spriteBatch.Draw(slimeSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
                         Vector2.Zero, // rotation center (not used)
                         1f, // scaling factor - dont change image size
                         flip, // Flip or not
-                        0);
+                        0//Current Layer
+                        );
 
 
                         //sprite.Draw(gameTime, spriteBatch);
@@ -126,7 +127,8 @@ namespace Glitch_Wobble
                         Vector2.Zero, // rotation center (not used)
                         1f, // scaling factor - dont change image size
                         flip, // Flip or not
-                        0);
+                        0//Current Layer
+                        );
 
                         //sprite.Draw(gameTime, spriteBatch);
                         //spriteBatch.Draw(slimeSkin, position, Color.White);
@@ -143,15 +145,17 @@ namespace Glitch_Wobble
         }
 
         //Methods
-        public void Switch(GameTime gameTime)
+
+        public void Update(GameTime gameTime)
         {
-            //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > millisecondsPerFrame) // time for a new frame
             {
                 timeSinceLastFrame = 0;
                 frame++;
-                if (frame >= numFrames) // go back to start
+
+                //Resets Animation Loop
+                if (frame >= numFrames)
                 {
                     frame = 0;
                 }
@@ -159,7 +163,13 @@ namespace Glitch_Wobble
                 // set the upper left corner of new frame
                 currentFrame.X = frameSize.X * frame;
             }
+        }
 
+        public void Switch(GameTime gameTime)
+        {
+            //Animation Logic
+
+            Update(gameTime);
 
             //sprite.Update(gameTime);
             switch (currentSlimeState)
