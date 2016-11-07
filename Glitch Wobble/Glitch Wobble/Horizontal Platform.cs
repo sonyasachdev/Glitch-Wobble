@@ -22,6 +22,7 @@ namespace Glitch_Wobble
         Rectangle hitBox;
         Rectangle LeftBound;
         Rectangle RightBound;
+        Timer SpawnTimer;
 
         Texture2D horzSkin;
         HorizontalPlatformState currentPlatformState;
@@ -35,6 +36,10 @@ namespace Glitch_Wobble
             //horzSkin = skin;
             //LeftBound = l;
             //RightBound = r;
+            SpawnTimer = new Timer();
+            SpawnTimer.Interval = 2000;
+            SpawnTimer.Elapsed += Despawn;
+            Active = true;
 
         }
 
@@ -99,6 +104,41 @@ namespace Glitch_Wobble
                 currentPlatformState = HorizontalPlatformState.Right;
             }
         }
+        public void Spawning()
+        {
+            if (Active == true)
+            {
+                SpawnTimer.Elapsed += Despawn;
+            }
+            else
+            {
+                SpawnTimer.Elapsed += Spawn;
+            }
+        }
+        public void Despawn()
+        {
+            SpawnTimer.Stop();
+            Active = false;
+            horzSkin = null;
+        }
+
+        public void Spawn(ContentManager Content)
+        {
+            SpawnTimer.Start();
+            Active = true;
+            horzSkin = Content.Load<Texture2D>("horzSkin.png");
+        }
+        private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Despawn();
+        }
+
+        private void Spawn(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Spawn();
+        }
+
+
         //Hitbox Method
     }
 }

@@ -53,15 +53,15 @@ namespace Glitch_Wobble
         }
 
         // constructor
-        public Beings(Texture2D img, Point size, int frames, int msPerFrame, SpriteEffects thing, Rectangle p)
+        public Beings(/*Texture2D img, Point size, int frames, int msPerFrame, SpriteEffects thing, Rectangle p*/)
         {
-            textureImage = img;
+            /*textureImage = img;
             frameSize = size;
             numFrames = frames;
             millisecondsPerFrame = msPerFrame;
             currentFrame.X = 0;
             currentFrame.Y = 0;
-            effect = thing;
+            effect = thing;*/
             
         }
 

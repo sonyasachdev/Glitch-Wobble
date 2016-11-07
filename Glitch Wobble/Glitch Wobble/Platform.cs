@@ -48,18 +48,34 @@ namespace Glitch_Wobble
         {
             Despawn();
         }
+
+        private void Spawn(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Spawn();
+        }
         
         //Methods
         
-        public void Spawn()
+        public void Spawning()
         {
-            SpawnTimer.Start();
-            Active = true;
+            if(Active == true)
+            {
+                SpawnTimer.Elapsed += Despawn;
+            } else
+            {
+                SpawnTimer.Elapsed += Spawn;
+            }
         }
         public void Despawn()
         {
             SpawnTimer.Stop();
-            active = false;
+            Active = false;
+        }
+
+        public void Spawn()
+        {
+            SpawnTimer.Start();
+            Active = true;
         }
         
         public virtual void Draw(SpriteBatch spriteBatch)
