@@ -67,61 +67,18 @@ namespace Glitch_Wobble
 
         //Constructor
         public Glitch()
-        {
-            //Jump Timer
-            /*startJumpTimer1 = new Timer();
-            startJumpTimer1.Interval = 250;
-            startJumpTimer1.Elapsed += slowJump1;
-
-            startJumpTimer2 = new Timer();
-            startJumpTimer2.Interval = 250;
-            startJumpTimer2.Elapsed += slowJump2;
-
-            startJumpTimer3 = new Timer();
-            startJumpTimer3.Interval = 250;
-            startJumpTimer3.Elapsed += switchJump; 
-
-            endJumpTimer = new Timer();
-            endJumpTimer.Interval = 750;
-            endJumpTimer.Elapsed += EndJump; */
-
+        { 
             //Setting Previous GlitchState
             previousGlitchState = currentGlitchState;
+
+            currentGlitchState = GlitchState.IdleRight;
 
             //Setting Start Position
             this.position = new Rectangle(0, 200, 125, 250);
             lives = 3;
 
-            //Setting the jump bools
-            jump1 = false;
-            jump2 = false;
-            jump3 = false;
-
-            hasJumped = true;
+            hasJumped = false; 
         }
-
-        //Timer Function
-        /*private void slowJump1(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            startJumpTimer1.Stop();
-            StartJump2();
-        }
-        private void slowJump2(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            startJumpTimer2.Stop();
-            StartJump3();
-        }
-
-        private void switchJump(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            startJumpTimer3.Stop();
-            currentGlitchState = GlitchState.JumpEnd;
-        }
-        private void EndJump(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            endJumpTimer.Stop();
-            currentGlitchState = previousGlitchState;
-        } */
 
         //Monogame Methods
         public void Initialize()
@@ -180,11 +137,9 @@ namespace Glitch_Wobble
                     break;
                 case GlitchState.Jump:
                     Jump();
+                    Move();
                     //StartJump1();
                     break;
-                /*case GlitchState.JumpEnd:
-                    //  EndJump();
-                    break;*/
                 case GlitchState.IdleLeft:
                     Move();
                     break;
@@ -199,108 +154,6 @@ namespace Glitch_Wobble
                     break;
             }
         }
-
-        //Jump
-        /*public void StartJump1()
-        {
-            if (jump1 == false)
-            {
-                jump1 = true;
-                startJumpTimer1.Start();
-
-                //Arc Logic
-                position.Y -= 10;
-                //Trying to get a loop to work so that it's moving smoothly
-                //Makes sure you can still move while Jumping
-                if (key.IsKeyDown(Keys.Right) == true)
-                {
-                    position.X += 7;
-                }
-                else if (key.IsKeyDown(Keys.Left) == true)
-                {
-                    position.X -= 7;
-                }
-            }
-        }
-
-        public void StartJump2()
-        {
-            if (jump2 == false)
-            {
-                jump2 = true;
-                startJumpTimer2.Start();
-
-                //Arc Logic
-                position.Y -= 5;
-
-                //Makes sure you can still move while Jumping
-                if (key.IsKeyDown(Keys.Right) == true)
-                {
-                    position.X += 7;
-                }
-                else if (key.IsKeyDown(Keys.Left) == true)
-                {
-                    position.X -= 7;
-                }
-            }
-        }
-
-        public void StartJump3()
-        {
-            if (jump3 == false)
-            {
-                jump3 = true;
-                startJumpTimer3.Start();
-
-                //Arc Logic
-                position.Y -= 3;
-
-                //Makes sure you can still move while Jumping
-                if (key.IsKeyDown(Keys.Right) == true)
-                {
-                    position.X += 7;
-                }
-                else if (key.IsKeyDown(Keys.Left) == true)
-                {
-                    position.X -= 7;
-                }
-            }
-            
-        }
-
-
-
-        public void EndJump()
-        {
-            endJumpTimer.Start();
-
-            Rectangle temp = new Rectangle();
-            temp.Y = position.Y;
-
-            //Arc Logic
-            if (position.Y > temp.Y - 5)
-            {
-                position.Y += 10;
-            }
-            else if (position.Y > temp.Y - 8)
-            {
-                position.Y += 5;
-            }
-            else if (position.Y > temp.Y - 9)
-            {
-                position.Y += 2;
-            }
-
-            //Makes sure you can still move while Jumping
-            if (key.IsKeyDown(Keys.Right) == true)
-            {
-                position.X += 7;
-            }
-            else if (key.IsKeyDown(Keys.Left) == true)
-            {
-                position.X -= 7;
-            }
-        } */
 
         public void Jump()
         {
@@ -320,7 +173,7 @@ namespace Glitch_Wobble
                 velocity.Y += 0.65f * i;
             }
 
-            if (position.Y + glitchSkin.Height >= 900)
+            if (position.Y + 250 >= 500)
                 hasJumped = false;
 
             if (hasJumped == false)
