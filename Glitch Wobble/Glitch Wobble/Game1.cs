@@ -173,10 +173,9 @@ namespace Glitch_Wobble
                     slime1.Switch(gameTime);
                     vert1.Switch();
                     horz1.Switch();
+                    vert1.Spawning();
+                    horz1.Spawning();
                     longSword.Switch();
-
-                    //vert1.PlatBeat();
-                    //horz1.PlatBeat();
                     break;
                 case GameState.Pause:
                     //Draw Pause Screen
