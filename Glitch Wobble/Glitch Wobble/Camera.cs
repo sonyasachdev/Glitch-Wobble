@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Glitch_Wobble
         Viewport view;
         Vector2 center;
 
-        Glitch glitch = new Glitch();
+        Glitch glitch;
 
         public Camera(Viewport newView)
         {
