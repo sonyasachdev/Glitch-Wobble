@@ -41,6 +41,7 @@ namespace Glitch_Wobble
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
         Buttons button;
+        Camera cam;
 
         //Rectangles
         Rectangle slimePos1;
@@ -79,6 +80,7 @@ namespace Glitch_Wobble
             //If you get a splashscreen, use:
             //currentMenuState = GameState.SplashScreen;
             currentGameState = GameState.Menu;
+            cam = new Camera(GraphicsDevice.Viewport);
 
             base.Initialize();
         }
@@ -203,18 +205,20 @@ namespace Glitch_Wobble
             GraphicsDevice.Clear(Color.DarkGray);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
 
             switch (currentGameState)
             {
                 case GameState.Menu:
+                    spriteBatch.Begin();
                     spriteBatch.Draw(menuSkin, menuPos, Color.White);
                     button.DrawMenu(spriteBatch);
                     break;
                 case GameState.Options:
+                    spriteBatch.Begin();
                     button.DrawOptions(spriteBatch);
                     break;
                 case GameState.PlayGame:
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cam.transform);
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
                     /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}

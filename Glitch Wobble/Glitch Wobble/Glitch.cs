@@ -51,6 +51,11 @@ namespace Glitch_Wobble
         //Texture
         Texture2D glitchSkin;
 
+        //Jumping variables
+        Vector2 velocity;
+        Vector2 position;
+        bool hasJumped;
+
         //Enum Variables
         GlitchState currentGlitchState;
         GlitchState previousGlitchState;
@@ -61,6 +66,49 @@ namespace Glitch_Wobble
         {
             get { return lives; }
             set { lives = value; }
+        }
+
+        public Glitch(Texture2D newTexture, Vector2 newPosition)
+        {
+            glitchSkin = newTexture;
+            position = newPosition;
+            hasJumped = true;
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            position += velocity;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                velocity.X = 3f;
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                velocity.X = -3f;
+            else
+                velocity.X = 0f;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) && hasJumped == false)
+            {
+                position.Y -= 10f;
+                velocity.Y = -18f;
+                hasJumped = true;
+            }
+
+            if (hasJumped == true)
+            {
+                float i = 1;
+                velocity.Y += 0.65f * i;
+            }
+
+            if (position.Y + glitchSkin.Height >= 900)
+                hasJumped = false;
+
+            if (hasJumped == false)
+                velocity.Y = 0f;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(glitchSkin, position: position, scale: new Vector2(0.25f, 0.25f));
         }
 
         //Constructor
@@ -299,7 +347,7 @@ namespace Glitch_Wobble
             {
                 position.X -= 7;
             }
-        }
+        } 
 
         //Movement
         public void Move()
@@ -326,11 +374,11 @@ namespace Glitch_Wobble
             {
                 currentGlitchState = GlitchState.IdleRight;
             }
-            //Makes character Jump
+            /*Makes character Jump
             if(key.IsKeyDown(Keys.Up))
             {
                 currentGlitchState = GlitchState.JumpStart;
-            }
+            } */
         }
         //Enemy Body Collision Code
         public void GlitchHurt(Slime slime)
@@ -351,5 +399,7 @@ namespace Glitch_Wobble
                 }
             }
         }
+
+
     }
 }
