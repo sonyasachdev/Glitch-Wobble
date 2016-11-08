@@ -74,7 +74,7 @@ namespace Glitch_Wobble
             currentGlitchState = GlitchState.IdleRight;
 
             //Setting Start Position
-            this.position = new Rectangle(0, 200, 125, 250);
+            this.position = new Rectangle(0, 200, 400, 400);
             lives = 3;
 
             hasJumped = false; 
@@ -87,7 +87,7 @@ namespace Glitch_Wobble
         } 
         public void LoadContent(ContentManager Content)
         {
-            glitchSkin = Content.Load<Texture2D>("glitchSkin.jpg");
+            glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -97,7 +97,6 @@ namespace Glitch_Wobble
             {
                 case GlitchState.MoveRight:
                     //Animation
-                    //PlayerImage(SpriteEffects.None);
                     spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.MoveLeft:
@@ -138,7 +137,6 @@ namespace Glitch_Wobble
                 case GlitchState.Jump:
                     Jump();
                     Move();
-                    //StartJump1();
                     break;
                 case GlitchState.IdleLeft:
                     Move();
@@ -197,11 +195,11 @@ namespace Glitch_Wobble
                 position.X -= 7;
             }
 
-            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Right) == false)
+            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Left) == true && key.IsKeyDown(Keys.Right) == false)
             {
                 currentGlitchState = GlitchState.IdleLeft;
             }
-            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Left) == false)
+            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Right) == true && key.IsKeyDown(Keys.Left) == false)
             {
                 currentGlitchState = GlitchState.IdleRight;
             }
@@ -230,7 +228,5 @@ namespace Glitch_Wobble
                 }
             }
         }
-
-
     }
 }

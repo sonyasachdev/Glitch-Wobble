@@ -118,7 +118,7 @@ namespace Glitch_Wobble
             
 
             //Menu Textures
-            menuSkin = Content.Load<Texture2D>("mainmenu.png");
+            menuSkin = Content.Load<Texture2D>("logoSkin.png");
             //Menu Rectangle
             menuPos = new Rectangle(0, 0, 1024, 720);
 
