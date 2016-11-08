@@ -131,9 +131,10 @@ namespace Glitch_Wobble
         }
 
         //Methods
-
-        public void Update(GameTime gameTime)
+        
+        public void Switch(GameTime gameTime)
         {
+            //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > frameRate) // time for a new frame
             {
@@ -149,23 +150,14 @@ namespace Glitch_Wobble
                 // set the upper left corner of new frame
                 currentFrame.X = frameSize.X * frame;
             }
-        }
-
-        public void Switch(GameTime gameTime)
-        {
-            //Animation Logic
-
-            Update(gameTime);
 
             //sprite.Update(gameTime);
             switch (currentSlimeState)
             {
                 case SlimeState.MoveLeft:
-                    //face = false;
                     MoveLeft(LeftBound);
                     break;
                 case SlimeState.MoveRight:
-                    //face = true;
                     MoveRight(RightBound);
                     break;
                 case SlimeState.Hurt:
@@ -247,40 +239,6 @@ namespace Glitch_Wobble
                 return isHurt;
             }
         }
-
-        //Ask Steve how to handle this code, how to bring the position of the current Long Sword Rectangle into this class.
-        public void ChangeState(bool? hurt)
-        {
-            if (Hurt() == true)
-            {
-                currentSlimeState = SlimeState.Hurt;
-            }
-            else if (Hurt() == false)
-            {
-                currentSlimeState = SlimeState.Dead;
-            }
-            else if (Hurt() == null && currentSlimeState == SlimeState.MoveLeft)
-            {
-                //might modify code to do nothing and make this blank, if problems arise.
-                currentSlimeState = SlimeState.MoveLeft;
-            }
-            else if (Hurt() == null && currentSlimeState == SlimeState.MoveRight)
-            {
-                //might modify code to do nothing and make this blank, if problems arise.
-                currentSlimeState = SlimeState.MoveRight;
-            }
-        }
         */
-
-
-        /*
-        private void SlimeIdle(SpriteEffects flipSprite)
-        {
-            spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
-        }
-        
-        */
-
-
     }
 }
