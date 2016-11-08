@@ -35,17 +35,10 @@ namespace Glitch_Wobble
     class Glitch : Beings
     {
         //Fields
-        Timer startJumpTimer1;
-        Timer startJumpTimer2;
-        Timer startJumpTimer3;
-        Timer endJumpTimer;
         SpriteBatch spriteBatch;
         KeyboardState key;
         KeyboardState previousKeyState;
         private int lives;
-        private bool jump1;
-        private bool jump2;
-        private bool jump3;
 
         //Animation Fields
         Vector2 pos;
@@ -90,12 +83,14 @@ namespace Glitch_Wobble
             hasJumped = false;
 
             //Animation Initializers
-            frameSize.X = 108;
-            frameSize.Y = 108;
+            frameSize.X = 1000;
+            frameSize.Y = 1000;
             currentFrame.X = 0;
             currentFrame.Y = 0;
             numFrames = 1;
             frameRate = 100;
+            flip = SpriteEffects.FlipHorizontally;
+
         }
 
         //Monogame Methods
@@ -114,24 +109,80 @@ namespace Glitch_Wobble
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:
-                    //Animation
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
+                    //Flips Image
+                    flip = SpriteEffects.FlipHorizontally;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.MoveLeft:
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
-                    //Draw(spriteBatch);
+
+                    flip = SpriteEffects.None;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.Jump:
-                    // Draw(spriteBatch);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleLeft:
-                    //    Draw(spriteBatch);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
+                    flip = SpriteEffects.None;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleRight:
-                    //    Draw(spriteBatch);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
+                    flip = SpriteEffects.FlipHorizontally;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.Hurt:
                     //Put hurt animation, also reduce the GUI hearts by one

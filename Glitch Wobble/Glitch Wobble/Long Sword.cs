@@ -27,7 +27,6 @@ namespace Glitch_Wobble
 
         //Fields
         LongSwordState currentLongSwordState;
-        Timer JumpTimer;
         Texture2D longSwordSkin;
 
         //Constructor

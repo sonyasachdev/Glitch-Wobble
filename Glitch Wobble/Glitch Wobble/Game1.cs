@@ -96,7 +96,7 @@ namespace Glitch_Wobble
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             //Starting Position Rectangles
-            slimePos1 = new Rectangle(500, 400, 350, 200);
+            slimePos1 = new Rectangle(500, 500, 108, 108);
             vertPos1 = new Rectangle(100, 300, 400, 100);
             horzPos1 = new Rectangle(100, 500, 400, 100);
 

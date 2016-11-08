@@ -42,13 +42,14 @@ namespace Glitch_Wobble
         SpriteEffects flip;
 
         //Constructor
-        public Slime(Rectangle p, bool a,int t)
+        public Slime(Rectangle p, bool a, int t)
         {
             this.position = p;
             this.timesHit = t;
             this.active = a;
             LeftBound = new Rectangle(500, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
+            
             currentSlimeState = SlimeState.MoveRight;
 
             flip = SpriteEffects.FlipHorizontally;
@@ -65,7 +66,7 @@ namespace Glitch_Wobble
             currentFrame.X = 0;
             currentFrame.Y = 0;
             numFrames = 4;
-            frameRate = 100;
+            frameRate = 5000;
         }
         //Timer Function
         
