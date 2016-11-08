@@ -74,7 +74,7 @@ namespace Glitch_Wobble
             currentGlitchState = GlitchState.IdleRight;
 
             //Setting Start Position
-            this.position = new Rectangle(0, 200, 125, 250);
+            this.position = new Rectangle(0, 200, 400, 400);
             lives = 3;
 
             hasJumped = false; 
@@ -87,7 +87,7 @@ namespace Glitch_Wobble
         } 
         public void LoadContent(ContentManager Content)
         {
-            glitchSkin = Content.Load<Texture2D>("glitchSkin.jpg");
+            glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -97,7 +97,6 @@ namespace Glitch_Wobble
             {
                 case GlitchState.MoveRight:
                     //Animation
-                    //PlayerImage(SpriteEffects.None);
                     spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.MoveLeft:
