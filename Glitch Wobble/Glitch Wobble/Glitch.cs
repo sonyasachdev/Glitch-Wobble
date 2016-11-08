@@ -138,7 +138,6 @@ namespace Glitch_Wobble
                 case GlitchState.Jump:
                     Jump();
                     Move();
-                    //StartJump1();
                     break;
                 case GlitchState.IdleLeft:
                     Move();
@@ -197,11 +196,11 @@ namespace Glitch_Wobble
                 position.X -= 7;
             }
 
-            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Right) == false)
+            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Left) == true && key.IsKeyDown(Keys.Right) == false)
             {
                 currentGlitchState = GlitchState.IdleLeft;
             }
-            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Left) == false)
+            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Right) == true && key.IsKeyDown(Keys.Left) == false)
             {
                 currentGlitchState = GlitchState.IdleRight;
             }
@@ -230,7 +229,5 @@ namespace Glitch_Wobble
                 }
             }
         }
-
-
     }
 }
