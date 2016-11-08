@@ -39,14 +39,8 @@ namespace Glitch_Wobble
         private int frame;
         private int numFrames;
         private int timeSinceLastFrame;
-        private int millisecondsPerFrame;
-
-        //Property
-        public int MilliseondsPerFrame
-        {
-            set { millisecondsPerFrame = value; }
-        }
-
+        private int frameRate;
+       
         //Constructor
         public Slime(Rectangle p, bool a,int t)
         {
@@ -71,7 +65,7 @@ namespace Glitch_Wobble
             currentFrame.X = 0;
             currentFrame.Y = 0;
             numFrames = 4;
-
+            frameRate = 100;
         }
         //Timer Function
         
@@ -109,19 +103,14 @@ namespace Glitch_Wobble
                         flip, // Flip or not
                         0//Current Layer
                         );
-
-
-                        //sprite.Draw(gameTime, spriteBatch);
-                        //spriteBatch.Draw(slimeSkin, position, Color.White);
-                        //Draw(spriteBatch);
                         break;
                     case SlimeState.MoveRight:
                         //Draw(spriteBatch);
                         flip = SpriteEffects.FlipHorizontally;
 
-                        spriteBatch.Draw(slimeSkin, // spritesheet
-                        pos = new Vector2(position.X, position.Y), // where to draw in window
-                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // pick out a section of spritesheet
+                        spriteBatch.Draw(slimeSkin, // Spritesheet
+                        pos = new Vector2(position.X, position.Y), // Position
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame
                         Color.White,
                         0, // don't rotate the image
                         Vector2.Zero, // rotation center (not used)
@@ -129,9 +118,6 @@ namespace Glitch_Wobble
                         flip, // Flip or not
                         0//Current Layer
                         );
-
-                        //sprite.Draw(gameTime, spriteBatch);
-                        //spriteBatch.Draw(slimeSkin, position, Color.White);
                         break;
                     case SlimeState.Hurt:
                         //Hurt Animation
@@ -149,7 +135,7 @@ namespace Glitch_Wobble
         public void Update(GameTime gameTime)
         {
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
-            if (timeSinceLastFrame > millisecondsPerFrame) // time for a new frame
+            if (timeSinceLastFrame > frameRate) // time for a new frame
             {
                 timeSinceLastFrame = 0;
                 frame++;
