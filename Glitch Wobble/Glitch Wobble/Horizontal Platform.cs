@@ -22,7 +22,7 @@ namespace Glitch_Wobble
         Rectangle hitBox;
         Rectangle LeftBound;
         Rectangle RightBound;
-        Timer SpawnTimer;
+        public Timer SpawnTimer;
         
         Texture2D horzSkin;
         HorizontalPlatformState currentPlatformState;
@@ -42,8 +42,6 @@ namespace Glitch_Wobble
             Active = true;
 
         }
-
-        
 
         //Monogame Methods
         public void Initialize()
