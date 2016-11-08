@@ -168,6 +168,8 @@ namespace Glitch_Wobble
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
                     glitch.GlitchHurt(slime1);
 
+                    cam.Update(gameTime, this);
+
                     //Class switches
                     glitch.Switch();
                     slime1.Switch(gameTime);
@@ -217,7 +219,7 @@ namespace Glitch_Wobble
                     button.DrawOptions(spriteBatch);
                     break;
                 case GameState.PlayGame:
-                    spriteBatch.Begin();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cam.transform);
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
                     /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}
