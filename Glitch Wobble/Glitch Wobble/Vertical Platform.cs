@@ -22,7 +22,7 @@ namespace Glitch_Wobble
         Rectangle hitBox;
         Rectangle UpperBound;
         Rectangle LowerBound;
-        Timer SpawnTimer;
+        public Timer SpawnTimer;
         ContentManager Content;
 
         Texture2D vertSkin;
@@ -39,6 +39,10 @@ namespace Glitch_Wobble
             //remember that the upper bound will be small (closer to 0) and lower will be big
             //UpperBound = u;
             //LowerBound = l;
+            SpawnTimer = new Timer();
+            SpawnTimer.Interval = 2000;
+            SpawnTimer.Elapsed += Despawn;
+            Active = true;
         }
 
         //Monogame Methods
@@ -112,6 +116,15 @@ namespace Glitch_Wobble
         {
             SpawnTimer.Stop();
             active = false;
+        }
+        private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Despawn();
+        }
+
+        private void Spawn(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Spawn();
         }
     }
 }

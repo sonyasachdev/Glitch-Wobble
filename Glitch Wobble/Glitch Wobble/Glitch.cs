@@ -47,6 +47,16 @@ namespace Glitch_Wobble
         private bool jump2;
         private bool jump3;
 
+        //Animation Fields
+        Vector2 pos;
+        private Point currentFrame;
+        private Point frameSize;
+        private int frame;
+        private int numFrames;
+        private int timeSinceLastFrame;
+        private int frameRate;
+        SpriteEffects flip;
+
         //Texture
         Texture2D glitchSkin;
 
@@ -77,7 +87,15 @@ namespace Glitch_Wobble
             this.position = new Rectangle(0, 200, 400, 400);
             lives = 3;
 
-            hasJumped = false; 
+            hasJumped = false;
+
+            //Animation Initializers
+            frameSize.X = 108;
+            frameSize.Y = 108;
+            currentFrame.X = 0;
+            currentFrame.Y = 0;
+            numFrames = 1;
+            frameRate = 100;
         }
 
         //Monogame Methods
@@ -124,8 +142,26 @@ namespace Glitch_Wobble
             }
         }
         //Main Methods
-        public void Switch()
+        public void Switch(GameTime gameTime)
         {
+            //Animation Logic
+            timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+            if (timeSinceLastFrame > frameRate) // time for a new frame
+            {
+                timeSinceLastFrame = 0;
+                frame++;
+
+                //Resets Animation Loop
+                if (frame >= numFrames)
+                {
+                    frame = 0;
+                }
+
+                // set the upper left corner of new frame
+                currentFrame.X = frameSize.X * frame;
+            }
+
+            //Gamestate Switch logic
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:

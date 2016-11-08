@@ -53,6 +53,7 @@ namespace Glitch_Wobble
         //Menu Rectangles
         Rectangle menuPos;
 
+        
 
         //Monogame Methods
         public Game1()
@@ -162,8 +163,10 @@ namespace Glitch_Wobble
                     button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
-                    
+
                     //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
+                    horz1.SpawnTimer.Start();
+                    vert1.SpawnTimer.Start();
 
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
                     glitch.GlitchHurt(slime1);
@@ -171,11 +174,10 @@ namespace Glitch_Wobble
                     cam.Update(gameTime, this);
 
                     //Class switches
-                    glitch.Switch();
+                    glitch.Switch(gameTime);
                     slime1.Switch(gameTime);
                     vert1.Switch();
                     horz1.Switch();
-                    vert1.Spawning();
                     horz1.Spawning();
                     longSword.Switch();
                     break;
@@ -227,7 +229,6 @@ namespace Glitch_Wobble
                     glitch.Draw(spriteBatch);
                     slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
-                    
                     break;
                 case GameState.Pause:
                     button.DrawPause(spriteBatch);
