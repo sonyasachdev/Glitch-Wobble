@@ -66,7 +66,7 @@ namespace Glitch_Wobble
             currentFrame.X = 0;
             currentFrame.Y = 0;
             numFrames = 4;
-            frameRate = 5000;
+            frameRate = 100;
         }
         //Timer Function
         
