@@ -23,7 +23,7 @@ namespace Glitch_Wobble
         Rectangle LeftBound;
         Rectangle RightBound;
         Timer SpawnTimer;
-
+        
         Texture2D horzSkin;
         HorizontalPlatformState currentPlatformState;
 
@@ -42,6 +42,8 @@ namespace Glitch_Wobble
             Active = true;
 
         }
+
+        
 
         //Monogame Methods
         public void Initialize()
@@ -119,14 +121,12 @@ namespace Glitch_Wobble
         {
             SpawnTimer.Stop();
             Active = false;
-            horzSkin = null;
         }
 
-        public void Spawn(ContentManager Content)
+        public void Spawn()
         {
             SpawnTimer.Start();
             Active = true;
-            horzSkin = Content.Load<Texture2D>("horzSkin.png");
         }
         private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {

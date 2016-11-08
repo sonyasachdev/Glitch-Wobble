@@ -53,6 +53,7 @@ namespace Glitch_Wobble
         //Menu Rectangles
         Rectangle menuPos;
 
+        
 
         //Monogame Methods
         public Game1()
@@ -225,7 +226,6 @@ namespace Glitch_Wobble
                     glitch.Draw(spriteBatch);
                     slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
-                    
                     break;
                 case GameState.Pause:
                     button.DrawPause(spriteBatch);
