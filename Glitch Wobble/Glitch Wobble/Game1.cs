@@ -172,7 +172,7 @@ namespace Glitch_Wobble
                     glitch.GlitchHurt(slime1);
 
                     //Class switches
-                    glitch.Switch();
+                    glitch.Switch(gameTime);
                     slime1.Switch(gameTime);
                     vert1.Switch();
                     horz1.Switch();

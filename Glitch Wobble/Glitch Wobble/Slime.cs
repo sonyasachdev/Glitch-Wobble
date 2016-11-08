@@ -30,7 +30,6 @@ namespace Glitch_Wobble
         Rectangle RightBound;
         Timer hurtTimer;
         Texture2D slimeSkin;
-        SpriteEffects flip;
 
         //Animation Fields
         Vector2 pos;
@@ -40,14 +39,15 @@ namespace Glitch_Wobble
         private int numFrames;
         private int timeSinceLastFrame;
         private int frameRate;
-       
+        SpriteEffects flip;
+
         //Constructor
         public Slime(Rectangle p, bool a,int t)
         {
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(200, 100, 10, 10);
+            LeftBound = new Rectangle(500, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
             currentSlimeState = SlimeState.MoveRight;
 
@@ -151,7 +151,6 @@ namespace Glitch_Wobble
                 currentFrame.X = frameSize.X * frame;
             }
 
-            //sprite.Update(gameTime);
             switch (currentSlimeState)
             {
                 case SlimeState.MoveLeft:
@@ -213,6 +212,7 @@ namespace Glitch_Wobble
 
         /*
         //Takes count how many times hitbox has been touched by the weapon's attack state
+
         //maybe make this return a bool so that with the timer, it will know if the slime was hurt. If true, set state to hurt, if false, set state to dead.
         public bool? Hurt(Long_Sword longSword)
         {
