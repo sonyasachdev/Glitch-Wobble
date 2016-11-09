@@ -30,6 +30,7 @@ namespace Glitch_Wobble
         Rectangle RightBound;
         Timer hurtTimer;
         Texture2D slimeSkin;
+        Texture2D hitboxSkin;
 
         //Animation Fields
         Vector2 pos;
@@ -49,12 +50,15 @@ namespace Glitch_Wobble
             this.active = a;
             LeftBound = new Rectangle(0, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
-            
+
             currentSlimeState = SlimeState.MoveRight;
 
             flip = SpriteEffects.FlipHorizontally;
             previousSlimeState = currentSlimeState;
-           
+
+            //Setting hitbox
+            hitbox = new Rectangle(position.X, position.Y, 108, 108);
+
             //At the end of the hurt animation, it will revert to the previous Slime State it was in (Moving left or right)
             hurtTimer = new Timer();
             hurtTimer.Interval = 2000;
@@ -83,9 +87,11 @@ namespace Glitch_Wobble
         public void LoadContent(ContentManager Content)
         {
             slimeSkin = Content.Load<Texture2D>("Slime-Sheet.png");
+            hitboxSkin = Content.Load<Texture2D>("playactive.png");
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
             if (active == true)
             {
                 switch (currentSlimeState)
@@ -135,6 +141,10 @@ namespace Glitch_Wobble
         
         public void Switch(GameTime gameTime)
         {
+            //Hitbox Logic
+            hitbox.X = position.X;
+            hitbox.Y = position.Y;
+
             //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > frameRate) // time for a new frame

@@ -53,7 +53,9 @@ namespace Glitch_Wobble
 
         //Texture
         Texture2D glitchSkin;
+        Texture2D hitboxSkin;
 
+        //Jump Fields
         Vector2 velocity;
         bool hasJumped;
 
@@ -83,7 +85,7 @@ namespace Glitch_Wobble
 
             currentGlitchState = GlitchState.IdleRight;
             //Setting Hitbox
-
+            hitbox = new Rectangle(position.X, position.Y, 100, 400);
             //Setting Start Position
             this.position = new Rectangle(0, 200, 400, 400);
             lives = 3;
@@ -109,10 +111,14 @@ namespace Glitch_Wobble
         public void LoadContent(ContentManager Content)
         {
             glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
+            hitboxSkin = Content.Load <Texture2D>("playactive.png");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(hitboxSkin, position, Color.White);
+            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+            
             
             switch (currentGlitchState)
             {
@@ -203,6 +209,10 @@ namespace Glitch_Wobble
         //Main Methods
         public void Switch(GameTime gameTime)
         {
+            //Dynamically sets hitbox
+            hitbox.X = position.X;
+            hitbox.Y = position.Y;
+
             //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > frameRate) // time for a new frame
@@ -305,14 +315,13 @@ namespace Glitch_Wobble
             } 
         }
         //Enemy Body Collision Code
-        public void GlitchHurt(Slime slime)
+        public void GlitchHurtSlime(Enemy enemy)
         {
             //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
             //Probably need to add a timer.
-            hitbox = new Rectangle(position.X, position.Y, 250, 400);
 
             //See if you have to put the draw logic in this method?
-            if (hitbox.Intersects(slime.Position) == true)
+            if (hitbox.Intersects(enemy.Hitbox) == true)
             {
                 if (Lives < 4 && Lives > 0)
                 {

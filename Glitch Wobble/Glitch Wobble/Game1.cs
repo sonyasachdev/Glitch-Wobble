@@ -50,11 +50,13 @@ namespace Glitch_Wobble
 
         //Menu Textures
         Texture2D menuSkin;
+
         //Menu Rectangles
         Rectangle menuPos;
 
-        
-
+        //List
+        List<Enemy> enemyList;
+        List<Platform> platformList;
         //Monogame Methods
         public Game1()
         {
@@ -115,7 +117,14 @@ namespace Glitch_Wobble
             longSword.LoadContent(Content);
             vert1.LoadContent(Content);
             horz1.LoadContent(Content);
-            
+
+            //List Initializations
+            enemyList = new List<Enemy>();
+            enemyList.Add(slime1);
+
+            platformList = new List<Platform>();
+            platformList.Add(horz1);
+            platformList.Add(vert1);
 
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("logoSkin.png");
@@ -169,7 +178,18 @@ namespace Glitch_Wobble
                     vert1.SpawnTimer.Start();
 
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
-                    glitch.GlitchHurt(slime1);
+                    
+                    //Hitbox collision check loop for enemies
+                    for (int i = 0; i < enemyList.Count; i++)
+                    {
+                        glitch.GlitchHurtSlime(enemyList[i]);
+                    }
+
+                    //Hitbox collision check loop for platforms
+                    for (int i = 0; i < platformList.Count; i++)
+                    {
+                        //some collision code
+                    }
 
                     cam.Update(gameTime, this);
 

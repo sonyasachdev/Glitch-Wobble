@@ -17,6 +17,7 @@ namespace Glitch_Wobble
         Timer SpawnTimer;
         protected bool active;
         protected int timesHit;
+        protected Rectangle hitbox;
         
         //Properties
         public bool Active
@@ -28,6 +29,11 @@ namespace Glitch_Wobble
         {
             get { return timesHit; }
             set { timesHit = value; }
+        }
+        public Rectangle Hitbox
+        {
+            get { return hitbox; }
+            set { hitbox = value; }
         }
 
         //Constructor
