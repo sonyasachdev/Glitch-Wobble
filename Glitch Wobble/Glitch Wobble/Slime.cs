@@ -48,7 +48,7 @@ namespace Glitch_Wobble
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(0, 100, 10, 10);
+            LeftBound = new Rectangle(700, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
 
             currentSlimeState = SlimeState.MoveRight;
@@ -91,7 +91,8 @@ namespace Glitch_Wobble
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+            //Visual Hitbox 
+            //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
             if (active == true)
             {
                 switch (currentSlimeState)

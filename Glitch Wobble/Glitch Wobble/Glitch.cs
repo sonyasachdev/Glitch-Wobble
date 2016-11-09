@@ -22,14 +22,10 @@ namespace Glitch_Wobble
         Dead
     }
 
-    public enum keyState
+    public enum keyboardState
     {
-        MoveRight,
-        MoveLeft,
-        JumpStart,
-        JumpEnd,
-        IdleLeft,
-        IdleRight
+        Right,
+        Left
     }
 
     class Glitch : Beings
@@ -62,7 +58,8 @@ namespace Glitch_Wobble
         //Enum Variables
         GlitchState currentGlitchState;
         GlitchState previousGlitchState;
-        keyState currentKeyState;
+        keyboardState currentKeyState;
+        keyboardState previousKeyboardState;
 
         //Properties
         public int Lives
@@ -82,12 +79,13 @@ namespace Glitch_Wobble
         { 
             //Setting Previous GlitchState
             previousGlitchState = currentGlitchState;
+            previousKeyboardState = currentKeyState;
 
             currentGlitchState = GlitchState.IdleRight;
             //Setting Hitbox
-            hitbox = new Rectangle(position.X, position.Y, 100, 400);
+            hitbox = new Rectangle(position.X, position.Y, 125, 400);
             //Setting Start Position
-            this.position = new Rectangle(0, 200, 400, 400);
+            this.position = new Rectangle(0, 200, 300, 400);
             lives = 3;
 
             hasJumped = false;
@@ -116,15 +114,16 @@ namespace Glitch_Wobble
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(hitboxSkin, position, Color.White);
-            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+            //Hitbox visual code
+            //spriteBatch.Draw(hitboxSkin, position, Color.White);
+            //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
             
             
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:
                     //Flips Image
-                    flip = SpriteEffects.FlipHorizontally;
+                    flip = SpriteEffects.None;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
                         pos = new Vector2(position.X, position.Y), // position of slime
@@ -140,7 +139,7 @@ namespace Glitch_Wobble
                     break;
                 case GlitchState.MoveLeft:
 
-                    flip = SpriteEffects.None;
+                    flip = SpriteEffects.FlipHorizontally;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
                         pos = new Vector2(position.X, position.Y), // position of slime
@@ -168,7 +167,7 @@ namespace Glitch_Wobble
                         );
                     //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
-                case GlitchState.IdleLeft:
+                case GlitchState.IdleRight:
                     flip = SpriteEffects.None;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
@@ -183,7 +182,7 @@ namespace Glitch_Wobble
                         );
                     //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
-                case GlitchState.IdleRight:
+                case GlitchState.IdleLeft:
                     flip = SpriteEffects.FlipHorizontally;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
@@ -234,19 +233,27 @@ namespace Glitch_Wobble
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:
+                    hitbox.X = position.X;
+                    hitbox.Y = position.Y;
                     Move();
                     break;
                 case GlitchState.MoveLeft:
+                    hitbox.X = 275+position.X;
+                    hitbox.Y = position.Y;
                     Move();
                     break;
                 case GlitchState.Jump:
                     Jump();
                     Move();
                     break;
-                case GlitchState.IdleLeft:
+                case GlitchState.IdleRight:
+                    hitbox.X = position.X;
+                    hitbox.Y = position.Y;
                     Move();
                     break;
-                case GlitchState.IdleRight:
+                case GlitchState.IdleLeft:
+                    hitbox.X = 275 + position.X;
+                    hitbox.Y = position.Y;
                     Move();
                     break;
                 case GlitchState.Hurt:
@@ -260,6 +267,9 @@ namespace Glitch_Wobble
 
         public void Jump()
         {
+            previousKeyState = key;
+            key = Keyboard.GetState();
+
             position.X += (int)velocity.X;
             position.Y += (int)velocity.Y;
 
@@ -277,7 +287,19 @@ namespace Glitch_Wobble
             }
 
             if (position.Y + 250 >= 500)
+            {
                 hasJumped = false;
+                
+                if(currentKeyState == keyboardState.Right)
+                {
+                    currentGlitchState = GlitchState.IdleRight;
+                }
+                else if(currentKeyState == keyboardState.Left)
+                {
+                    currentGlitchState = GlitchState.IdleLeft;
+                }
+
+            }
 
             if (hasJumped == false)
                 velocity.Y = 0f;
@@ -291,25 +313,76 @@ namespace Glitch_Wobble
             
             if (key.IsKeyDown(Keys.Right) == true)
             {
-                currentGlitchState = GlitchState.MoveRight;
-                position.X += 7;
+                //Changes the KeyState to Right
+                currentKeyState = keyboardState.Right;
+
+                //Makes sure that the hitbox matches up to the image before switching Glitch's state
+                if (currentGlitchState == GlitchState.MoveLeft || currentGlitchState == GlitchState.IdleLeft)
+                {
+                    position.X += 175;
+                }
+
+                //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.MoveRight;
+                    position.X += 7;
+                }
+                else
+                {
+                    //Makes sure Glitch flips visually in air
+                    if (previousGlitchState == GlitchState.MoveRight)
+                    {
+                        flip = SpriteEffects.None;
+                    }
+                    position.X += 7;
+                }
+                
             }
             else if (key.IsKeyDown(Keys.Left) == true)
             {
-                currentGlitchState = GlitchState.MoveLeft;
-                position.X -= 7;
+                //Changes the KeyState to Left
+                currentKeyState = keyboardState.Left;
+
+                //Makes sure that the hitbox matches up to the image before switching Glitch's state
+                if (currentGlitchState == GlitchState.MoveRight || currentGlitchState == GlitchState.IdleRight)
+                {
+                    position.X -= 175;
+                }
+
+                //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.MoveLeft;
+                    position.X -= 7;
+                }
+                else
+                {
+                    //Makes sure Glitch flips visually in air
+                    if (previousGlitchState == GlitchState.MoveRight)
+                    {
+                        flip = SpriteEffects.FlipHorizontally;
+                    }
+                    position.X -= 7;
+                }
             }
 
-            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Left) == true && key.IsKeyDown(Keys.Right) == false)
+            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Left) == true)
             {
-                currentGlitchState = GlitchState.IdleLeft;
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.IdleLeft;
+                }
             }
-            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Right) == true && key.IsKeyDown(Keys.Left) == false)
+            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Right) == true)
             {
-                currentGlitchState = GlitchState.IdleRight;
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.IdleRight;
+                }
             }
             //Makes character Jump
-            if(key.IsKeyDown(Keys.Up))
+            if(previousKeyState.IsKeyUp(Keys.Up) == true && key.IsKeyDown(Keys.Up) == true)
             {
                 currentGlitchState = GlitchState.Jump;
             } 
