@@ -47,7 +47,7 @@ namespace Glitch_Wobble
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(500, 100, 10, 10);
+            LeftBound = new Rectangle(0, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
             
             currentSlimeState = SlimeState.MoveRight;

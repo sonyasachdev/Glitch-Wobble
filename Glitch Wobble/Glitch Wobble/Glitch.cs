@@ -39,6 +39,7 @@ namespace Glitch_Wobble
         KeyboardState key;
         KeyboardState previousKeyState;
         private int lives;
+        private Rectangle hitbox;
 
         //Animation Fields
         Vector2 pos;
@@ -68,6 +69,12 @@ namespace Glitch_Wobble
             set { lives = value; }
         }
 
+        public Rectangle Hitbox
+        {
+            get { return hitbox; }
+            set { hitbox = value; }
+        }
+
         //Constructor
         public Glitch()
         { 
@@ -75,6 +82,7 @@ namespace Glitch_Wobble
             previousGlitchState = currentGlitchState;
 
             currentGlitchState = GlitchState.IdleRight;
+            //Setting Hitbox
 
             //Setting Start Position
             this.position = new Rectangle(0, 200, 400, 400);
@@ -301,9 +309,10 @@ namespace Glitch_Wobble
         {
             //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
             //Probably need to add a timer.
+            hitbox = new Rectangle(position.X, position.Y, 250, 400);
 
             //See if you have to put the draw logic in this method?
-            if (position.Intersects(slime.Position) == true)
+            if (hitbox.Intersects(slime.Position) == true)
             {
                 if (Lives < 4 && Lives > 0)
                 {
