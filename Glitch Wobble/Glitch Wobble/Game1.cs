@@ -198,6 +198,7 @@ namespace Glitch_Wobble
                     slime1.Switch(gameTime);
                     vert1.Switch();
                     horz1.Switch();
+                    vert1.Spawning();
                     horz1.Spawning();
                     longSword.Switch();
                     break;

@@ -107,15 +107,26 @@ namespace Glitch_Wobble
                 currentPlatformState = VerticalPlatformState.Up;
             }
         }
+        public void Spawning()
+        {
+            if (Active == true)
+            {
+                SpawnTimer.Elapsed += Despawn;
+            }
+            else
+            {
+                SpawnTimer.Elapsed += Spawn;
+            }
+        }
         public void Spawn()
         {
             SpawnTimer.Start();
-            active = true;
+            Active = true;
         }
         public void Despawn()
         {
             SpawnTimer.Stop();
-            active = false;
+            Active = false;
         }
         private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {
