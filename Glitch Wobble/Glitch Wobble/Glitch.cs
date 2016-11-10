@@ -125,6 +125,7 @@ namespace Glitch_Wobble
         public void Draw(SpriteBatch spriteBatch)
         {
             //Hitbox visual code
+            //spriteBatch.Draw(hitboxSkin, position, Color.White);
             if(Game1.drawHitbox == true)
             {
                 spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
@@ -356,10 +357,10 @@ namespace Glitch_Wobble
                     position.X -= 175;
                 }
 
-                //Changes the KeyState to Left
+                //Changes the KeyState to Right
                 currentKeyState = keyboardState.Left;
                 currentFaceState = FaceState.Left;
-                
+
                 //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
                 if (currentGlitchState != GlitchState.Jump)
                 {
@@ -369,7 +370,7 @@ namespace Glitch_Wobble
                 else
                 {
                     //Makes sure Glitch flips visually in air
-                    if (previousGlitchState == GlitchState.MoveRight)
+                    if (previousGlitchState == GlitchState.MoveLeft)
                     {
                         flip = SpriteEffects.FlipHorizontally;
                     }
