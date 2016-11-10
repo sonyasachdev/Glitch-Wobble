@@ -67,11 +67,7 @@ namespace Glitch_Wobble
             currentPauseButtonState = PauseButtonState.ActiveResume;
             currentGameOverState = GameOverState.ActiveRestart;
         }
-
-        public void Initialize()
-        {
-            
-        }
+        
         public void LoadContent(ContentManager Content)
         {
             playIdle = Content.Load<Texture2D>("playidle.png");
@@ -84,6 +80,8 @@ namespace Glitch_Wobble
             optionsIdleRect = new Rectangle(100, 500, 300, 100);
             optionsActiveRect = new Rectangle(100, 500, 300, 100);
         }
+
+        //Menu*
         public void DrawMenu(SpriteBatch spriteBatch)
         {
             //Draws the static idle buttons. Eventually this will be deleted since the "idle" will be part of the background
@@ -100,6 +98,8 @@ namespace Glitch_Wobble
                     break;
             }
         }
+
+        //Options*
         public void DrawOptions(SpriteBatch spriteBatch)
         {
             //Draw Options Background
@@ -116,6 +116,7 @@ namespace Glitch_Wobble
             }
         }
         
+        //GameOver*
         public void DrawGameOver(SpriteBatch spriteBatch)
         {
             //Draw Gameover Background
@@ -128,6 +129,7 @@ namespace Glitch_Wobble
             }
         }
 
+        //Pause*
         public void DrawPause(SpriteBatch spriteBatch)
         {
             //Draw Pause Background
@@ -139,7 +141,9 @@ namespace Glitch_Wobble
                     break;
             }
         }
-        //Menu Button Switch
+
+        //Menu Button Switch 
+        //MenuUpdate*
         public void MenuButtonSwitch(KeyboardState key)
         {
             switch (currentMenuButtonState)
@@ -169,6 +173,7 @@ namespace Glitch_Wobble
         }
 
         //Options Button Switch
+        //OptionsUpdate*
         public void OptionButtonSwitch(KeyboardState key)
         {
             
@@ -237,6 +242,7 @@ namespace Glitch_Wobble
         }
 
         //Pause Button Switch
+        //PauseUpdate*
         public void PauseButtonSwitch(KeyboardState key)
         {
             switch (currentPauseButtonState)
@@ -265,6 +271,7 @@ namespace Glitch_Wobble
         }
 
         //GameOver Button Switch
+        //GameOverUpdate*
         public void GameOverSwitch(KeyboardState key)
         {
             switch (currentGameOverState)

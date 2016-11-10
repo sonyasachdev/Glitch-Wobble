@@ -54,6 +54,9 @@ namespace Glitch_Wobble
         //Menu Rectangles
         Rectangle menuPos;
 
+        //Draws Hitbox
+        public static bool drawHitbox = false;
+
         //List
         List<Enemy> enemyList;
         List<Platform> platformList;
@@ -172,6 +175,15 @@ namespace Glitch_Wobble
                     button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
+
+                    if(key.IsKeyDown(Keys.Space) == true)
+                    {
+                        Game1.drawHitbox = true;
+                    }
+                    else if(key.IsKeyDown(Keys.B) == true)
+                    {
+                        Game1.drawHitbox = false;
+                    }
 
                     //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
                     horz1.SpawnTimer.Start();

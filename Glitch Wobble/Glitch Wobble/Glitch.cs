@@ -28,6 +28,12 @@ namespace Glitch_Wobble
         Left
     }
 
+    public enum FaceState
+    {
+        Right,
+        Left
+    }
+
     class Glitch : Beings
     {
         //Fields
@@ -60,6 +66,7 @@ namespace Glitch_Wobble
         GlitchState previousGlitchState;
         keyboardState currentKeyState;
         keyboardState previousKeyboardState;
+        FaceState currentFaceState;
 
         //Properties
         public int Lives
@@ -82,6 +89,8 @@ namespace Glitch_Wobble
             previousKeyboardState = currentKeyState;
 
             currentGlitchState = GlitchState.IdleRight;
+            currentKeyState = keyboardState.Right;
+            currentFaceState = FaceState.Right; 
             //Setting Hitbox
             hitbox = new Rectangle(position.X, position.Y, 125, 400);
             //Setting Start Position
@@ -112,21 +121,22 @@ namespace Glitch_Wobble
             hitboxSkin = Content.Load <Texture2D>("playactive.png");
         }
 
+        //Draw*
         public void Draw(SpriteBatch spriteBatch)
         {
             //Hitbox visual code
-            //spriteBatch.Draw(hitboxSkin, position, Color.White);
-            //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
-            
-            
+            if(Game1.drawHitbox == true)
+            {
+                spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+            }
+
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:
-                    //Flips Image
                     flip = SpriteEffects.None;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X, position.Y), // position of slime
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -135,14 +145,13 @@ namespace Glitch_Wobble
                         flip, // Flip or not
                         0//Current Layer
                         );
-                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.MoveLeft:
 
                     flip = SpriteEffects.FlipHorizontally;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X, position.Y), // position of slime
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -151,12 +160,10 @@ namespace Glitch_Wobble
                         flip, // Flip or not
                         0//Current Layer
                         );
-                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.Jump:
-
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X, position.Y), // position of slime
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -171,7 +178,7 @@ namespace Glitch_Wobble
                     flip = SpriteEffects.None;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X, position.Y), // position of slime
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -180,7 +187,6 @@ namespace Glitch_Wobble
                         flip, // Flip or not
                         0//Current Layer
                         );
-                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleLeft:
                     flip = SpriteEffects.FlipHorizontally;
@@ -195,7 +201,6 @@ namespace Glitch_Wobble
                         flip, // Flip or not
                         0//Current Layer
                         );
-                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.Hurt:
                     //Put hurt animation, also reduce the GUI hearts by one
@@ -205,7 +210,8 @@ namespace Glitch_Wobble
                     break;
             }
         }
-        //Main Methods
+
+        //Update*
         public void Switch(GameTime gameTime)
         {
             //Dynamically sets hitbox
@@ -265,6 +271,7 @@ namespace Glitch_Wobble
             }
         }
 
+        //Jump*
         public void Jump()
         {
             previousKeyState = key;
@@ -298,29 +305,30 @@ namespace Glitch_Wobble
                 {
                     currentGlitchState = GlitchState.IdleLeft;
                 }
-
             }
 
             if (hasJumped == false)
                 velocity.Y = 0f;
         }
 
-        //Movement
+        //Move*
         public void Move()
         {
             previousKeyState = key;
             key = Keyboard.GetState();
             
+            //Moving Right
             if (key.IsKeyDown(Keys.Right) == true)
             {
-                //Changes the KeyState to Right
-                currentKeyState = keyboardState.Right;
-
                 //Makes sure that the hitbox matches up to the image before switching Glitch's state
-                if (currentGlitchState == GlitchState.MoveLeft || currentGlitchState == GlitchState.IdleLeft)
+                if (currentKeyState == keyboardState.Left)
                 {
                     position.X += 175;
                 }
+
+                //Changes the KeyState to Right
+                currentKeyState = keyboardState.Right;
+                currentFaceState = FaceState.Right;
 
                 //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
                 if (currentGlitchState != GlitchState.Jump)
@@ -337,19 +345,21 @@ namespace Glitch_Wobble
                     }
                     position.X += 7;
                 }
-                
             }
+
+            //Moving Left
             else if (key.IsKeyDown(Keys.Left) == true)
             {
-                //Changes the KeyState to Left
-                currentKeyState = keyboardState.Left;
-
                 //Makes sure that the hitbox matches up to the image before switching Glitch's state
-                if (currentGlitchState == GlitchState.MoveRight || currentGlitchState == GlitchState.IdleRight)
+                if (currentKeyState == keyboardState.Right)
                 {
                     position.X -= 175;
                 }
 
+                //Changes the KeyState to Left
+                currentKeyState = keyboardState.Left;
+                currentFaceState = FaceState.Left;
+                
                 //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
                 if (currentGlitchState != GlitchState.Jump)
                 {
@@ -381,13 +391,15 @@ namespace Glitch_Wobble
                     currentGlitchState = GlitchState.IdleRight;
                 }
             }
+
             //Makes character Jump
             if(previousKeyState.IsKeyUp(Keys.Up) == true && key.IsKeyDown(Keys.Up) == true)
             {
                 currentGlitchState = GlitchState.Jump;
-            } 
+            }
         }
-        //Enemy Body Collision Code
+
+        //Enemy Collision* Code
         public void GlitchHurtSlime(Enemy enemy)
         {
             //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately

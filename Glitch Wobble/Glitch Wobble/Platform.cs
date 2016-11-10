@@ -55,7 +55,6 @@ namespace Glitch_Wobble
         }
         
         //Methods
-        
         public void Spawning()
         {
             if(Active == true)

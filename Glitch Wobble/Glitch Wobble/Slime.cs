@@ -48,7 +48,7 @@ namespace Glitch_Wobble
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(700, 100, 10, 10);
+            LeftBound = new Rectangle(400, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
 
             currentSlimeState = SlimeState.MoveRight;
@@ -72,8 +72,9 @@ namespace Glitch_Wobble
             numFrames = 4;
             frameRate = 100;
         }
+
         //Timer Function
-        
+        //TimerEnd*
         private void HurtTimerState(Object source, System.Timers.ElapsedEventArgs e)
         {
             currentSlimeState = previousSlimeState;
@@ -89,6 +90,7 @@ namespace Glitch_Wobble
             slimeSkin = Content.Load<Texture2D>("Slime-Sheet.png");
             hitboxSkin = Content.Load<Texture2D>("playactive.png");
         }
+        //Draw*
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             //Visual Hitbox 
@@ -98,7 +100,6 @@ namespace Glitch_Wobble
                 switch (currentSlimeState)
                 {
                     case SlimeState.MoveLeft:
-                        //see how to flip the image
                         flip = SpriteEffects.None;
 
                         spriteBatch.Draw(slimeSkin, // SpriteSheet
@@ -113,7 +114,6 @@ namespace Glitch_Wobble
                         );
                         break;
                     case SlimeState.MoveRight:
-                        //Draw(spriteBatch);
                         flip = SpriteEffects.FlipHorizontally;
 
                         spriteBatch.Draw(slimeSkin, // Spritesheet
@@ -137,9 +137,8 @@ namespace Glitch_Wobble
             }
             //else, it won't draw
         }
-
-        //Methods
         
+        //Update*
         public void Switch(GameTime gameTime)
         {
             //Hitbox Logic
@@ -182,6 +181,7 @@ namespace Glitch_Wobble
         }
 
         //Basic AI Code that makes it go left and right
+        //Move*
         public void MoveRight(Rectangle RightBound)
         {
             if (position.X < RightBound.X)
@@ -205,6 +205,7 @@ namespace Glitch_Wobble
             }
         }
 
+        //Collision*
         public void Hurt(Long_Sword longsword)
         {
             if (this.Position.Intersects(longsword.Position) == true)

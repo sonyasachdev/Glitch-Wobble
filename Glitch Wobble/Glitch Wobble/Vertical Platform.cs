@@ -61,11 +61,9 @@ namespace Glitch_Wobble
                 switch (currentPlatformState)
                 {
                     case VerticalPlatformState.Up:
-                        //base.Draw(spriteBatch);
                         spriteBatch.Draw(vertSkin, position, Color.White);
                         break;
                     case VerticalPlatformState.Down:
-                        //base.Draw(spriteBatch);
                         spriteBatch.Draw(vertSkin, position, Color.White);
                         break;
                 }

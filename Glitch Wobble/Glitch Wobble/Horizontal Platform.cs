@@ -52,6 +52,7 @@ namespace Glitch_Wobble
         {
             horzSkin = Content.Load<Texture2D>("horzSkin.png");
         }
+        //Draw*
         public override void Draw(SpriteBatch spriteBatch)
         {
             if(active == true)
@@ -69,6 +70,7 @@ namespace Glitch_Wobble
                 }
             }
         }
+        //Update*
         public void Switch()
         {
             switch (currentPlatformState)
@@ -82,6 +84,7 @@ namespace Glitch_Wobble
             }
         }
         //Methods
+        //Move*
         public void MoveRight(Rectangle RightBound)
         {
             if (position.X < RightBound.X)
@@ -104,6 +107,7 @@ namespace Glitch_Wobble
                 currentPlatformState = HorizontalPlatformState.Right;
             }
         }
+        //Spawn*
         public void Spawning()
         {
             if (Active == true)
@@ -115,6 +119,7 @@ namespace Glitch_Wobble
                 SpawnTimer.Elapsed += Spawn;
             }
         }
+        //Despawn*
         public void Despawn()
         {
             SpawnTimer.Stop();
@@ -135,8 +140,5 @@ namespace Glitch_Wobble
         {
             Spawn();
         }
-
-
-        //Hitbox Method
     }
 }
