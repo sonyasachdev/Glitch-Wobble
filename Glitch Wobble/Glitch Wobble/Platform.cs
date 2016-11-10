@@ -18,6 +18,7 @@ namespace Glitch_Wobble
         protected Rectangle position;
         protected Texture2D skin;
         protected bool active;
+        protected bool spawn;
 
         //Properties
         public Rectangle Position
@@ -46,42 +47,36 @@ namespace Glitch_Wobble
         }
         private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //Despawn();
+            Despawn();
         }
         
         //Methods
-        /*
         public void Spawn()
         {
-            SpawnTimer.Start();
-            spriteBatch = LoadContent(Content);
-            active = true;
+            if (spawn == true)
+            {
+                SpawnTimer.Start();
+                spriteBatch = LoadContent(Content);
+                active = true;
+                return active;
+            } else if (spawn == false)
+            {
+                SpawnTimer.Stop();
+                active = false;
+                return active;
+            } else
+            {
+                return true;
+            }
         }
+        /*
         public void Despawn()
         {
             SpawnTimer.Stop();
             spriteBatch = null;
             active = false;
         }
-        
-
-        public void PlatBeat()
-        {
-            int i = 1;
-
-            if(i == 1)
-            {
-                Despawn();
-
-                i++;
-            } else if (i == 2)
-            {
-                Spawn();
-
-                i--;
-            }
-        }
-        
+        /*
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(skin, position, Color.White);
