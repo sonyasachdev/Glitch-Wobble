@@ -19,7 +19,7 @@ namespace Glitch_Wobble
         Hurt,
         Dead
     }
-    public class Slime:Enemy
+    public class Slime : Enemy
     {
         //Enum Variables
         SlimeState currentSlimeState;
@@ -30,24 +30,47 @@ namespace Glitch_Wobble
         Rectangle RightBound;
         Timer hurtTimer;
         Texture2D slimeSkin;
+        Texture2D hitboxSkin;
+
+        //Animation Fields
+        Vector2 pos;
+        private Point currentFrame;
+        private Point frameSize;
+        private int frame;
+        private int numFrames;
+        private int timeSinceLastFrame;
+        private int frameRate;
+        SpriteEffects flip;
 
         //Constructor
-        public Slime(Rectangle p, bool a,int t)
+        public Slime(Rectangle p, bool a, int t)
         {
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(100, 100, 10, 10);
+            LeftBound = new Rectangle(700, 100, 10, 10);
             RightBound = new Rectangle(700, 100, 10, 10);
-            currentSlimeState = SlimeState.MoveRight;
-            //skin = slimeSkin;
 
+            currentSlimeState = SlimeState.MoveRight;
+
+            flip = SpriteEffects.FlipHorizontally;
             previousSlimeState = currentSlimeState;
-           
+
+            //Setting hitbox
+            hitbox = new Rectangle(position.X, position.Y, 108, 108);
+
             //At the end of the hurt animation, it will revert to the previous Slime State it was in (Moving left or right)
             hurtTimer = new Timer();
             hurtTimer.Interval = 2000;
             hurtTimer.Elapsed += HurtTimerState;
+
+            //Animation Initializers
+            frameSize.X = 108;
+            frameSize.Y = 108;
+            currentFrame.X = 0;
+            currentFrame.Y = 0;
+            numFrames = 4;
+            frameRate = 100;
         }
         //Timer Function
         
@@ -63,22 +86,46 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            slimeSkin = Content.Load<Texture2D>("slimeSkin.png");
+            slimeSkin = Content.Load<Texture2D>("Slime-Sheet.png");
+            hitboxSkin = Content.Load<Texture2D>("playactive.png");
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            //Visual Hitbox 
+            //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
             if (active == true)
             {
                 switch (currentSlimeState)
                 {
                     case SlimeState.MoveLeft:
                         //see how to flip the image
-                        spriteBatch.Draw(slimeSkin, position, Color.White);
-                        //Draw(spriteBatch);
+                        flip = SpriteEffects.None;
+
+                        spriteBatch.Draw(slimeSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        1f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
                         break;
                     case SlimeState.MoveRight:
                         //Draw(spriteBatch);
-                        spriteBatch.Draw(slimeSkin, position, Color.White);
+                        flip = SpriteEffects.FlipHorizontally;
+
+                        spriteBatch.Draw(slimeSkin, // Spritesheet
+                        pos = new Vector2(position.X, position.Y), // Position
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        1f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
                         break;
                     case SlimeState.Hurt:
                         //Hurt Animation
@@ -92,16 +139,36 @@ namespace Glitch_Wobble
         }
 
         //Methods
-        public void Switch()
+        
+        public void Switch(GameTime gameTime)
         {
+            //Hitbox Logic
+            hitbox.X = position.X;
+            hitbox.Y = position.Y;
+
+            //Animation Logic
+            timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+            if (timeSinceLastFrame > frameRate) // time for a new frame
+            {
+                timeSinceLastFrame = 0;
+                frame++;
+
+                //Resets Animation Loop
+                if (frame >= numFrames)
+                {
+                    frame = 0;
+                }
+
+                // set the upper left corner of new frame
+                currentFrame.X = frameSize.X * frame;
+            }
+
             switch (currentSlimeState)
             {
                 case SlimeState.MoveLeft:
-                    //face = false;
                     MoveLeft(LeftBound);
                     break;
                 case SlimeState.MoveRight:
-                    //face = true;
                     MoveRight(RightBound);
                     break;
                 case SlimeState.Hurt:
@@ -157,6 +224,7 @@ namespace Glitch_Wobble
 
         /*
         //Takes count how many times hitbox has been touched by the weapon's attack state
+
         //maybe make this return a bool so that with the timer, it will know if the slime was hurt. If true, set state to hurt, if false, set state to dead.
         public bool? Hurt(Long_Sword longSword)
         {
@@ -183,40 +251,6 @@ namespace Glitch_Wobble
                 return isHurt;
             }
         }
-
-        //Ask Steve how to handle this code, how to bring the position of the current Long Sword Rectangle into this class.
-        public void ChangeState(bool? hurt)
-        {
-            if (Hurt() == true)
-            {
-                currentSlimeState = SlimeState.Hurt;
-            }
-            else if (Hurt() == false)
-            {
-                currentSlimeState = SlimeState.Dead;
-            }
-            else if (Hurt() == null && currentSlimeState == SlimeState.MoveLeft)
-            {
-                //might modify code to do nothing and make this blank, if problems arise.
-                currentSlimeState = SlimeState.MoveLeft;
-            }
-            else if (Hurt() == null && currentSlimeState == SlimeState.MoveRight)
-            {
-                //might modify code to do nothing and make this blank, if problems arise.
-                currentSlimeState = SlimeState.MoveRight;
-            }
-        }
         */
-
-
-        /*
-        private void SlimeIdle(SpriteEffects flipSprite)
-        {
-            spriteBatch.Draw(Skin, new Vector2(0, 0), Position, Color.White, 0, Vector2.Zero, 1.0f, flipSprite, 0);
-        }
-        
-        */
-
-
     }
 }

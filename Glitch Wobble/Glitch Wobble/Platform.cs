@@ -18,7 +18,6 @@ namespace Glitch_Wobble
         protected Rectangle position;
         protected Texture2D skin;
         protected bool active;
-        protected bool spawn;
 
         //Properties
         public Rectangle Position
@@ -41,45 +40,49 @@ namespace Glitch_Wobble
         public Platform()
         {
             SpawnTimer = new Timer();
-            SpawnTimer.Interval = 4000;
+            SpawnTimer.Interval = 2000;
             SpawnTimer.Elapsed += Despawn;
-            active = true;
+            Active = true;
         }
         private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {
             Despawn();
         }
+
+        private void Spawn(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Spawn();
+        }
         
         //Methods
-        public void Spawn()
+        
+        public void Spawning()
         {
-            if (spawn == true)
+            if(Active == true)
             {
-                SpawnTimer.Start();
-                spriteBatch = LoadContent(Content);
-                active = true;
-                return active;
-            } else if (spawn == false)
-            {
-                SpawnTimer.Stop();
-                active = false;
-                return active;
+                SpawnTimer.Elapsed += Despawn;
             } else
             {
-                return true;
+                SpawnTimer.Elapsed += Spawn;
             }
         }
-        /*
         public void Despawn()
         {
             SpawnTimer.Stop();
-            spriteBatch = null;
-            active = false;
+            Active = false;
         }
-        /*
+
+        public void Spawn()
+        {
+            SpawnTimer.Start();
+            Active = true;
+        }
+        
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(skin, position, Color.White);
-        }*/
+            if (Active == true) {
+                spriteBatch.Draw(skin, position, Color.White);
+            }
+        }
     }
 }

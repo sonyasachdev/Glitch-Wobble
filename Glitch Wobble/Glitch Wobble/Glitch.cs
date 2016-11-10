@@ -15,46 +15,51 @@ namespace Glitch_Wobble
     {
         MoveRight,
         MoveLeft,
-        JumpStart,
-        JumpEnd,
+        Jump,
         IdleLeft,
         IdleRight,
         Hurt,
         Dead
     }
 
-    public enum keyState
+    public enum keyboardState
     {
-        MoveRight,
-        MoveLeft,
-        JumpStart,
-        JumpEnd,
-        IdleLeft,
-        IdleRight
+        Right,
+        Left
     }
 
     class Glitch : Beings
     {
         //Fields
-        Timer startJumpTimer1;
-        Timer startJumpTimer2;
-        Timer startJumpTimer3;
-        Timer endJumpTimer;
         SpriteBatch spriteBatch;
         KeyboardState key;
         KeyboardState previousKeyState;
         private int lives;
-        private bool jump1;
-        private bool jump2;
-        private bool jump3;
+        private Rectangle hitbox;
+
+        //Animation Fields
+        Vector2 pos;
+        private Point currentFrame;
+        private Point frameSize;
+        private int frame;
+        private int numFrames;
+        private int timeSinceLastFrame;
+        private int frameRate;
+        SpriteEffects flip;
 
         //Texture
         Texture2D glitchSkin;
+        Texture2D hitboxSkin;
+
+        //Jump Fields
+        Vector2 velocity;
+        bool hasJumped;
 
         //Enum Variables
         GlitchState currentGlitchState;
         GlitchState previousGlitchState;
-        keyState currentKeyState;
+        keyboardState currentKeyState;
+        keyboardState previousKeyboardState;
 
         //Properties
         public int Lives
@@ -63,101 +68,134 @@ namespace Glitch_Wobble
             set { lives = value; }
         }
 
-        //Constructor
-        public Glitch ()
+        public Rectangle Hitbox
         {
-            //Jump Timer
-            startJumpTimer1 = new Timer();
-            startJumpTimer1.Interval = 250;
-            startJumpTimer1.Elapsed += slowJump1;
+            get { return hitbox; }
+            set { hitbox = value; }
+        }
 
-            startJumpTimer2 = new Timer();
-            startJumpTimer2.Interval = 250;
-            startJumpTimer2.Elapsed += slowJump2;
-
-            startJumpTimer3 = new Timer();
-            startJumpTimer3.Interval = 250;
-            startJumpTimer3.Elapsed += switchJump;
-
-            endJumpTimer = new Timer();
-            endJumpTimer.Interval = 750;
-            endJumpTimer.Elapsed += EndJump;
-
+        //Constructor
+        public Glitch()
+        { 
             //Setting Previous GlitchState
             previousGlitchState = currentGlitchState;
+            previousKeyboardState = currentKeyState;
 
+            currentGlitchState = GlitchState.IdleRight;
+            //Setting Hitbox
+            hitbox = new Rectangle(position.X, position.Y, 125, 400);
             //Setting Start Position
-            this.position = new Rectangle(0, 200, 125, 250);
+            this.position = new Rectangle(0, 200, 300, 400);
             lives = 3;
 
-            //Setting the jump bools
-            jump1 = false;
-            jump2 = false;
-            jump3 = false;
-        }
+            hasJumped = false;
 
-        //Timer Function
-        private void slowJump1(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            startJumpTimer1.Stop();
-            StartJump2();
-        }
-        private void slowJump2(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            startJumpTimer2.Stop();
-            StartJump3();
-        }
+            //Animation Initializers
+            frameSize.X = 1000;
+            frameSize.Y = 1000;
+            currentFrame.X = 0;
+            currentFrame.Y = 0;
+            numFrames = 1;
+            frameRate = 100;
+            flip = SpriteEffects.FlipHorizontally;
 
-        private void switchJump(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            startJumpTimer3.Stop();
-            currentGlitchState = GlitchState.JumpEnd;
-        }
-        private void EndJump(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            endJumpTimer.Stop();
-            currentGlitchState = previousGlitchState;
         }
 
         //Monogame Methods
         public void Initialize()
         {
             currentGlitchState = GlitchState.IdleRight;
-        }
+        } 
         public void LoadContent(ContentManager Content)
         {
-            glitchSkin = Content.Load<Texture2D>("glitchSkin.jpg");
+            glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
+            hitboxSkin = Content.Load <Texture2D>("playactive.png");
         }
+
         public void Draw(SpriteBatch spriteBatch)
         {
+            //Hitbox visual code
+            //spriteBatch.Draw(hitboxSkin, position, Color.White);
+            //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+            
             
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:
-                    //Animation
-                    //PlayerImage(SpriteEffects.None);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
+                    //Flips Image
+                    flip = SpriteEffects.None;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.MoveLeft:
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
-                    //Draw(spriteBatch);
+
+                    flip = SpriteEffects.FlipHorizontally;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
-                case GlitchState.JumpStart:
-                    // Draw(spriteBatch);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
-                    break;
-                case GlitchState.JumpEnd:
-                    //JumpEnd
-                    //   Draw(spriteBatch);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
-                    break;
-                case GlitchState.IdleLeft:
-                    //    Draw(spriteBatch);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
+                case GlitchState.Jump:
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.IdleRight:
-                    //    Draw(spriteBatch);
-                    spriteBatch.Draw(glitchSkin, position, Color.White);
+                    flip = SpriteEffects.None;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
+                    break;
+                case GlitchState.IdleLeft:
+                    flip = SpriteEffects.FlipHorizontally;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    //spriteBatch.Draw(glitchSkin, position, Color.White);
                     break;
                 case GlitchState.Hurt:
                     //Put hurt animation, also reduce the GUI hearts by one
@@ -168,26 +206,54 @@ namespace Glitch_Wobble
             }
         }
         //Main Methods
-        public void Switch()
+        public void Switch(GameTime gameTime)
         {
+            //Dynamically sets hitbox
+            hitbox.X = position.X;
+            hitbox.Y = position.Y;
+
+            //Animation Logic
+            timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+            if (timeSinceLastFrame > frameRate) // time for a new frame
+            {
+                timeSinceLastFrame = 0;
+                frame++;
+
+                //Resets Animation Loop
+                if (frame >= numFrames)
+                {
+                    frame = 0;
+                }
+
+                // set the upper left corner of new frame
+                currentFrame.X = frameSize.X * frame;
+            }
+
+            //Gamestate Switch logic
             switch (currentGlitchState)
             {
                 case GlitchState.MoveRight:
+                    hitbox.X = position.X;
+                    hitbox.Y = position.Y;
                     Move();
                     break;
                 case GlitchState.MoveLeft:
+                    hitbox.X = 275+position.X;
+                    hitbox.Y = position.Y;
                     Move();
                     break;
-                case GlitchState.JumpStart:
-                    StartJump1();
-                    break;
-                case GlitchState.JumpEnd:
-                    EndJump();
-                    break;
-                case GlitchState.IdleLeft:
+                case GlitchState.Jump:
+                    Jump();
                     Move();
                     break;
                 case GlitchState.IdleRight:
+                    hitbox.X = position.X;
+                    hitbox.Y = position.Y;
+                    Move();
+                    break;
+                case GlitchState.IdleLeft:
+                    hitbox.X = 275 + position.X;
+                    hitbox.Y = position.Y;
                     Move();
                     break;
                 case GlitchState.Hurt:
@@ -199,106 +265,44 @@ namespace Glitch_Wobble
             }
         }
 
-        //Jump
-        public void StartJump1()
+        public void Jump()
         {
-            if (jump1 == false)
-            {
-                jump1 = true;
-                startJumpTimer1.Start();
+            previousKeyState = key;
+            key = Keyboard.GetState();
 
-                //Arc Logic
+            position.X += (int)velocity.X;
+            position.Y += (int)velocity.Y;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) && hasJumped == false)
+            {
                 position.Y -= 10;
-                //Trying to get a loop to work so that it's moving smoothly
-                //Makes sure you can still move while Jumping
-                if (key.IsKeyDown(Keys.Right) == true)
+                velocity.Y = -18f;
+                hasJumped = true;
+            }
+
+            if (hasJumped == true)
+            {
+                float i = 1;
+                velocity.Y += 0.65f * i;
+            }
+
+            if (position.Y + 250 >= 500)
+            {
+                hasJumped = false;
+                
+                if(currentKeyState == keyboardState.Right)
                 {
-                    position.X += 7;
+                    currentGlitchState = GlitchState.IdleRight;
                 }
-                else if (key.IsKeyDown(Keys.Left) == true)
+                else if(currentKeyState == keyboardState.Left)
                 {
-                    position.X -= 7;
+                    currentGlitchState = GlitchState.IdleLeft;
                 }
-            }
-        }
 
-        public void StartJump2()
-        {
-            if (jump2 == false)
-            {
-                jump2 = true;
-                startJumpTimer2.Start();
-
-                //Arc Logic
-                position.Y -= 5;
-
-                //Makes sure you can still move while Jumping
-                if (key.IsKeyDown(Keys.Right) == true)
-                {
-                    position.X += 7;
-                }
-                else if (key.IsKeyDown(Keys.Left) == true)
-                {
-                    position.X -= 7;
-                }
-            }
-        }
-
-        public void StartJump3()
-        {
-            if (jump3 == false)
-            {
-                jump3 = true;
-                startJumpTimer3.Start();
-
-                //Arc Logic
-                position.Y -= 3;
-
-                //Makes sure you can still move while Jumping
-                if (key.IsKeyDown(Keys.Right) == true)
-                {
-                    position.X += 7;
-                }
-                else if (key.IsKeyDown(Keys.Left) == true)
-                {
-                    position.X -= 7;
-                }
-            }
-            
-        }
-
-
-
-        public void EndJump()
-        {
-            endJumpTimer.Start();
-
-            Rectangle temp = new Rectangle();
-            temp.Y = position.Y;
-
-            //Arc Logic
-            if (position.Y > temp.Y - 5)
-            {
-                position.Y += 10;
-            }
-            else if (position.Y > temp.Y - 8)
-            {
-                position.Y += 5;
-            }
-            else if (position.Y > temp.Y - 9)
-            {
-                position.Y += 2;
             }
 
-            //Makes sure you can still move while Jumping
-            if (key.IsKeyDown(Keys.Right) == true)
-            {
-                position.X += 7;
-            }
-            else if (key.IsKeyDown(Keys.Left) == true)
-            {
-                position.X -= 7;
-            }
+            if (hasJumped == false)
+                velocity.Y = 0f;
         }
 
         //Movement
@@ -309,37 +313,88 @@ namespace Glitch_Wobble
             
             if (key.IsKeyDown(Keys.Right) == true)
             {
-                currentGlitchState = GlitchState.MoveRight;
-                position.X += 7;
+                //Changes the KeyState to Right
+                currentKeyState = keyboardState.Right;
+
+                //Makes sure that the hitbox matches up to the image before switching Glitch's state
+                if (currentGlitchState == GlitchState.MoveLeft || currentGlitchState == GlitchState.IdleLeft)
+                {
+                    position.X += 175;
+                }
+
+                //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.MoveRight;
+                    position.X += 7;
+                }
+                else
+                {
+                    //Makes sure Glitch flips visually in air
+                    if (previousGlitchState == GlitchState.MoveRight)
+                    {
+                        flip = SpriteEffects.None;
+                    }
+                    position.X += 7;
+                }
+                
             }
             else if (key.IsKeyDown(Keys.Left) == true)
             {
-                currentGlitchState = GlitchState.MoveLeft;
-                position.X -= 7;
+                //Changes the KeyState to Left
+                currentKeyState = keyboardState.Left;
+
+                //Makes sure that the hitbox matches up to the image before switching Glitch's state
+                if (currentGlitchState == GlitchState.MoveRight || currentGlitchState == GlitchState.IdleRight)
+                {
+                    position.X -= 175;
+                }
+
+                //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.MoveLeft;
+                    position.X -= 7;
+                }
+                else
+                {
+                    //Makes sure Glitch flips visually in air
+                    if (previousGlitchState == GlitchState.MoveRight)
+                    {
+                        flip = SpriteEffects.FlipHorizontally;
+                    }
+                    position.X -= 7;
+                }
             }
 
-            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Right) == false)
+            if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Left) == true)
             {
-                currentGlitchState = GlitchState.IdleLeft;
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.IdleLeft;
+                }
             }
-            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Left) == false)
+            else if (previousKeyState.IsKeyUp(Keys.Right) == true && key.IsKeyDown(Keys.Right) == true)
             {
-                currentGlitchState = GlitchState.IdleRight;
+                if (currentGlitchState != GlitchState.Jump)
+                {
+                    currentGlitchState = GlitchState.IdleRight;
+                }
             }
             //Makes character Jump
-            if(key.IsKeyDown(Keys.Up))
+            if(previousKeyState.IsKeyUp(Keys.Up) == true && key.IsKeyDown(Keys.Up) == true)
             {
-                currentGlitchState = GlitchState.JumpStart;
-            }
+                currentGlitchState = GlitchState.Jump;
+            } 
         }
         //Enemy Body Collision Code
-        public void GlitchHurt(Slime slime)
+        public void GlitchHurtSlime(Enemy enemy)
         {
             //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
             //Probably need to add a timer.
 
             //See if you have to put the draw logic in this method?
-            if (position.Intersects(slime.Position) == true)
+            if (hitbox.Intersects(enemy.Hitbox) == true)
             {
                 if (Lives < 4 && Lives > 0)
                 {

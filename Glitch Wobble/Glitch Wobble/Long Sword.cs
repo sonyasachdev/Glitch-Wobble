@@ -15,8 +15,7 @@ namespace Glitch_Wobble
         Idle,
         MoveLeft,
         MoveRight,
-        StartJump,
-        EndJump,
+        Jump,
         Attack,
         Hurt,
         Dead
@@ -24,18 +23,16 @@ namespace Glitch_Wobble
 
     public class Long_Sword:Sword
     {
+        //See if you need longsword to inherit from glitch. Have it inherit glitch's position so that the longsword will follow where her body is.
 
         //Fields
         LongSwordState currentLongSwordState;
-        Timer JumpTimer;
         Texture2D longSwordSkin;
 
         //Constructor
         public Long_Sword()
         {
             position = new Rectangle(0, 0, 100, 100);
-            //longSwordSkin = skin;
-            //skin = longSwordSkin;
         }
 
         
@@ -51,21 +48,15 @@ namespace Glitch_Wobble
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            //Draw(spriteBatch);
-            
             switch (currentLongSwordState)
             {
                 case LongSwordState.Idle:
                     break;
                 case LongSwordState.MoveLeft:
-                    spriteBatch.Draw(skin, position, Color.White);
                     break;
                 case LongSwordState.MoveRight:
-                    spriteBatch.Draw(skin, position, Color.White);
                     break;
-                case LongSwordState.StartJump:
-                    break;
-                case LongSwordState.EndJump:
+                case LongSwordState.Jump:
                     break;
                 case LongSwordState.Attack:
                     break;
@@ -87,9 +78,7 @@ namespace Glitch_Wobble
                     break;
                 case LongSwordState.MoveRight:
                     break;
-                case LongSwordState.StartJump:
-                    break;
-                case LongSwordState.EndJump:
+                case LongSwordState.Jump:
                     break;
                 case LongSwordState.Attack:
                     break;

@@ -41,7 +41,7 @@ namespace Glitch_Wobble
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
         Buttons button;
-        Timer SpawnTimer;
+        Camera cam;
 
         //Rectangles
         Rectangle slimePos1;
@@ -50,10 +50,13 @@ namespace Glitch_Wobble
 
         //Menu Textures
         Texture2D menuSkin;
+
         //Menu Rectangles
         Rectangle menuPos;
 
-
+        //List
+        List<Enemy> enemyList;
+        List<Platform> platformList;
         //Monogame Methods
         public Game1()
         {
@@ -80,6 +83,7 @@ namespace Glitch_Wobble
             //If you get a splashscreen, use:
             //currentMenuState = GameState.SplashScreen;
             currentGameState = GameState.Menu;
+            cam = new Camera(GraphicsDevice.Viewport);
 
             base.Initialize();
         }
@@ -94,13 +98,13 @@ namespace Glitch_Wobble
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             //Starting Position Rectangles
-            slimePos1 = new Rectangle(500, 400, 350, 200);
+            slimePos1 = new Rectangle(500, 500, 108, 108);
             vertPos1 = new Rectangle(100, 300, 400, 100);
             horzPos1 = new Rectangle(100, 500, 400, 100);
 
             //Class Initializations
-            glitch = new Glitch();
             longSword = new Long_Sword();
+            glitch = new Glitch();
             slime1 = new Slime(slimePos1, true, 0);
             vert1 = new Vertical_Platform(vertPos1);
             horz1 = new Horizontal_Platform(horzPos1);
@@ -113,10 +117,17 @@ namespace Glitch_Wobble
             longSword.LoadContent(Content);
             vert1.LoadContent(Content);
             horz1.LoadContent(Content);
-            
+
+            //List Initializations
+            enemyList = new List<Enemy>();
+            enemyList.Add(slime1);
+
+            platformList = new List<Platform>();
+            platformList.Add(horz1);
+            platformList.Add(vert1);
 
             //Menu Textures
-            menuSkin = Content.Load<Texture2D>("mainmenu.png");
+            menuSkin = Content.Load<Texture2D>("logoSkin.png");
             //Menu Rectangle
             menuPos = new Rectangle(0, 0, 1024, 720);
 
@@ -163,20 +174,32 @@ namespace Glitch_Wobble
                 case GameState.PlayGame:
 
                     //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
-                    
+                    horz1.SpawnTimer.Start();
+                    vert1.SpawnTimer.Start();
 
                     //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
-                    glitch.GlitchHurt(slime1);
+                    
+                    //Hitbox collision check loop for enemies
+                    for (int i = 0; i < enemyList.Count; i++)
+                    {
+                        glitch.GlitchHurtSlime(enemyList[i]);
+                    }
+
+                    //Hitbox collision check loop for platforms
+                    for (int i = 0; i < platformList.Count; i++)
+                    {
+                        //some collision code
+                    }
+
+                    cam.Update(gameTime, this);
 
                     //Class switches
-                    glitch.Switch();
-                    slime1.Switch();
+                    glitch.Switch(gameTime);
+                    slime1.Switch(gameTime);
                     vert1.Switch();
                     horz1.Switch();
+                    horz1.Spawning();
                     longSword.Switch();
-
-                    //vert1.PlatBeat();
-                    //horz1.PlatBeat();
                     break;
                 case GameState.Pause:
                     //Draw Pause Screen
@@ -205,26 +228,27 @@ namespace Glitch_Wobble
             GraphicsDevice.Clear(Color.DarkGray);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
 
             switch (currentGameState)
             {
                 case GameState.Menu:
+                    spriteBatch.Begin();
                     spriteBatch.Draw(menuSkin, menuPos, Color.White);
                     button.DrawMenu(spriteBatch);
                     break;
                 case GameState.Options:
+                    spriteBatch.Begin();
                     button.DrawOptions(spriteBatch);
                     break;
                 case GameState.PlayGame:
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cam.transform);
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
-                    vert1.Draw(spriteBatch);
-                    horz1.Draw(spriteBatch);
+                    /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}
+                    if (horz1.Active == true) {*/ horz1.Draw(spriteBatch); /*}*/
                     glitch.Draw(spriteBatch);
-                    slime1.Draw(spriteBatch);
+                    slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
-                    
                     break;
                 case GameState.Pause:
                     button.DrawPause(spriteBatch);

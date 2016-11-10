@@ -22,7 +22,7 @@ namespace Glitch_Wobble
         Rectangle hitBox;
         Rectangle UpperBound;
         Rectangle LowerBound;
-        Timer SpawnTimer;
+        public Timer SpawnTimer;
         ContentManager Content;
 
         Texture2D vertSkin;
@@ -39,6 +39,10 @@ namespace Glitch_Wobble
             //remember that the upper bound will be small (closer to 0) and lower will be big
             //UpperBound = u;
             //LowerBound = l;
+            SpawnTimer = new Timer();
+            SpawnTimer.Interval = 2000;
+            SpawnTimer.Elapsed += Despawn;
+            Active = true;
         }
 
         //Monogame Methods
@@ -50,7 +54,7 @@ namespace Glitch_Wobble
         {
             vertSkin = Content.Load<Texture2D>("vertSkin.png");
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (active == true)
             {
@@ -106,34 +110,21 @@ namespace Glitch_Wobble
         public void Spawn()
         {
             SpawnTimer.Start();
-            vertSkin = Content.Load<Texture2D>("vertSkin.png");
             active = true;
         }
         public void Despawn()
         {
             SpawnTimer.Stop();
-            vertSkin = null;
             active = false;
         }
-        /*public void PlatBeat()
+        private void Despawn(Object source, System.Timers.ElapsedEventArgs e)
         {
-            int i = 1;
+            Despawn();
+        }
 
-            if (true)
-            {
-                if (i == 1)
-                {
-                    Despawn();
-
-                    i++;
-                }
-                else if (i == 2)
-                {
-                    Spawn();
-
-                    i--;
-                }
-            }
-        }*/
+        private void Spawn(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Spawn();
+        }
     }
 }
