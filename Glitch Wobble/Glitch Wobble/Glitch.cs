@@ -28,12 +28,6 @@ namespace Glitch_Wobble
         Left
     }
 
-    public enum FaceState
-    {
-        Right,
-        Left
-    }
-
     class Glitch : Beings
     {
         //Fields
@@ -66,7 +60,6 @@ namespace Glitch_Wobble
         GlitchState previousGlitchState;
         keyboardState currentKeyState;
         keyboardState previousKeyboardState;
-        FaceState currentFaceState;
 
         //Properties
         public int Lives
@@ -90,7 +83,6 @@ namespace Glitch_Wobble
 
             currentGlitchState = GlitchState.IdleRight;
             currentKeyState = keyboardState.Right;
-            currentFaceState = FaceState.Right; 
             //Setting Hitbox
             hitbox = new Rectangle(position.X, position.Y, 125, 400);
             //Setting Start Position
@@ -245,11 +237,15 @@ namespace Glitch_Wobble
                     Move();
                     break;
                 case GlitchState.MoveLeft:
-                    hitbox.X = position.X;
+                    hitbox.X = 275+position.X;
                     hitbox.Y = position.Y;
                     Move();
                     break;
                 case GlitchState.Jump:
+                    if(currentKeyState == keyboardState.Left)
+                    {
+                        hitbox.X = 275 + position.X;
+                    }
                     Jump();
                     Move();
                     break;
@@ -259,7 +255,7 @@ namespace Glitch_Wobble
                     Move();
                     break;
                 case GlitchState.IdleLeft:
-                    hitbox.X = position.X;
+                    hitbox.X = 275+position.X;
                     hitbox.Y = position.Y;
                     Move();
                     break;
@@ -329,7 +325,6 @@ namespace Glitch_Wobble
 
                 //Changes the KeyState to Right
                 currentKeyState = keyboardState.Right;
-                currentFaceState = FaceState.Right;
 
                 //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
                 if (currentGlitchState != GlitchState.Jump)
@@ -359,7 +354,6 @@ namespace Glitch_Wobble
 
                 //Changes the KeyState to Right
                 currentKeyState = keyboardState.Left;
-                currentFaceState = FaceState.Left;
 
                 //Makes sure that glitch isn't in Jump before switching the state so that she doesn't stop midair
                 if (currentGlitchState != GlitchState.Jump)
