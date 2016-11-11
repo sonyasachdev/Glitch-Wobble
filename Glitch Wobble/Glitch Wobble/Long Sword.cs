@@ -28,11 +28,13 @@ namespace Glitch_Wobble
         //Fields
         LongSwordState currentLongSwordState;
         Texture2D longSwordSkin;
+        Glitch glitch;
 
         //Constructor
         public Long_Sword()
         {
-            position = new Rectangle(0, 0, 100, 100);
+            //Makes sure that the long sword's position follows Glitch's position
+            //this.position = glitch.Position;
         }
 
         

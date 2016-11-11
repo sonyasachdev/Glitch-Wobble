@@ -108,7 +108,7 @@ namespace Glitch_Wobble
                         Color.White,
                         0, // don't rotate the image
                         Vector2.Zero, // rotation center (not used)
-                        1f, // scaling factor - dont change image size
+                        1.5f, // scaling factor - dont change image size
                         flip, // Flip or not
                         0//Current Layer
                         );
@@ -122,7 +122,7 @@ namespace Glitch_Wobble
                         Color.White,
                         0, // don't rotate the image
                         Vector2.Zero, // rotation center (not used)
-                        1f, // scaling factor - dont change image size
+                        1.5f, // scaling factor - dont change image size
                         flip, // Flip or not
                         0//Current Layer
                         );

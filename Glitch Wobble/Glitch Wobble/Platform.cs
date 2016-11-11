@@ -9,13 +9,14 @@ using System.Timers;
 
 namespace Glitch_Wobble
 {
-    class Platform
+    public class Platform
     {
         //Fields
         Timer SpawnTimer;
         Timer MoveTimer;
         protected SpriteBatch spriteBatch;
         protected Rectangle position;
+        protected Rectangle hitbox;
         protected Texture2D skin;
         protected bool active;
 
@@ -29,6 +30,11 @@ namespace Glitch_Wobble
         {
             get { return skin; }
             set { skin = value; }
+        }
+        public Rectangle Hitbox
+        {
+            get { return hitbox; }
+            set { hitbox = value; }
         }
         public bool Active
         {

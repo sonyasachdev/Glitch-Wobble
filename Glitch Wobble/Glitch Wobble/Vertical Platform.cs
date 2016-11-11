@@ -24,21 +24,23 @@ namespace Glitch_Wobble
         Rectangle LowerBound;
         public Timer SpawnTimer;
         ContentManager Content;
-
-        Texture2D vertSkin;
         VerticalPlatformState currentPlatformState;
 
         //Constructor
         public Vertical_Platform(Rectangle p /*, Rectangle u, Rectangle l */)
         {
             this.position = p;
-            UpperBound = new Rectangle(100, 0, 10, 10);
-            LowerBound = new Rectangle(100, 700, 10, 10);
-            //check if it has to be skin = vert or vert = skin
-            //skin = vertSkin;
-            //remember that the upper bound will be small (closer to 0) and lower will be big
+            UpperBound = new Rectangle(600, 0, 10, 10);
+            LowerBound = new Rectangle(600, 700, 10, 10);
+
+            //This will be so that you can input the bounds externally and easily create many platforms
             //UpperBound = u;
             //LowerBound = l;
+
+            //Sets Hitbox
+            hitbox = new Rectangle(position.X, position.Y, 315, 10);
+
+            //Timer
             SpawnTimer = new Timer();
             SpawnTimer.Interval = 2000;
             SpawnTimer.Elapsed += Despawn;
@@ -52,7 +54,7 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            vertSkin = Content.Load<Texture2D>("vertSkin.png");
+            skin = Content.Load<Texture2D>("vertSkin.png");
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -61,18 +63,21 @@ namespace Glitch_Wobble
                 switch (currentPlatformState)
                 {
                     case VerticalPlatformState.Up:
-                        spriteBatch.Draw(vertSkin, position, Color.White);
+                        spriteBatch.Draw(skin, position, Color.White);
                         break;
                     case VerticalPlatformState.Down:
-                        spriteBatch.Draw(vertSkin, position, Color.White);
+                        spriteBatch.Draw(skin, position, Color.White);
                         break;
                 }
             }
         }
 
         //Methods
+        //Update*
         public void Switch()
         {
+            hitBox.X = position.X+40;
+            hitbox.Y = position.Y;
             switch (currentPlatformState)
             {
                 case VerticalPlatformState.Up:
@@ -83,6 +88,8 @@ namespace Glitch_Wobble
                     break;
             }
         }
+
+        //Move Up*
         public void MoveUp(Rectangle UpperBound)
         {
             if (position.Y > UpperBound.Y )
@@ -94,6 +101,8 @@ namespace Glitch_Wobble
                 currentPlatformState = VerticalPlatformState.Down;
             }
         }
+
+        //Move Down*
         public void MoveDown(Rectangle LowerBound)
         {
             if (position.Y < LowerBound.Y)
@@ -105,6 +114,8 @@ namespace Glitch_Wobble
                 currentPlatformState = VerticalPlatformState.Up;
             }
         }
+
+        //Spawn*
         public void Spawning()
         {
             if (Active == true)

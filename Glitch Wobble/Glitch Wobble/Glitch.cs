@@ -36,6 +36,8 @@ namespace Glitch_Wobble
         KeyboardState previousKeyState;
         private int lives;
         private Rectangle hitbox;
+        bool onPlatform;
+        private Rectangle bottomHitBox;
 
         //Animation Fields
         Vector2 pos;
@@ -85,10 +87,16 @@ namespace Glitch_Wobble
             currentKeyState = keyboardState.Right;
             //Setting Hitbox
             hitbox = new Rectangle(position.X, position.Y, 125, 400);
+            bottomHitBox = new Rectangle(position.X, position.Y, 125, 10);
+
             //Setting Start Position
             this.position = new Rectangle(0, 200, 300, 400);
             lives = 3;
 
+            //Setting Platform Boolean
+            onPlatform = true;
+            
+            //Jump
             hasJumped = false;
 
             //Animation Initializers
@@ -117,7 +125,7 @@ namespace Glitch_Wobble
         public void Draw(SpriteBatch spriteBatch)
         {
             //Hitbox visual code
-            //spriteBatch.Draw(hitboxSkin, position, Color.White);
+            spriteBatch.Draw(hitboxSkin, bottomHitBox, Color.White);
             if(Game1.drawHitbox == true)
             {
                 spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
@@ -211,6 +219,9 @@ namespace Glitch_Wobble
             hitbox.X = position.X;
             hitbox.Y = position.Y;
 
+            bottomHitBox.X = position.X;
+            bottomHitBox.Y = position.Y+350;
+
             //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > frameRate) // time for a new frame
@@ -290,18 +301,10 @@ namespace Glitch_Wobble
                 velocity.Y += 0.65f * i;
             }
 
-            if (position.Y + 250 >= 500)
+            //Instead of this piece have a forloop calling endjump for each platform
+            for (int i = 0; i < Game1.platformList.Count; i++)
             {
-                hasJumped = false;
-                
-                if(currentKeyState == keyboardState.Right)
-                {
-                    currentGlitchState = GlitchState.IdleRight;
-                }
-                else if(currentKeyState == keyboardState.Left)
-                {
-                    currentGlitchState = GlitchState.IdleLeft;
-                }
+                EndJump(Game1.platformList[i]);
             }
 
             if (hasJumped == false)
@@ -390,12 +393,13 @@ namespace Glitch_Wobble
             //Makes character Jump
             if(previousKeyState.IsKeyUp(Keys.Up) == true && key.IsKeyDown(Keys.Up) == true)
             {
+                onPlatform = false;
                 currentGlitchState = GlitchState.Jump;
             }
         }
 
         //Enemy Collision* Code
-        public void GlitchHurtSlime(Enemy enemy)
+        public void GlitchGetsHurt(Enemy enemy)
         {
             //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
             //Probably need to add a timer.
@@ -413,5 +417,38 @@ namespace Glitch_Wobble
                 }
             }
         }
+
+        //Ground Collision* Code
+        public void EndJump(Platform platform)
+        {
+            if (onPlatform == false)
+            {
+                if (platform.Active == true)
+                {
+                    //Checks if Glitch is touching a platform
+                    if (position.Intersects(platform.Hitbox) == true)
+                    {
+                        onPlatform = true;
+                        //Checks if she's in Jump State
+                        if (currentGlitchState == GlitchState.Jump)
+                        {
+                            hasJumped = false;
+                            //Checks whether to put her facing right or left when the collision happens
+                            if (currentKeyState == keyboardState.Right)
+                            {
+                                currentGlitchState = GlitchState.IdleRight;
+                            }
+                            else if (currentKeyState == keyboardState.Left)
+                            {
+                                currentGlitchState = GlitchState.IdleLeft;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 }

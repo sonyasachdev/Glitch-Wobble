@@ -40,6 +40,7 @@ namespace Glitch_Wobble
         Slime slime1;
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
+        Ground ground1;
         Buttons button;
         Camera cam;
 
@@ -59,7 +60,8 @@ namespace Glitch_Wobble
 
         //List
         List<Enemy> enemyList;
-        List<Platform> platformList;
+        public static List<Platform> platformList;
+
         //Monogame Methods
         public Game1()
         {
@@ -101,9 +103,9 @@ namespace Glitch_Wobble
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             //Starting Position Rectangles
-            slimePos1 = new Rectangle(500, 500, 108, 108);
-            vertPos1 = new Rectangle(100, 300, 400, 100);
-            horzPos1 = new Rectangle(100, 500, 400, 100);
+            slimePos1 = new Rectangle(500, 425, 108, 108);
+            vertPos1 = new Rectangle(600, 300, 400, 100);
+            horzPos1 = new Rectangle(600, 500, 400, 100);
 
             //Class Initializations
             longSword = new Long_Sword();
@@ -111,6 +113,7 @@ namespace Glitch_Wobble
             slime1 = new Slime(slimePos1, true, 0);
             vert1 = new Vertical_Platform(vertPos1);
             horz1 = new Horizontal_Platform(horzPos1);
+            ground1 = new Ground();
             button = new Buttons();
 
             //Load Content Logic
@@ -120,6 +123,7 @@ namespace Glitch_Wobble
             longSword.LoadContent(Content);
             vert1.LoadContent(Content);
             horz1.LoadContent(Content);
+            ground1.LoadContent(Content);
 
             //List Initializations
             enemyList = new List<Enemy>();
@@ -128,6 +132,7 @@ namespace Glitch_Wobble
             platformList = new List<Platform>();
             platformList.Add(horz1);
             platformList.Add(vert1);
+            platformList.Add(ground1);
 
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("logoSkin.png");
@@ -188,22 +193,22 @@ namespace Glitch_Wobble
                     //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
                     horz1.SpawnTimer.Start();
                     vert1.SpawnTimer.Start();
-
-                    //Glitch Check Collision Code. Have this run for every enemy (copy and paste it). See if there's a more efficient way to do this.
                     
-                    //Hitbox collision check loop for enemies
+                    //Glitch collision loop for enemies
                     for (int i = 0; i < enemyList.Count; i++)
                     {
-                        glitch.GlitchHurtSlime(enemyList[i]);
+                        glitch.GlitchGetsHurt(enemyList[i]);
                     }
 
-                    //Hitbox collision check loop for platforms
-                    for (int i = 0; i < platformList.Count; i++)
+                    //Change*
+                    //Glitch collision* loop for platforms
+                    /*for (int i = 0; i < platformList.Count; i++)
                     {
-                        //some collision code
-                    }
+                        glitch.EndJump(platformList[i]);
+                    }*/
 
-                    cam.Update(gameTime, this);
+                    //Camera*
+                    cam.Update(gameTime, glitch);
 
                     //Class switches
                     glitch.Switch(gameTime);
@@ -257,6 +262,7 @@ namespace Glitch_Wobble
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cam.transform);
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
+                    ground1.Draw(spriteBatch);
                     /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}
                     if (horz1.Active == true) {*/ horz1.Draw(spriteBatch); /*}*/
                     glitch.Draw(spriteBatch);

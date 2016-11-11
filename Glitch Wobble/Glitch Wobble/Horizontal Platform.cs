@@ -23,19 +23,27 @@ namespace Glitch_Wobble
         Rectangle LeftBound;
         Rectangle RightBound;
         public Timer SpawnTimer;
-        
-        Texture2D horzSkin;
         HorizontalPlatformState currentPlatformState;
+
+        //Test Fields
+        Texture2D hitboxSkin;
 
         //Constructor
         public Horizontal_Platform(Rectangle p /*, Rectangle l, Rectangle r */)
         {
+            //Positions
             this.position = p;
-            LeftBound = new Rectangle(100, 100, 10, 10);
-            RightBound = new Rectangle(400, 100, 10, 10);
-            //horzSkin = skin;
+            LeftBound = new Rectangle(600, 100, 10, 10);
+            RightBound = new Rectangle(1000, 100, 10, 10);
+
+            //This is to externally have the left and right bounds made so you can make more platforms easily
             //LeftBound = l;
             //RightBound = r;
+
+            //Sets Hitbox
+            hitbox = new Rectangle(position.X, position.Y, 315, 10);
+
+            //Timer
             SpawnTimer = new Timer();
             SpawnTimer.Interval = 2000;
             SpawnTimer.Elapsed += Despawn;
@@ -50,22 +58,23 @@ namespace Glitch_Wobble
         }
         public void LoadContent(ContentManager Content)
         {
-            horzSkin = Content.Load<Texture2D>("horzSkin.png");
+            skin = Content.Load<Texture2D>("horzSkin.png");
+            hitboxSkin = Content.Load<Texture2D>("playactive.png");
         }
         //Draw*
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+
             if(active == true)
             {
                 switch (currentPlatformState)
                 {
                     case HorizontalPlatformState.Left:
-                        //base.Draw(spriteBatch);
-                        spriteBatch.Draw(horzSkin, position, Color.White);
+                        spriteBatch.Draw(skin, position, Color.White);
                         break;
                     case HorizontalPlatformState.Right:
-                        //base.Draw(spriteBatch);
-                        spriteBatch.Draw(horzSkin, position, Color.White);
+                        spriteBatch.Draw(skin, position, Color.White);
                         break;
                 }
             }
@@ -73,6 +82,9 @@ namespace Glitch_Wobble
         //Update*
         public void Switch()
         {
+            hitbox.X = position.X+40;
+            hitbox.Y = position.Y;
+
             switch (currentPlatformState)
             {
                 case HorizontalPlatformState.Left:
@@ -83,8 +95,9 @@ namespace Glitch_Wobble
                     break;
             }
         }
+
         //Methods
-        //Move*
+        //Move Right*
         public void MoveRight(Rectangle RightBound)
         {
             if (position.X < RightBound.X)
@@ -96,6 +109,7 @@ namespace Glitch_Wobble
                 currentPlatformState = HorizontalPlatformState.Left;
             }
         }
+        //Move Left*
         public void MoveLeft(Rectangle LeftBound)
         {
             if (position.X > LeftBound.X)
@@ -119,7 +133,6 @@ namespace Glitch_Wobble
                 SpawnTimer.Elapsed += Spawn;
             }
         }
-        //Despawn*
         public void Despawn()
         {
             SpawnTimer.Stop();
