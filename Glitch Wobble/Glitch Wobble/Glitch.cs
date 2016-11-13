@@ -38,6 +38,8 @@ namespace Glitch_Wobble
         private Rectangle hitbox;
         private Rectangle bottomHitBox;
 
+        private Platform currentPlatform = null;
+
         //Lower bound that resets and makes her lose a life
         private Rectangle fallBound;
 
@@ -428,9 +430,28 @@ namespace Glitch_Wobble
             }
 
             //Makes her move with platform
-            if (onHorzPlatform == true)
+            //Horizontal
+            if (onHorzPlatform == true && currentPlatform != null && currentGlitchState != GlitchState.Jump)
             {
-                if(Horizontal_Platform.direction == true)
+                if (bottomHitBox.Intersects(currentPlatform.HitBox) == false)
+                {
+                    onHorzPlatform = false;
+                    currentPlatform = null;
+                    hasJumped = true;
+                    currentGlitchState = GlitchState.Jump;
+                }
+                else
+                {
+                    if (Horizontal_Platform.pubActive == false)
+                    {
+                        onHorzPlatform = false;
+                        currentPlatform = null;
+                        hasJumped = true;
+                        currentGlitchState = GlitchState.Jump;
+                    }
+                }
+
+                if (Horizontal_Platform.direction == true)
                 {
                     position.X += 5;
                 }
@@ -439,9 +460,29 @@ namespace Glitch_Wobble
                     position.X -= 5;
                 }
             }
-            if(onVertPlatform == true)
+
+            //Vertical
+            if (onVertPlatform == true && currentPlatform != null && currentGlitchState != GlitchState.Jump)
             {
-                if(Vertical_Platform.direction == true)
+                if (bottomHitBox.Intersects(currentPlatform.HitBox) == false)
+                {
+                    onVertPlatform = false;
+                    currentPlatform = null;
+                    hasJumped = true;
+                    currentGlitchState = GlitchState.Jump;
+                }
+                else
+                {
+                    if(Vertical_Platform.pubActive == true)
+                    {
+                        onVertPlatform = false;
+                        currentPlatform = null;
+                        hasJumped = true;
+                        currentGlitchState = GlitchState.Jump;
+                    }
+                }
+
+                if (Vertical_Platform.direction == true)
                 {
                     position.Y -= 5;
                 }
@@ -450,7 +491,9 @@ namespace Glitch_Wobble
                     position.Y += 5;
                 }
             }
+
             
+
         }
 
         //Enemy Collision* Code
@@ -481,6 +524,8 @@ namespace Glitch_Wobble
                 //Checks if Glitch is touching a platform
                 if (bottomHitBox.Intersects(platform.HitBox) == true)
                 {
+                    currentPlatform = platform;
+
                     onHorzPlatform = true;
                     //Checks if she's in Jump State
                     if (currentGlitchState == GlitchState.Jump)
@@ -498,12 +543,6 @@ namespace Glitch_Wobble
                     }
                 }
             }
-            
-            //Change*
-            if (bottomHitBox.Intersects(platform.HitBox) == false)
-            {
-                onHorzPlatform = false;
-            }
         }
 
         //Vertical Collision* Code
@@ -514,6 +553,8 @@ namespace Glitch_Wobble
                 //Checks if Glitch is touching a platform
                 if (bottomHitBox.Intersects(vert.HitBox) == true)
                 {
+                    currentPlatform = vert;
+
                     onVertPlatform = true;
                     //Checks if she's in Jump State
                     if (currentGlitchState == GlitchState.Jump)
@@ -530,12 +571,6 @@ namespace Glitch_Wobble
                         }
                     }
                 }
-            }
-
-            //Vertical*
-            if(bottomHitBox.Intersects(vert.HitBox) == false)
-            {
-                onVertPlatform = false;
             }
         }
 

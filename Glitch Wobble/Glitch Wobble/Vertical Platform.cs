@@ -25,6 +25,9 @@ namespace Glitch_Wobble
         ContentManager Content;
         VerticalPlatformState currentPlatformState;
 
+        //Active
+        public static bool pubActive;
+
         //Current X and Y Positions
         public static int currentPositionX;
         public static int currentPositionY;
@@ -46,6 +49,10 @@ namespace Glitch_Wobble
             UpperBound = new Rectangle(600, 100, 10, 10);
             LowerBound = new Rectangle(600, 400, 10, 10);
 
+            //Active
+            pubActive = active;
+
+            //Reset Position
             startPositionX = p.X;
             startPositionY = p.Y;
 
@@ -64,7 +71,7 @@ namespace Glitch_Wobble
             //Timer
             SpawnTimer = new Timer();
             //Change*
-            SpawnTimer.Interval = 100000;
+            SpawnTimer.Interval = 1000000;
             SpawnTimer.Elapsed += Despawn;
             Active = true;
         }
