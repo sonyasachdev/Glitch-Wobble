@@ -60,7 +60,8 @@ namespace Glitch_Wobble
 
         //List
         List<Enemy> enemyList;
-        public static List<Platform> platformList;
+        public static List<Horizontal_Platform> horzPlatformList;
+        public static List<Vertical_Platform> vertPlatformList;
 
         //Monogame Methods
         public Game1()
@@ -102,9 +103,10 @@ namespace Glitch_Wobble
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            //Starting Position Rectangles
+            //Starting Position Rectangles Platform*
+            //x,y,width,height
             slimePos1 = new Rectangle(500, 425, 108, 108);
-            vertPos1 = new Rectangle(600, 300, 400, 100);
+            vertPos1 = new Rectangle(600, 400, 400, 100);
             horzPos1 = new Rectangle(600, 500, 400, 100);
 
             //Class Initializations
@@ -129,10 +131,11 @@ namespace Glitch_Wobble
             enemyList = new List<Enemy>();
             enemyList.Add(slime1);
 
-            platformList = new List<Platform>();
-            platformList.Add(horz1);
-            platformList.Add(vert1);
-            platformList.Add(ground1);
+            horzPlatformList = new List<Horizontal_Platform>();
+            horzPlatformList.Add(horz1);
+
+            vertPlatformList = new List<Vertical_Platform>();
+            vertPlatformList.Add(vert1);
 
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("logoSkin.png");
@@ -180,7 +183,6 @@ namespace Glitch_Wobble
                     button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
-
                     if(key.IsKeyDown(Keys.Space) == true)
                     {
                         Game1.drawHitbox = true;
@@ -199,13 +201,6 @@ namespace Glitch_Wobble
                     {
                         glitch.GlitchGetsHurt(enemyList[i]);
                     }
-
-                    //Change*
-                    //Glitch collision* loop for platforms
-                    /*for (int i = 0; i < platformList.Count; i++)
-                    {
-                        glitch.EndJump(platformList[i]);
-                    }*/
 
                     //Camera*
                     cam.Update(gameTime, glitch);
@@ -226,6 +221,12 @@ namespace Glitch_Wobble
                 case GameState.Win:
                     break;
                 case GameState.GameOver:
+                    //Put Reset* Methods here to restart the level everytime
+                    glitch.Reset();
+                    horz1.Reset();
+                    vert1.Reset();
+                    slime1.Reset();
+
                     button.GameOverSwitch(key);
                     break;
             }

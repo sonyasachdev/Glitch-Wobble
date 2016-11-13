@@ -36,8 +36,17 @@ namespace Glitch_Wobble
         KeyboardState previousKeyState;
         private int lives;
         private Rectangle hitbox;
-        bool onPlatform;
         private Rectangle bottomHitBox;
+
+        //Lower bound that resets and makes her lose a life
+        private Rectangle fallBound;
+
+        //Platform Collision Bool
+        bool onHorzPlatform;
+        bool onVertPlatform;
+
+        //Class Initializer
+        Ground ground;
 
         //Animation Fields
         Vector2 pos;
@@ -85,19 +94,28 @@ namespace Glitch_Wobble
 
             currentGlitchState = GlitchState.IdleRight;
             currentKeyState = keyboardState.Right;
+
+            //Setting Start* Position
+            this.position = new Rectangle(0, 200, 300, 400);
             //Setting Hitbox
             hitbox = new Rectangle(position.X, position.Y, 125, 400);
             bottomHitBox = new Rectangle(position.X, position.Y, 125, 10);
 
-            //Setting Start Position
-            this.position = new Rectangle(0, 200, 300, 400);
+            //Setting Life Count
             lives = 3;
 
             //Setting Platform Boolean
-            onPlatform = true;
-            
+            onHorzPlatform = false;
+            onVertPlatform = false;
+
+            //Setting fallBound
+            fallBound = new Rectangle(-1000000, 2000, 2000000, 10);
+
             //Jump
             hasJumped = false;
+
+            //Initialize ground TEST*
+            ground = new Ground();
 
             //Animation Initializers
             frameSize.X = 1000;
@@ -107,7 +125,7 @@ namespace Glitch_Wobble
             numFrames = 1;
             frameRate = 100;
             flip = SpriteEffects.FlipHorizontally;
-
+               
         }
 
         //Monogame Methods
@@ -130,6 +148,9 @@ namespace Glitch_Wobble
             {
                 spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
             }
+
+            //fallBound visual code
+            spriteBatch.Draw(hitboxSkin, fallBound, Color.White);
 
             switch (currentGlitchState)
             {
@@ -219,8 +240,8 @@ namespace Glitch_Wobble
             hitbox.X = position.X;
             hitbox.Y = position.Y;
 
-            bottomHitBox.X = position.X;
-            bottomHitBox.Y = position.Y+350;
+            bottomHitBox.X = hitbox.X;
+            bottomHitBox.Y = hitbox.Y+375;
 
             //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
@@ -259,6 +280,7 @@ namespace Glitch_Wobble
                     }
                     Jump();
                     Move();
+                    Fall();
                     break;
                 case GlitchState.IdleRight:
                     hitbox.X = position.X;
@@ -288,6 +310,9 @@ namespace Glitch_Wobble
             position.X += (int)velocity.X;
             position.Y += (int)velocity.Y;
 
+            onHorzPlatform = false;
+            onVertPlatform = false;
+
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && hasJumped == false)
             {
                 position.Y -= 10;
@@ -301,10 +326,16 @@ namespace Glitch_Wobble
                 velocity.Y += 0.65f * i;
             }
 
-            //Instead of this piece have a forloop calling endjump for each platform
-            for (int i = 0; i < Game1.platformList.Count; i++)
+            //Instead of this piece have a for*loop calling endjump for each platform
+            for (int i = 0; i < Game1.horzPlatformList.Count; i++)
             {
-                EndJump(Game1.platformList[i]);
+                EndHorzMoveJump(Game1.horzPlatformList[i]);
+                EndGroundJump(ground);
+            }
+            for (int i = 0; i < Game1.vertPlatformList.Count; i++)
+            {
+                EndVertMoveJump(Game1.vertPlatformList[i]);
+                EndGroundJump(ground);
             }
 
             if (hasJumped == false)
@@ -390,12 +421,36 @@ namespace Glitch_Wobble
                 }
             }
 
-            //Makes character Jump
+            //Makes Glitch Jump
             if(previousKeyState.IsKeyUp(Keys.Up) == true && key.IsKeyDown(Keys.Up) == true)
             {
-                onPlatform = false;
                 currentGlitchState = GlitchState.Jump;
             }
+
+            //Makes her move with platform
+            if (onHorzPlatform == true)
+            {
+                if(Horizontal_Platform.direction == true)
+                {
+                    position.X += 5;
+                }
+                else
+                {
+                    position.X -= 5;
+                }
+            }
+            if(onVertPlatform == true)
+            {
+                if(Vertical_Platform.direction == true)
+                {
+                    position.Y -= 5;
+                }
+                else
+                {
+                    position.Y += 5;
+                }
+            }
+            
         }
 
         //Enemy Collision* Code
@@ -418,37 +473,115 @@ namespace Glitch_Wobble
             }
         }
 
-        //Ground Collision* Code
-        public void EndJump(Platform platform)
+        //Horizontal Collision* Code
+        public void EndHorzMoveJump(Horizontal_Platform platform)
         {
-            if (onPlatform == false)
+            if (platform.Active == true)
             {
-                if (platform.Active == true)
+                //Checks if Glitch is touching a platform
+                if (bottomHitBox.Intersects(platform.HitBox) == true)
                 {
-                    //Checks if Glitch is touching a platform
-                    if (position.Intersects(platform.Hitbox) == true)
+                    onHorzPlatform = true;
+                    //Checks if she's in Jump State
+                    if (currentGlitchState == GlitchState.Jump)
                     {
-                        onPlatform = true;
-                        //Checks if she's in Jump State
-                        if (currentGlitchState == GlitchState.Jump)
+                        hasJumped = false;
+                        //Checks whether to put her facing right or left when the collision happens
+                        if (currentKeyState == keyboardState.Right)
                         {
-                            hasJumped = false;
-                            //Checks whether to put her facing right or left when the collision happens
-                            if (currentKeyState == keyboardState.Right)
-                            {
-                                currentGlitchState = GlitchState.IdleRight;
-                            }
-                            else if (currentKeyState == keyboardState.Left)
-                            {
-                                currentGlitchState = GlitchState.IdleLeft;
-                            }
-
+                            currentGlitchState = GlitchState.IdleRight;
+                        }
+                        else if (currentKeyState == keyboardState.Left)
+                        {
+                            currentGlitchState = GlitchState.IdleLeft;
                         }
                     }
                 }
             }
+            
+            //Change*
+            if (bottomHitBox.Intersects(platform.HitBox) == false)
+            {
+                onHorzPlatform = false;
+            }
         }
 
+        //Vertical Collision* Code
+        public void EndVertMoveJump(Vertical_Platform vert)
+        {
+            if (vert.Active == true)
+            {
+                //Checks if Glitch is touching a platform
+                if (bottomHitBox.Intersects(vert.HitBox) == true)
+                {
+                    onVertPlatform = true;
+                    //Checks if she's in Jump State
+                    if (currentGlitchState == GlitchState.Jump)
+                    {
+                        hasJumped = false;
+                        //Checks whether to put her facing right or left when the collision happens
+                        if (currentKeyState == keyboardState.Right)
+                        {
+                            currentGlitchState = GlitchState.IdleRight;
+                        }
+                        else if (currentKeyState == keyboardState.Left)
+                        {
+                            currentGlitchState = GlitchState.IdleLeft;
+                        }
+                    }
+                }
+            }
 
+            //Vertical*
+            if(bottomHitBox.Intersects(vert.HitBox) == false)
+            {
+                onVertPlatform = false;
+            }
+        }
+
+        //Ground Collision* Code
+        public void EndGroundJump(Ground ground)
+        {
+            //Change
+            //Checks if Glitch is touching the ground
+            if (position.Intersects(ground.HitBox) == true)
+            {
+                //Checks if she's in Jump State
+                if (currentGlitchState == GlitchState.Jump)
+                {
+                    hasJumped = false;
+                    //Checks whether to put her facing right or left when the collision happens
+                    if (currentKeyState == keyboardState.Right)
+                    {
+                        currentGlitchState = GlitchState.IdleRight;
+                    }
+                    else if (currentKeyState == keyboardState.Left)
+                    {
+                        currentGlitchState = GlitchState.IdleLeft;
+                    }
+
+                }
+            }
+        }
+
+        //Reset* Method
+        public void Reset()
+        {
+            position.X = 0;
+            position.Y = 200;
+            currentGlitchState = GlitchState.IdleRight;
+        }
+
+        //Falling Reset Code
+        public void Fall()
+        {
+            if (hitbox.Intersects(fallBound) == true)
+            {
+                lives -= 1;
+                position.X = 0;
+                position.Y = 200;
+                currentGlitchState = GlitchState.IdleRight;
+            }
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace Glitch_Wobble
             get { return skin; }
             set { skin = value; }
         }
-        public Rectangle Hitbox
+        public Rectangle HitBox
         {
             get { return hitbox; }
             set { hitbox = value; }
@@ -83,11 +83,5 @@ namespace Glitch_Wobble
             Active = true;
         }
         
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            if (Active == true) {
-                spriteBatch.Draw(skin, position, Color.White);
-            }
-        }
     }
 }

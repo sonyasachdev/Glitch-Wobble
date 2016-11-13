@@ -16,33 +16,55 @@ namespace Glitch_Wobble
         Up,
         Down
     }
-    class Vertical_Platform : Platform
+    public class Vertical_Platform : Platform
     {
         //Fields
-        Rectangle hitBox;
         Rectangle UpperBound;
         Rectangle LowerBound;
         public Timer SpawnTimer;
         ContentManager Content;
         VerticalPlatformState currentPlatformState;
 
+        //Current X and Y Positions
+        public static int currentPositionX;
+        public static int currentPositionY;
+
+        //Reset ints
+        int startPositionX;
+        int startPositionY;
+
+        //Direction = true means going up
+        public static bool direction;
+
+        //Test Skin
+        Texture2D hitboxSkin;
+
         //Constructor
         public Vertical_Platform(Rectangle p /*, Rectangle u, Rectangle l */)
         {
             this.position = p;
-            UpperBound = new Rectangle(600, 0, 10, 10);
-            LowerBound = new Rectangle(600, 700, 10, 10);
+            UpperBound = new Rectangle(600, 100, 10, 10);
+            LowerBound = new Rectangle(600, 400, 10, 10);
 
+            startPositionX = p.X;
+            startPositionY = p.Y;
+
+            currentPositionX = p.X;
+            currentPositionY = p.Y;
             //This will be so that you can input the bounds externally and easily create many platforms
             //UpperBound = u;
             //LowerBound = l;
+
+            //Sets direction to up
+            direction = true;
 
             //Sets Hitbox
             hitbox = new Rectangle(position.X, position.Y, 315, 10);
 
             //Timer
             SpawnTimer = new Timer();
-            SpawnTimer.Interval = 2000;
+            //Change*
+            SpawnTimer.Interval = 100000;
             SpawnTimer.Elapsed += Despawn;
             Active = true;
         }
@@ -55,9 +77,12 @@ namespace Glitch_Wobble
         public void LoadContent(ContentManager Content)
         {
             skin = Content.Load<Texture2D>("vertSkin.png");
+            hitboxSkin = Content.Load<Texture2D>("playactive.png");
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+
             if (active == true)
             {
                 switch (currentPlatformState)
@@ -76,8 +101,12 @@ namespace Glitch_Wobble
         //Update*
         public void Switch()
         {
-            hitBox.X = position.X+40;
-            hitbox.Y = position.Y;
+            hitbox.X = position.X + 40;
+            hitbox.Y = position.Y + 10;
+
+            currentPositionX = position.X + 40;
+            currentPositionY = position.Y + 10;
+
             switch (currentPlatformState)
             {
                 case VerticalPlatformState.Up:
@@ -98,6 +127,7 @@ namespace Glitch_Wobble
             }
             else if (position.Y <= UpperBound.Y)
             {
+                direction = false;
                 currentPlatformState = VerticalPlatformState.Down;
             }
         }
@@ -111,6 +141,7 @@ namespace Glitch_Wobble
             }
             else if (position.Y >= LowerBound.Y)
             {
+                direction = true;
                 currentPlatformState = VerticalPlatformState.Up;
             }
         }
@@ -145,6 +176,13 @@ namespace Glitch_Wobble
         private void Spawn(Object source, System.Timers.ElapsedEventArgs e)
         {
             Spawn();
+        }
+
+        //Reset*
+        public void Reset()
+        {
+            position.X = startPositionX;
+            position.Y = startPositionY;
         }
     }
 }

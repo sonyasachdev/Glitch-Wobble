@@ -16,14 +16,24 @@ namespace Glitch_Wobble
         Left,
         Right
     }
-    class Horizontal_Platform : Platform
+    public class Horizontal_Platform : Platform
     {
         //Fields
-        Rectangle hitBox;
         Rectangle LeftBound;
         Rectangle RightBound;
         public Timer SpawnTimer;
         HorizontalPlatformState currentPlatformState;
+
+        //Current Position ints
+        public static int currentPositionX;
+        public static int currentPositionY;
+
+        //Reset ints
+        int startPositionX;
+        int startPositionY;
+
+        //Direction = true means going right
+        public static bool direction;
 
         //Test Fields
         Texture2D hitboxSkin;
@@ -34,18 +44,27 @@ namespace Glitch_Wobble
             //Positions
             this.position = p;
             LeftBound = new Rectangle(600, 100, 10, 10);
-            RightBound = new Rectangle(1000, 100, 10, 10);
+            RightBound = new Rectangle(800, 100, 10, 10);
+
+            startPositionX = p.X;
+            startPositionY = p.Y;
+
+            currentPositionX = p.X;
+            currentPositionY = p.Y;
 
             //This is to externally have the left and right bounds made so you can make more platforms easily
             //LeftBound = l;
             //RightBound = r;
 
+            //Sets direction to right
+            direction = true;
+
             //Sets Hitbox
             hitbox = new Rectangle(position.X, position.Y, 315, 10);
-
+            
             //Timer
             SpawnTimer = new Timer();
-            SpawnTimer.Interval = 2000;
+            SpawnTimer.Interval = 100000;
             SpawnTimer.Elapsed += Despawn;
             Active = true;
 
@@ -62,7 +81,7 @@ namespace Glitch_Wobble
             hitboxSkin = Content.Load<Texture2D>("playactive.png");
         }
         //Draw*
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
 
@@ -82,8 +101,11 @@ namespace Glitch_Wobble
         //Update*
         public void Switch()
         {
-            hitbox.X = position.X+40;
-            hitbox.Y = position.Y;
+            hitbox.X = position.X + 40;
+            hitbox.Y = position.Y + 10;
+
+            currentPositionX = position.X + 40;
+            currentPositionY = position.Y + 10;
 
             switch (currentPlatformState)
             {
@@ -106,6 +128,7 @@ namespace Glitch_Wobble
             }
             else if (position.X >= RightBound.X)
             {
+                direction = false;
                 currentPlatformState = HorizontalPlatformState.Left;
             }
         }
@@ -118,6 +141,7 @@ namespace Glitch_Wobble
             }
             else if (position.X <= LeftBound.X)
             {
+                direction = true;
                 currentPlatformState = HorizontalPlatformState.Right;
             }
         }
@@ -152,6 +176,13 @@ namespace Glitch_Wobble
         private void Spawn(Object source, System.Timers.ElapsedEventArgs e)
         {
             Spawn();
+        }
+
+        //Reset*
+        public void Reset()
+        {
+            position.X = startPositionX;
+            position.Y = startPositionY;
         }
     }
 }

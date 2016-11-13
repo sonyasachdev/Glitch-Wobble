@@ -10,9 +10,10 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Glitch_Wobble
 {
-    class Ground:Platform
+    public class Ground:Platform
     {
         //Fields
+        public static List<Ground> groundList;
 
         //Constructor
         public Ground()
@@ -20,6 +21,9 @@ namespace Glitch_Wobble
             position = new Rectangle(0, 260, 1000, 500);
             hitbox = new Rectangle(position.X, position.Y+330 , 1000, 190);
             active = true;
+
+            //Setting up ground list
+            groundList = new List<Ground>();
         }
 
         //Methods

@@ -32,6 +32,10 @@ namespace Glitch_Wobble
         Texture2D slimeSkin;
         Texture2D hitboxSkin;
 
+        //Reset ints
+        int startPositionX;
+        int startPositionY;
+
         //Animation Fields
         Vector2 pos;
         private Point currentFrame;
@@ -48,8 +52,11 @@ namespace Glitch_Wobble
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(400, 100, 10, 10);
-            RightBound = new Rectangle(700, 100, 10, 10);
+            LeftBound = new Rectangle(1000, 100, 10, 10);
+            RightBound = new Rectangle(3000, 100, 10, 10);
+
+            startPositionX = p.X;
+            startPositionY = p.Y;
 
             currentSlimeState = SlimeState.MoveRight;
 
@@ -221,6 +228,13 @@ namespace Glitch_Wobble
                     Dead();
                 }
             }
+        }
+
+        //Reset*
+        public void Reset()
+        {
+            position.X = startPositionX;
+            position.Y = startPositionY;
         }
 
         /*
