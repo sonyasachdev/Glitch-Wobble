@@ -154,7 +154,7 @@ namespace Glitch_Wobble
         }
 
         //Spawn*
-        public void Spawning()
+        public new void Spawning()
         {
             if (Active == true)
             {
@@ -165,12 +165,12 @@ namespace Glitch_Wobble
                 SpawnTimer.Elapsed += Spawn;
             }
         }
-        public void Spawn()
+        public new void Spawn()
         {
             SpawnTimer.Start();
             Active = true;
         }
-        public void Despawn()
+        public new void Despawn()
         {
             SpawnTimer.Stop();
             Active = false;
