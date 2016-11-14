@@ -70,7 +70,7 @@ namespace Glitch_Wobble
             
             //Timer
             SpawnTimer = new Timer();
-            SpawnTimer.Interval = 1000000;
+            SpawnTimer.Interval = 1000;
             SpawnTimer.Elapsed += Despawn;
             Active = true;
 

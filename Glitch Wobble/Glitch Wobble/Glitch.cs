@@ -147,6 +147,7 @@ namespace Glitch_Wobble
         {
             //Hitbox visual code
             spriteBatch.Draw(hitboxSkin, bottomHitBox, Color.White);
+            //spriteBatch.Draw(hitboxSkin, position, Color.White);
             if(Game1.drawHitbox == true)
             {
                 spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
@@ -242,9 +243,9 @@ namespace Glitch_Wobble
             //Dynamically sets hitbox
             hitbox.X = position.X;
             hitbox.Y = position.Y;
-
-            bottomHitBox.X = hitbox.X;
-            bottomHitBox.Y = hitbox.Y+375;
+            
+            bottomHitBox.X = position.X;
+            bottomHitBox.Y = position.Y+385;
 
             //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
@@ -313,36 +314,41 @@ namespace Glitch_Wobble
             position.X += (int)velocity.X;
             position.Y += (int)velocity.Y;
 
-            onHorzPlatform = false;
-            onVertPlatform = false;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && hasJumped == false)
             {
                 position.Y -= 10;
                 velocity.Y = -18f;
                 hasJumped = true;
+
+                onHorzPlatform = false;
+                onVertPlatform = false;
             }
 
             if (hasJumped == true)
             {
-                float i = 1;
-                velocity.Y += 0.65f * i;
+                velocity.Y += 0.65f;
             }
 
             //Instead of this piece have a for*loop calling endjump for each platform
-            for (int i = 0; i < Game1.horzPlatformList.Count; i++)
+            if (velocity.Y > -16.7f)
             {
-                EndHorzMoveJump(Game1.horzPlatformList[i]);
-                EndGroundJump(ground);
-            }
-            for (int i = 0; i < Game1.vertPlatformList.Count; i++)
-            {
-                EndVertMoveJump(Game1.vertPlatformList[i]);
-                EndGroundJump(ground);
+                for (int i = 0; i < Game1.horzPlatformList.Count; i++)
+                {
+                    EndHorzMoveJump(Game1.horzPlatformList[i]);
+                    EndGroundJump(ground);
+                }
+                for (int i = 0; i < Game1.vertPlatformList.Count; i++)
+                {
+                    EndVertMoveJump(Game1.vertPlatformList[i]);
+                    EndGroundJump(ground);
+                }
             }
 
             if (hasJumped == false)
+            {
                 velocity.Y = 0f;
+            }
         }
 
         //Move*
@@ -435,7 +441,7 @@ namespace Glitch_Wobble
 
             //Makes her move with platform
             //Horizontal
-            if (onHorzPlatform == true && currentPlatform != null && currentGlitchState != GlitchState.Jump)
+            if (onHorzPlatform == true && currentPlatform != null)
             {
                 if (bottomHitBox.Intersects(currentPlatform.HitBox) == false)
                 {
@@ -450,7 +456,7 @@ namespace Glitch_Wobble
                     {
                         onHorzPlatform = false;
                         currentPlatform = null;
-                        hasJumped = true;
+                        hasJumped = false;
                         currentGlitchState = GlitchState.Jump;
                     }
                 }
@@ -466,7 +472,7 @@ namespace Glitch_Wobble
             }
 
             //Vertical
-            if (onVertPlatform == true && currentPlatform != null && currentGlitchState != GlitchState.Jump)
+            if (onVertPlatform == true && currentPlatform != null)
             {
                 if (bottomHitBox.Intersects(currentPlatform.HitBox) == false)
                 {
@@ -477,15 +483,16 @@ namespace Glitch_Wobble
                 }
                 else
                 {
-                    if(Vertical_Platform.pubActive == true)
+                    if(Vertical_Platform.pubActive == false)
                     {
                         onVertPlatform = false;
                         currentPlatform = null;
-                        hasJumped = true;
+                        hasJumped = false;
                         currentGlitchState = GlitchState.Jump;
                     }
                 }
 
+                //Decides which position to move glitch in.
                 if (Vertical_Platform.direction == true)
                 {
                     position.Y -= 5;
@@ -495,16 +502,13 @@ namespace Glitch_Wobble
                     position.Y += 5;
                 }
             }
-
-            
-
         }
 
         //Enemy Collision* Code
         public void GlitchGetsHurt(Enemy enemy)
         {
             //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
-            //Probably need to add a timer.
+            //Probably need to add a timer*.
 
             //See if you have to put the draw logic in this method?
             if (hitbox.Intersects(enemy.Hitbox) == true)
@@ -550,14 +554,14 @@ namespace Glitch_Wobble
         }
 
         //Vertical Collision* Code
-        public void EndVertMoveJump(Vertical_Platform vert)
+        public void EndVertMoveJump(Vertical_Platform platform)
         {
-            if (vert.Active == true)
+            if (platform.Active == true)
             {
                 //Checks if Glitch is touching a platform
-                if (bottomHitBox.Intersects(vert.HitBox) == true)
+                if (bottomHitBox.Intersects(platform.HitBox) == true)
                 {
-                    currentPlatform = vert;
+                    currentPlatform = platform;
 
                     onVertPlatform = true;
                     //Checks if she's in Jump State
@@ -583,7 +587,7 @@ namespace Glitch_Wobble
         {
             //Change
             //Checks if Glitch is touching the ground
-            if (position.Intersects(ground.HitBox) == true)
+            if (bottomHitBox.Intersects(ground.HitBox) == true)
             {
                 //Checks if she's in Jump State
                 if (currentGlitchState == GlitchState.Jump)
@@ -606,9 +610,17 @@ namespace Glitch_Wobble
         //Reset* Method
         public void Reset()
         {
+            lives = 3;
             position.X = 0;
             position.Y = 200;
             currentGlitchState = GlitchState.IdleRight;
+            hasJumped = false;
+            onVertPlatform = false;
+            onHorzPlatform = false;
+            currentPlatform = null;
+            currentKeyState = keyboardState.Right;
+            velocity.X = 0f;
+            velocity.Y = 0f;
         }
 
         //Falling Reset Code
@@ -616,10 +628,24 @@ namespace Glitch_Wobble
         {
             if (hitbox.Intersects(fallBound) == true)
             {
-                lives -= 1;
-                position.X = 0;
-                position.Y = 200;
-                currentGlitchState = GlitchState.IdleRight;
+                if (Lives == 0)
+                {
+                    Game1.currentGameState = GameState.GameOver;
+                }
+                else
+                {
+                    lives -= 1;
+                    position.X = 0;
+                    position.Y = 200;
+                    currentGlitchState = GlitchState.IdleRight;
+                    hasJumped = false;
+                    onVertPlatform = false;
+                    onHorzPlatform = false;
+                    currentPlatform = null;
+                    currentKeyState = keyboardState.Right;
+                    velocity.X = 0f;
+                    velocity.Y = 0f;
+                }
             }
         }
     }
