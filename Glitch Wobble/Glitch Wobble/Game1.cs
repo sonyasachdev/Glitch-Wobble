@@ -193,7 +193,7 @@ namespace Glitch_Wobble
                     if (key.IsKeyDown(Keys.Space) == true)
                     {
                         MediaPlayer.Play(song);      //plays the song only once through
-                        MediaPlayer.IsRepeating = true;       // uncomment this to have song repeat
+                        //MediaPlayer.IsRepeating = true;       uncomment this to have song repeat
                         Game1.drawHitbox = true;
                     }
                     else if(key.IsKeyDown(Keys.B) == true)
