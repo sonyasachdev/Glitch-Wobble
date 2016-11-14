@@ -19,3 +19,15 @@
 /processorParam:TextureFormat=Compressed
 /build:Time.spritefont
 
+#begin song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:song.mp3
+
+#begin jump.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:jump.mp3
+

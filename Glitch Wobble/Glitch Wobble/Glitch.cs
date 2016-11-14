@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Glitch_Wobble
 {
@@ -73,7 +75,6 @@ namespace Glitch_Wobble
         GlitchState previousGlitchState;
         keyboardState currentKeyState;
         keyboardState previousKeyboardState;
-
         //Properties
         public int Lives
         {
@@ -356,7 +357,10 @@ namespace Glitch_Wobble
                 //Makes sure that the hitbox matches up to the image before switching Glitch's state
                 if (currentKeyState == keyboardState.Left)
                 {
-                    position.X += 175;
+                    if (position.X < 0)
+                        position.X = 0;
+                    else
+                        position.X += 175;
                 }
 
                 //Changes the KeyState to Right

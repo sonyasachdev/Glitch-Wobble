@@ -25,7 +25,7 @@ namespace Glitch_Wobble
 
         public void Update(GameTime gameTime, Glitch glitch)
         {
-            center = new Vector2(glitch.Position.X + (glitch.Position.Width / 2) - 400, glitch.Position.Y + (glitch.Position.Height / 2) - 250);
+            center = new Vector2(glitch.Position.X + (glitch.Position.Width / 2) - 400, 0);   //only moves in the x-axis
             transform = Matrix.CreateScale(new Vector3(1, 1, 0)) * Matrix.CreateTranslation(new Vector3(-center.X, -center.Y, 0));
         }
     }

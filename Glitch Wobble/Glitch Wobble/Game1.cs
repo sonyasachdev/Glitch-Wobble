@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Glitch_Wobble
 {
@@ -63,6 +65,9 @@ namespace Glitch_Wobble
         public static List<Horizontal_Platform> horzPlatformList;
         public static List<Vertical_Platform> vertPlatformList;
 
+        //Le Audio
+        Song song;
+        Song effect;
         //Monogame Methods
         public Game1()
         {
@@ -141,6 +146,8 @@ namespace Glitch_Wobble
             menuSkin = Content.Load<Texture2D>("logoSkin.png");
             //Menu Rectangle
             menuPos = new Rectangle(0, 0, 1024, 720);
+            //Sounds
+            song = Content.Load<Song>("song");
 
             // TODO: use this.Content to load your game content here
 
@@ -183,8 +190,10 @@ namespace Glitch_Wobble
                     button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
-                    if(key.IsKeyDown(Keys.Space) == true)
+                    if (key.IsKeyDown(Keys.Space) == true)
                     {
+                        MediaPlayer.Play(song);      //plays the song only once through
+                        //MediaPlayer.IsRepeating = true;        uncomment this to have song repeat
                         Game1.drawHitbox = true;
                     }
                     else if(key.IsKeyDown(Keys.B) == true)
