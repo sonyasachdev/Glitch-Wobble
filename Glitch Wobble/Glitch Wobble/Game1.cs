@@ -69,7 +69,7 @@ namespace Glitch_Wobble
         public static bool drawHitbox = false;
 
         //List
-        List<Enemy> enemyList;
+        public static List<Enemy> enemyList;
         public static List<Horizontal_Platform> horzPlatformList;
         public static List<Vertical_Platform> vertPlatformList;
 
