@@ -66,7 +66,7 @@ namespace Glitch_Wobble
             direction = true;
 
             //Sets Hitbox
-            hitbox = new Rectangle(position.X, position.Y, 315, 10);
+            hitbox = new Rectangle(position.X, position.Y, 315, 20);   //changed hitbox thickness to prevent fallthrough
 
             //Timer
             SpawnTimer = new Timer();

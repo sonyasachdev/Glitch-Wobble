@@ -76,8 +76,9 @@ namespace Glitch_Wobble
         keyboardState currentKeyState;
         keyboardState previousKeyboardState;
 
-        //buffer timer
+        //buffer timer variables
         Timer bufferTime;
+        bool canBeHit;
 
         //Properties
         public int Lives
@@ -109,7 +110,7 @@ namespace Glitch_Wobble
             bottomHitBox = new Rectangle(position.X, position.Y, 125, 10);
 
             //Setting Life Count
-            lives = 3;
+            lives = 2;
 
             //Setting Platform Boolean
             onHorzPlatform = false;
@@ -138,9 +139,26 @@ namespace Glitch_Wobble
         //Monogame Methods
         public void Initialize()
         {
+            canBeHit = true;
             currentGlitchState = GlitchState.IdleRight;
-            bufferTime = new Timer(2000);
-        } 
+           // bufferTime = new Timer(2000);
+            //bufferTime.Elapsed += BufferTime_Elapsed;
+        }
+
+       /* private void BufferTime_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            bufferTime.Stop();
+            canBeHit = true;
+
+            if (currentKeyState == keyboardState.Right)
+            {
+                currentGlitchState = GlitchState.IdleRight;
+            }
+
+            else
+                currentGlitchState = GlitchState.IdleLeft;
+        } */
+
         public void LoadContent(ContentManager Content)
         {
             glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
@@ -235,6 +253,16 @@ namespace Glitch_Wobble
                     break;
                 case GlitchState.Hurt:
                     //Put hurt animation, also reduce the GUI hearts by one
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.Red,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
                     break;
                 case GlitchState.Dead:
                     //Run dead animation and change state to GameOver
@@ -250,7 +278,11 @@ namespace Glitch_Wobble
             hitbox.Y = position.Y;
             
             bottomHitBox.X = position.X;
-            bottomHitBox.Y = position.Y+385;
+
+            if (currentGlitchState == GlitchState.IdleLeft || currentGlitchState == GlitchState.MoveLeft)
+                bottomHitBox.X = position.X + 290;
+
+            bottomHitBox.Y = position.Y + 385;
 
             //Animation Logic
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
@@ -302,6 +334,7 @@ namespace Glitch_Wobble
                     Move();
                     break;
                 case GlitchState.Hurt:
+                    Move();
                     break;
                 case GlitchState.Dead:
                     //Run dead animation and change state to GameOver
@@ -334,16 +367,14 @@ namespace Glitch_Wobble
             //Down
             if (hasJumped == true)
             {
-                velocity.Y += 0.65f;
-                /*
-                if (velocity.Y < 0f)
+                if (velocity.Y < 13f)
                 {
-                    
+                    velocity.Y += 0.65f;
                 }
                 else
                 {
-                    velocity.Y = 7.8f;
-                }*/
+                    velocity.Y = 13f;
+                }
             }
 
             //Instead of this piece have a for*loop calling endjump for each platform
@@ -403,6 +434,8 @@ namespace Glitch_Wobble
                     }
                     position.X += 7;
                 }
+
+                Console.WriteLine(position.X);
             }
 
             //Moving Left*
@@ -432,6 +465,9 @@ namespace Glitch_Wobble
                     }
                     position.X -= 7;
                 }
+
+                if (position.X < -550)    //prevents glitch from going back too far and stops her at x = -550
+                    position.X = -550;
             }
 
             if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Left) == true)
@@ -529,11 +565,16 @@ namespace Glitch_Wobble
             //See if you have to put the draw logic in this method?
             if (hitbox.Intersects(enemy.Hitbox) == true)
             {
-                if (Lives < 4 && Lives > 0)
-                {
-                    Lives--;
-                    //bufferTime -= GameTime.ElapsedGameTime;
+                if (currentKeyState == keyboardState.Right)
+                    position.X -= 75;
+                else
+                    position.X += 75;
 
+                if (Lives < 3 && Lives > 0)
+                {
+                    currentGlitchState = GlitchState.Hurt;
+                    Lives--;
+                    //bufferTime.Start();
                 }
                 else if (Lives == 0)
                 {

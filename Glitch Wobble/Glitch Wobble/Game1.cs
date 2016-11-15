@@ -163,6 +163,7 @@ namespace Glitch_Wobble
             song = Content.Load<Song>("Level1");
 
             // TODO: use this.Content to load your game content here
+            glitch.Initialize();   //initialized glitch so you can jump and get hurt
 
             /*
             button.Initialize();
