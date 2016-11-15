@@ -75,6 +75,10 @@ namespace Glitch_Wobble
         GlitchState previousGlitchState;
         keyboardState currentKeyState;
         keyboardState previousKeyboardState;
+
+        //buffer timer
+        Timer bufferTime;
+
         //Properties
         public int Lives
         {
@@ -135,6 +139,7 @@ namespace Glitch_Wobble
         public void Initialize()
         {
             currentGlitchState = GlitchState.IdleRight;
+            bufferTime = new Timer(2000);
         } 
         public void LoadContent(ContentManager Content)
         {
@@ -516,6 +521,8 @@ namespace Glitch_Wobble
                 if (Lives < 4 && Lives > 0)
                 {
                     Lives--;
+                    //bufferTime -= GameTime.ElapsedGameTime;
+
                 }
                 else if (Lives == 0)
                 {
