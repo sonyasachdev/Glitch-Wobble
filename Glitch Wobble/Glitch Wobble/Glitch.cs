@@ -319,20 +319,31 @@ namespace Glitch_Wobble
             position.X += (int)velocity.X;
             position.Y += (int)velocity.Y;
 
-
+            //Up
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && hasJumped == false)
             {
                 position.Y -= 10;
                 velocity.Y = -18f;
+
                 hasJumped = true;
 
                 onHorzPlatform = false;
                 onVertPlatform = false;
             }
 
+            //Down
             if (hasJumped == true)
             {
                 velocity.Y += 0.65f;
+                /*
+                if (velocity.Y < 0f)
+                {
+                    
+                }
+                else
+                {
+                    velocity.Y = 7.8f;
+                }*/
             }
 
             //Instead of this piece have a for*loop calling endjump for each platform
