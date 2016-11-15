@@ -22,6 +22,14 @@ namespace Glitch_Wobble
         Win,
         GameOver
     }
+
+    public enum MusicState
+    {
+        Play,
+        Stop,
+        Pause
+        //Quiet
+    }
     
     /// <summary>
     /// This is the main type for your game.
@@ -65,9 +73,11 @@ namespace Glitch_Wobble
         public static List<Horizontal_Platform> horzPlatformList;
         public static List<Vertical_Platform> vertPlatformList;
 
-        //Le Audio
+        //Music Fields
+        MusicState currentMusicState;
         Song song;
-        Song effect;
+        bool songStart;
+
         //Monogame Methods
         public Game1()
         {
@@ -146,8 +156,11 @@ namespace Glitch_Wobble
             menuSkin = Content.Load<Texture2D>("logoSkin.png");
             //Menu Rectangle
             menuPos = new Rectangle(0, 0, 1024, 720);
+
             //Sounds
-            song = Content.Load<Song>("song");
+            currentMusicState = MusicState.Stop;
+            songStart = false;
+            song = Content.Load<Song>("Level1");
 
             // TODO: use this.Content to load your game content here
 
@@ -155,7 +168,7 @@ namespace Glitch_Wobble
             button.Initialize();
             glitch.Initialize();
             longSword.Initialize();
-            slime1.Initialize();
+            slime1.Initialize();   
             horz1.Initialize();
             vert1.Initialize();*/
             
@@ -190,10 +203,23 @@ namespace Glitch_Wobble
                     button.OptionButtonSwitch(key);
                     break;
                 case GameState.PlayGame:
+                    //Song Start Code
+                    if(currentMusicState == MusicState.Stop)
+                    {
+                        MediaPlayer.Play(song);
+                        //MediaPlayer.Volume This controls volume, so lower it when EMP goes off
+                        songStart = true;
+                        currentMusicState = MusicState.Play;
+                    }
+                    
+                    if (currentMusicState == MusicState.Pause)
+                    {
+                        MediaPlayer.Resume();
+                        currentMusicState = MusicState.Play;
+                    }
+
                     if (key.IsKeyDown(Keys.Space) == true)
                     {
-                        MediaPlayer.Play(song);      //plays the song only once through
-                        //MediaPlayer.IsRepeating = true;       uncomment this to have song repeat
                         Game1.drawHitbox = true;
                     }
                     else if(key.IsKeyDown(Keys.B) == true)
@@ -222,19 +248,37 @@ namespace Glitch_Wobble
                     vert1.Spawning();
                     horz1.Spawning();
                     longSword.Switch();
+
+                    if ( key.IsKeyDown(Keys.Tab) == true)
+                    {
+                        currentGameState = GameState.Pause;
+                    }
+
                     break;
                 case GameState.Pause:
                     //Draw Pause Screen
                     button.PauseButtonSwitch(key);
+                    MediaPlayer.Pause();
+                    currentMusicState = MusicState.Pause;
+
+                    if( key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        currentGameState = GameState.PlayGame;
+                    }
+
                     break;
                 case GameState.Win:
                     break;
                 case GameState.GameOver:
-                    //Put Reset* Methods here to restart the level everytime
                     glitch.Reset();
                     horz1.Reset();
                     vert1.Reset();
                     slime1.Reset();
+
+                    //Song Reset Code
+                    songStart = false;
+                    currentMusicState = MusicState.Stop;
+                    MediaPlayer.Stop();
 
                     button.GameOverSwitch(key);
                     break;
