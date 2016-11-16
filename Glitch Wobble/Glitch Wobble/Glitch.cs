@@ -466,8 +466,8 @@ namespace Glitch_Wobble
                     position.X -= 7;
                 }
 
-                if (position.X < -550)    //prevents glitch from going back too far and stops her at x = -550
-                    position.X = -550;
+                if (position.X < -280)    //prevents glitch from going back too far and stops her at x = -280
+                    position.X = -280;
             }
 
             if (previousKeyState.IsKeyUp(Keys.Left) == true && key.IsKeyDown(Keys.Left) == true)
