@@ -269,6 +269,7 @@ namespace Glitch_Wobble
                     horz1.Switch();
                     vert1.Spawning();
                     horz1.Spawning();
+                    slime1.Spawning();
                     longSword.Switch();
 
                     if ( key.IsKeyDown(Keys.Tab) == true)
