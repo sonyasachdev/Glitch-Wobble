@@ -9,6 +9,7 @@ using System.Timers;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using System.Diagnostics;
 
 namespace Glitch_Wobble
 {
@@ -43,6 +44,7 @@ namespace Glitch_Wobble
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         KeyboardState key;
+        KeyboardState previousKey;
         
         //Classes
         Glitch glitch;
@@ -199,6 +201,13 @@ namespace Glitch_Wobble
             {
                 case GameState.Menu:
                     button.MenuButtonSwitch(key);
+
+                    previousKey = key;
+                    key = Keyboard.GetState();
+
+                    if (key.IsKeyDown(Keys.Space) && previousKey.IsKeyUp(Keys.Space) == true)
+                        Process.Start("Game2.exe");
+
                     break;
                 case GameState.Options:
                     button.OptionButtonSwitch(key);
