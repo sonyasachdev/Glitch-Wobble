@@ -133,7 +133,6 @@ namespace Glitch_Wobble
             numFrames = 1;
             frameRate = 100;
             flip = SpriteEffects.FlipHorizontally;
-               
         }
 
         //Monogame Methods
@@ -178,6 +177,10 @@ namespace Glitch_Wobble
 
             //fallBound visual code
             spriteBatch.Draw(hitboxSkin, fallBound, Color.White);
+
+            if (currentGlitchState == GlitchState.Hurt)
+            {
+            }
 
             switch (currentGlitchState)
             {
@@ -557,7 +560,7 @@ namespace Glitch_Wobble
         }
 
         //Enemy Collision* Code
-        public void GlitchGetsHurt(Enemy enemy)
+        public bool GlitchGetsHurt(Enemy enemy)
         {
             //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
             //Probably need to add a timer*.
@@ -574,13 +577,16 @@ namespace Glitch_Wobble
                 {
                     currentGlitchState = GlitchState.Hurt;
                     Lives--;
-                    //bufferTime.Start();
                 }
                 else if (Lives == 0)
                 {
                     Game1.currentGameState = GameState.GameOver;
                 }
+
+                return true;
             }
+            else
+                return false;
         }
 
         //Horizontal Collision* Code

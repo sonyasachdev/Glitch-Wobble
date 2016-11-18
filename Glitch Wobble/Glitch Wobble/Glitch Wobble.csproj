@@ -48,6 +48,7 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Ground.cs" />
+    <Compile Include="Health.cs" />
     <Compile Include="Horizontal Platform.cs" />
     <Compile Include="Long Sword.cs" />
     <Compile Include="Glitch.cs" />
@@ -73,6 +74,7 @@
     <Content Include="Content\Ground-1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Heart.png" />
     <Content Include="Content\horzSkin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

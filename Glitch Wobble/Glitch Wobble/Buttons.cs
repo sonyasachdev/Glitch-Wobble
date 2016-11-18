@@ -58,6 +58,7 @@ namespace Glitch_Wobble
         Rectangle optionsActiveRect;
 
         KeyboardState key;
+        KeyboardState previousKey;
         
         //Constructors
         public Buttons()
@@ -144,8 +145,10 @@ namespace Glitch_Wobble
 
         //Menu Button Switch 
         //MenuUpdate*
-        public void MenuButtonSwitch(KeyboardState key)
+        public void MenuButtonSwitch(KeyboardState key1)
         {
+            previousKey = key;
+            key = Keyboard.GetState();
             switch (currentMenuButtonState)
             {
                 case MenuButtonState.ActivePlayButton:
@@ -153,7 +156,7 @@ namespace Glitch_Wobble
                     {
                         currentMenuButtonState = MenuButtonState.ActiveOptionButton;
                     }
-                    else if (key.IsKeyDown(Keys.Enter))
+                    else if (key.IsKeyDown(Keys.Enter) && previousKey.IsKeyUp(Keys.Enter) == true)
                     {
                         Game1.currentGameState = GameState.PlayGame;
                     }
@@ -272,13 +275,17 @@ namespace Glitch_Wobble
 
         //GameOver Button Switch
         //GameOverUpdate*
-        public void GameOverSwitch(KeyboardState key)
+        public void GameOverSwitch(KeyboardState key1)
         {
+            previousKey = key;
+            key = Keyboard.GetState();
+
             switch (currentGameOverState)
             {
                 case GameOverState.ActiveRestart:
-                    if (key.IsKeyDown(Keys.Enter) == true)
+                    if (key.IsKeyDown(Keys.Enter) == true && previousKey.IsKeyUp(Keys.Enter) == true)
                     {
+                        previousKey = key;
                         Game1.currentGameState = GameState.Menu;
                     }
                     else if (key.IsKeyDown(Keys.Up) == true)

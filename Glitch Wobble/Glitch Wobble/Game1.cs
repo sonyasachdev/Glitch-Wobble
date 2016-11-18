@@ -74,11 +74,19 @@ namespace Glitch_Wobble
         public static List<Enemy> enemyList;
         public static List<Horizontal_Platform> horzPlatformList;
         public static List<Vertical_Platform> vertPlatformList;
+        List<Health> hearts;
 
         //Music Fields
         MusicState currentMusicState;
         Song song;
         bool songStart;
+
+        //health fields
+        Health hit1;
+        Health hit2;
+        Health hit3;
+        Texture2D heart;
+        int counter = 0;
 
         //Monogame Methods
         public Game1()
@@ -107,6 +115,7 @@ namespace Glitch_Wobble
             //currentMenuState = GameState.SplashScreen;
             currentGameState = GameState.Menu;
             cam = new Camera(GraphicsDevice.Viewport);
+            hearts = new List<Health>();
 
             base.Initialize();
         }
@@ -164,6 +173,9 @@ namespace Glitch_Wobble
             songStart = false;
             song = Content.Load<Song>("Level1");
 
+            //health texture
+            heart = Content.Load<Texture2D>("Heart");
+
             // TODO: use this.Content to load your game content here
             glitch.Initialize();   //initialized glitch so you can jump and get hurt
 
@@ -195,19 +207,19 @@ namespace Glitch_Wobble
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            previousKey = key;
+            key = Keyboard.GetState();
+
+            if (key.IsKeyDown(Keys.Space) && previousKey.IsKeyUp(Keys.Space) == true)
+                Process.Start("Game2.exe");
+
             key = Keyboard.GetState();
             //Game Switch
             switch (currentGameState)
             {
                 case GameState.Menu:
                     button.MenuButtonSwitch(key);
-
-                    previousKey = key;
-                    key = Keyboard.GetState();
-
-                    if (key.IsKeyDown(Keys.Space) && previousKey.IsKeyUp(Keys.Space) == true)
-                        Process.Start("Game2.exe");
-
                     break;
                 case GameState.Options:
                     button.OptionButtonSwitch(key);
@@ -332,6 +344,25 @@ namespace Glitch_Wobble
                     glitch.Draw(spriteBatch);
                     slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
+                    //heart drawings
+                    hit1 = new Health(glitch.Position.X - 225, 0, 75, 75, heart);
+                    hit2 = new Health(glitch.Position.X - 150, 0, 75, 75, heart);
+                    hit3 = new Health(glitch.Position.X - 75, 0, 75, 75, heart);
+
+                    if (glitch.Lives == 2)
+                    {
+                        hit1.Draw(spriteBatch);
+                        hit2.Draw(spriteBatch);
+                        hit3.Draw(spriteBatch);
+                    }
+                    else if (glitch.Lives == 1)
+                    {
+                        hit1.Draw(spriteBatch);
+                        hit2.Draw(spriteBatch);
+                    }
+                    else if (glitch.Lives == 0)
+                        hit1.Draw(spriteBatch);
+
                     break;
                 case GameState.Pause:
                     button.DrawPause(spriteBatch);
