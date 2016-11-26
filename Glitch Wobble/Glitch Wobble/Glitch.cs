@@ -48,6 +48,7 @@ namespace Glitch_Wobble
         //Platform Collision Bool
         bool onHorzPlatform;
         bool onVertPlatform;
+        bool onGroundPlatform;
 
         //Class Initializer
         Ground ground;
@@ -115,6 +116,7 @@ namespace Glitch_Wobble
             //Setting Platform Boolean
             onHorzPlatform = false;
             onVertPlatform = false;
+            onGroundPlatform = true;
 
             //Setting fallBound
             fallBound = new Rectangle(-1000000, 2000, 2000000, 10);
@@ -495,6 +497,17 @@ namespace Glitch_Wobble
             }
 
             //Makes her move with platform
+            //Ground
+            if (onGroundPlatform == true && currentPlatform == null)
+            {
+                if(bottomHitBox.Intersects(ground.HitBox) == false)
+                {
+                    onGroundPlatform = false;
+                    hasJumped = true;
+                    currentGlitchState = GlitchState.Jump;
+                }
+            }
+
             //Horizontal
             if (onHorzPlatform == true && currentPlatform != null)
             {
@@ -675,7 +688,7 @@ namespace Glitch_Wobble
         //Reset* Method
         public void Reset()
         {
-            lives = 3;
+            lives = 2;
             position.X = 0;
             position.Y = 200;
             currentGlitchState = GlitchState.IdleRight;
@@ -706,6 +719,7 @@ namespace Glitch_Wobble
                     hasJumped = false;
                     onVertPlatform = false;
                     onHorzPlatform = false;
+                    onGroundPlatform = true;
                     currentPlatform = null;
                     currentKeyState = keyboardState.Right;
                     velocity.X = 0f;
