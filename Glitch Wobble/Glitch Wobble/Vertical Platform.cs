@@ -71,7 +71,7 @@ namespace Glitch_Wobble
             //Timer
             SpawnTimer = new Timer();
             //Change*
-            SpawnTimer.Interval = 100000000;
+            SpawnTimer.Interval = 1000;
             SpawnTimer.Elapsed += Despawn;
             Active = true;
         }
@@ -88,7 +88,7 @@ namespace Glitch_Wobble
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+            //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
 
             if (active == true)
             {
@@ -113,6 +113,8 @@ namespace Glitch_Wobble
 
             currentPositionX = position.X + 40;
             currentPositionY = position.Y + 10;
+
+            pubActive = active;
 
             switch (currentPlatformState)
             {

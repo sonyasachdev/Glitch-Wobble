@@ -89,7 +89,7 @@ namespace Glitch_Wobble
         //Draw*
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+            //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
 
             if(active == true)
             {
@@ -112,6 +112,8 @@ namespace Glitch_Wobble
 
             currentPositionX = position.X + 40;
             currentPositionY = position.Y + 10;
+
+            pubActive = active;
 
             switch (currentPlatformState)
             {

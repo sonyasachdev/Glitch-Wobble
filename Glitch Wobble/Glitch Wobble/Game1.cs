@@ -52,7 +52,7 @@ namespace Glitch_Wobble
         Slime slime1;
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
-        Ground ground1;
+        Ground ground;
         Buttons button;
         Camera cam;
 
@@ -130,8 +130,8 @@ namespace Glitch_Wobble
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             //Starting Position Rectangles Platform*
-            //x,y,width,height
-            slimePos1 = new Rectangle(500, 425, 108, 108);
+            //x,y,width,height 
+            slimePos1 = new Rectangle(500, 800, 108, 108);
             vertPos1 = new Rectangle(600, 400, 400, 100);
             horzPos1 = new Rectangle(600, 500, 400, 100);
 
@@ -141,7 +141,7 @@ namespace Glitch_Wobble
             slime1 = new Slime(slimePos1, true, 0);
             vert1 = new Vertical_Platform(vertPos1);
             horz1 = new Horizontal_Platform(horzPos1);
-            ground1 = new Ground();
+            ground = new Ground();
             button = new Buttons();
 
             //Load Content Logic
@@ -151,7 +151,7 @@ namespace Glitch_Wobble
             longSword.LoadContent(Content);
             vert1.LoadContent(Content);
             horz1.LoadContent(Content);
-            ground1.LoadContent(Content);
+            ground.LoadContent(Content);
 
             //List Initializations
             enemyList = new List<Enemy>();
@@ -297,6 +297,7 @@ namespace Glitch_Wobble
                     horz1.Reset();
                     vert1.Reset();
                     slime1.Reset();
+                    ground.Reset();
 
                     //Song Reset Code
                     songStart = false;
@@ -339,13 +340,14 @@ namespace Glitch_Wobble
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cam.transform);
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
-                    ground1.Draw(spriteBatch);
-                    /*if (vert1.Active == true) {*/ vert1.Draw(spriteBatch); /*}
-                    if (horz1.Active == true) {*/ horz1.Draw(spriteBatch); /*}*/
+                    ground.Draw(spriteBatch);
+                    vert1.Draw(spriteBatch); 
+                    horz1.Draw(spriteBatch);
                     glitch.Draw(spriteBatch);
                     slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
-                    //heart drawings
+
+                    //Lives
                     hit1 = new Health(glitch.Position.X - 225, 0, 75, 75, heart);
                     hit2 = new Health(glitch.Position.X - 150, 0, 75, 75, heart);
                     hit3 = new Health(glitch.Position.X - 75, 0, 75, 75, heart);

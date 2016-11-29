@@ -170,11 +170,11 @@ namespace Glitch_Wobble
         public void Draw(SpriteBatch spriteBatch)
         {
             //Hitbox visual code
-            spriteBatch.Draw(hitboxSkin, bottomHitBox, Color.White);
             //spriteBatch.Draw(hitboxSkin, position, Color.White);
             if(Game1.drawHitbox == true)
             {
-                spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
+                spriteBatch.Draw(hitboxSkin, bottomHitBox, Color.White);
+                //spriteBatch.Draw(hitboxSkin, hitbox, Color.White);
             }
 
             //fallBound visual code
@@ -284,6 +284,9 @@ namespace Glitch_Wobble
             
             bottomHitBox.X = position.X;
 
+            //Fix this method, for some reason it crashes visual studio
+            //Loop();
+
             if (currentGlitchState == GlitchState.IdleLeft || currentGlitchState == GlitchState.MoveLeft)
                 bottomHitBox.X = position.X + 290;
 
@@ -381,8 +384,8 @@ namespace Glitch_Wobble
                     velocity.Y = 13f;
                 }
             }
-
-            //Instead of this piece have a for*loop calling endjump for each platform
+            
+            //Almost after jumping, checks to see if she collides
             if (velocity.Y > -16.7f)
             {
                 for (int i = 0; i < Game1.horzPlatformList.Count; i++)
@@ -395,6 +398,7 @@ namespace Glitch_Wobble
                     EndVertMoveJump(Game1.vertPlatformList[i]);
                     EndGroundJump(ground);
                 }
+                
             }
 
             if (hasJumped == false)
@@ -497,12 +501,15 @@ namespace Glitch_Wobble
             }
 
             //Makes her move with platform
-            //Ground
+            //Ground*
             if (onGroundPlatform == true && currentPlatform == null)
             {
-                if(bottomHitBox.Intersects(ground.HitBox) == false)
+                //checks to see if she's on any ground tile (1-4)
+                if (bottomHitBox.Intersects(Ground.hitboxList[0]) == false && bottomHitBox.Intersects(Ground.hitboxList[1]) == false && bottomHitBox.Intersects(Ground.hitboxList[2]) == false && bottomHitBox.Intersects(Ground.hitboxList[3]) == false)
                 {
                     onGroundPlatform = false;
+
+                    //Makes sure that she falls
                     hasJumped = true;
                     currentGlitchState = GlitchState.Jump;
                 }
@@ -524,7 +531,7 @@ namespace Glitch_Wobble
                     {
                         onHorzPlatform = false;
                         currentPlatform = null;
-                        hasJumped = false;
+                        hasJumped = true;
                         currentGlitchState = GlitchState.Jump;
                     }
                 }
@@ -555,7 +562,7 @@ namespace Glitch_Wobble
                     {
                         onVertPlatform = false;
                         currentPlatform = null;
-                        hasJumped = false;
+                        hasJumped = true;
                         currentGlitchState = GlitchState.Jump;
                     }
                 }
@@ -575,10 +582,7 @@ namespace Glitch_Wobble
         //Enemy Collision* Code
         public bool GlitchGetsHurt(Enemy enemy)
         {
-            //You need to add a cooldown between when the slime hits the player and when she can next be hit by a slime, or it ends immediately
-            //Probably need to add a timer*.
-
-            //See if you have to put the draw logic in this method?
+            
             if (hitbox.Intersects(enemy.Hitbox) == true)
             {
                 if (currentKeyState == keyboardState.Right)
@@ -663,27 +667,120 @@ namespace Glitch_Wobble
         //Ground Collision* Code
         public void EndGroundJump(Ground ground)
         {
-            //Change
-            //Checks if Glitch is touching the ground
-            if (bottomHitBox.Intersects(ground.HitBox) == true)
+            for (int i = 0; i < 4; i++)
             {
-                //Checks if she's in Jump State
-                if (currentGlitchState == GlitchState.Jump)
+                //Checks if she's on a ground tile
+                if (bottomHitBox.Intersects(Ground.hitboxList[i]) == true)
                 {
-                    hasJumped = false;
-                    //Checks whether to put her facing right or left when the collision happens
-                    if (currentKeyState == keyboardState.Right)
-                    {
-                        currentGlitchState = GlitchState.IdleRight;
-                    }
-                    else if (currentKeyState == keyboardState.Left)
-                    {
-                        currentGlitchState = GlitchState.IdleLeft;
-                    }
+                    onGroundPlatform = true;
 
+                    //Checks if she's in Jump State
+                    if (currentGlitchState == GlitchState.Jump)
+                    {
+                        hasJumped = false;
+                        //Checks whether to put her facing right or left when the collision happens and sets her state
+                        if (currentKeyState == keyboardState.Right)
+                        {
+                            currentGlitchState = GlitchState.IdleRight;
+                        }
+                        else if (currentKeyState == keyboardState.Left)
+                        {
+                            currentGlitchState = GlitchState.IdleLeft;
+                        }
+                    }
                 }
             }
         }
+
+        //Tile Loop* Method
+        public void Loop()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if(currentGlitchState == GlitchState.MoveRight)
+                {
+                    if (Ground.groundList[i] == Ground.groundList[0] && bottomHitBox.Intersects(Ground.hitboxList[0]) == true)
+                    {
+                        Rectangle temp = Ground.groundList[2];
+                        temp.X += 4000;
+                        Ground.groundList[2] = temp;
+                    }
+                    else if (Ground.groundList[i] == Ground.groundList[1] && bottomHitBox.Intersects(Ground.hitboxList[1]) == true)
+                    {
+                        Rectangle temp = Ground.groundList[3];
+                        if (Ground.makeHole == true)
+                        {
+                            temp.X += (4000 + Ground.sizeHole);
+                        }
+                        else
+                        {
+                            temp.X += 4000;
+                        }
+                        Ground.groundList[3] = temp;
+                    }
+                    else if (Ground.groundList[i] == Ground.groundList[2] && bottomHitBox.Intersects(Ground.hitboxList[2]) == true)
+                    {
+                        Rectangle temp = Ground.groundList[0];
+                        if (Ground.makeHole == true)
+                        {
+                            temp.X += (4000 + Ground.sizeHole);
+                        }
+                        else
+                        {
+                            temp.X += 4000;
+                        }
+                        Ground.groundList[0] = temp;
+                    }
+                    else if (Ground.groundList[i] == Ground.groundList[3] && bottomHitBox.Intersects(Ground.hitboxList[3]) == true)
+                    {
+                        i = 0;
+                        Rectangle temp = Ground.groundList[1];
+                        if (Ground.makeHole == true)
+                        {
+                            temp.X += (4000 + Ground.sizeHole);
+                        }
+                        else
+                        {
+                            temp.X += 4000;
+                        }
+                        Ground.groundList[1] = temp;
+                    }
+                }
+                else if (currentGlitchState == GlitchState.MoveLeft)
+                {
+                    if (Ground.groundList[i] == Ground.groundList[0] && bottomHitBox.Intersects(Ground.groundList[i]) == true)
+                    {
+                        Rectangle temp = Ground.groundList[2];
+                        temp.X -= 4000; 
+                        Ground.groundList[2] = temp;
+                    }
+                    else if (Ground.groundList[i] == Ground.groundList[1] && bottomHitBox.Intersects(Ground.groundList[i]) == true)
+                    {
+                        Rectangle temp = Ground.groundList[3];
+                        temp.X -= 4000; 
+                        Ground.groundList[3] = temp;
+                    }
+                    else if (Ground.groundList[i] == Ground.groundList[2] && bottomHitBox.Intersects(Ground.groundList[i]) == true)
+                    {
+                        Rectangle temp = Ground.groundList[0];
+                        temp.X -= 4000;
+                        Ground.groundList[0] = temp;
+                    }
+                    else if (Ground.groundList[i] == Ground.groundList[3] && bottomHitBox.Intersects(Ground.groundList[i]) == true)
+                    {
+                        i = 0;
+                        Rectangle temp = Ground.groundList[1];
+                        temp.X -= 4000;
+                        Ground.groundList[1] = temp;
+                    }
+
+                }
+                
+
+
+            }
+        }
+
 
         //Reset* Method
         public void Reset()
