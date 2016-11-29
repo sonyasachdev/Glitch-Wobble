@@ -78,12 +78,12 @@ namespace Glitch_Wobble
             active = true;
 
             //Tile1 Initialize
-            tile3 = new Rectangle(2000, 260, 1000, 500);
+            tile3 = new Rectangle(-2000, 260, 1000, 500);
             hitbox3 = new Rectangle(tile3.X, tile3.Y + 330, 1000, 190);
             active = true;
 
             //Tile1 Initialize
-            tile4 = new Rectangle(3000, 260, 1000, 500);
+            tile4 = new Rectangle(-1000, 260, 1000, 500);
             hitbox4 = new Rectangle(tile4.X, tile4.Y + 330, 1000, 190);
             active = true;
 
@@ -139,7 +139,7 @@ namespace Glitch_Wobble
             }
             if (makeHole == true)
             {
-                sizeHole = rngesus.Next(300, 401);
+                sizeHole = rngesus.Next(100, 201);
             }
 
             hitbox1 = tile1;

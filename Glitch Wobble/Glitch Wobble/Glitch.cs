@@ -50,6 +50,11 @@ namespace Glitch_Wobble
         bool onVertPlatform;
         bool onGroundPlatform;
 
+        bool onTile1;
+        bool onTile2;
+        bool onTile3;
+        bool onTile4;
+
         //Class Initializer
         Ground ground;
 
@@ -117,6 +122,11 @@ namespace Glitch_Wobble
             onHorzPlatform = false;
             onVertPlatform = false;
             onGroundPlatform = true;
+
+            onTile1 = false;
+            onTile2 = false;
+            onTile3 = false;
+            onTile4 = false;
 
             //Setting fallBound
             fallBound = new Rectangle(-1000000, 2000, 2000000, 10);
@@ -285,7 +295,7 @@ namespace Glitch_Wobble
             bottomHitBox.X = position.X;
 
             //Fix this method, for some reason it crashes visual studio
-            //Loop();
+            Loop(); //change*
 
             if (currentGlitchState == GlitchState.IdleLeft || currentGlitchState == GlitchState.MoveLeft)
                 bottomHitBox.X = position.X + 290;
@@ -697,15 +707,18 @@ namespace Glitch_Wobble
         {
             for (int i = 0; i < 4; i++)
             {
-                if(currentGlitchState == GlitchState.MoveRight)
+                if (currentGlitchState == GlitchState.MoveRight)
                 {
-                    if (Ground.groundList[i] == Ground.groundList[0] && bottomHitBox.Intersects(Ground.hitboxList[0]) == true)
+                    #region MoveRight
+                    if (i == 0 && bottomHitBox.Intersects(Ground.hitboxList[0]) == true && onGroundPlatform == true && onTile1 == false)
                     {
                         Rectangle temp = Ground.groundList[2];
                         temp.X += 4000;
                         Ground.groundList[2] = temp;
+                        onTile1 = true;
+                        onTile3 = false;
                     }
-                    else if (Ground.groundList[i] == Ground.groundList[1] && bottomHitBox.Intersects(Ground.hitboxList[1]) == true)
+                    else if (i == 1 && bottomHitBox.Intersects(Ground.hitboxList[1]) == true && onGroundPlatform == true && onTile2 == false)
                     {
                         Rectangle temp = Ground.groundList[3];
                         if (Ground.makeHole == true)
@@ -717,8 +730,10 @@ namespace Glitch_Wobble
                             temp.X += 4000;
                         }
                         Ground.groundList[3] = temp;
+                        onTile2 = true;
+                        onTile4 = false;
                     }
-                    else if (Ground.groundList[i] == Ground.groundList[2] && bottomHitBox.Intersects(Ground.hitboxList[2]) == true)
+                    else if (i == 2 && bottomHitBox.Intersects(Ground.hitboxList[2]) == true && onGroundPlatform == true && onTile3 == false)
                     {
                         Rectangle temp = Ground.groundList[0];
                         if (Ground.makeHole == true)
@@ -730,8 +745,10 @@ namespace Glitch_Wobble
                             temp.X += 4000;
                         }
                         Ground.groundList[0] = temp;
+                        onTile1 = false;
+                        onTile3 = true;
                     }
-                    else if (Ground.groundList[i] == Ground.groundList[3] && bottomHitBox.Intersects(Ground.hitboxList[3]) == true)
+                    else if (i == 3 && bottomHitBox.Intersects(Ground.hitboxList[3]) == true && onGroundPlatform == true && onTile4 == false)
                     {
                         i = 0;
                         Rectangle temp = Ground.groundList[1];
@@ -744,9 +761,12 @@ namespace Glitch_Wobble
                             temp.X += 4000;
                         }
                         Ground.groundList[1] = temp;
+                        onTile2 = false;
+                        onTile4 = true;
                     }
+#endregion
                 }
-                else if (currentGlitchState == GlitchState.MoveLeft)
+                /*else if (currentGlitchState == GlitchState.MoveLeft)
                 {
                     if (Ground.groundList[i] == Ground.groundList[0] && bottomHitBox.Intersects(Ground.groundList[i]) == true)
                     {
@@ -775,7 +795,7 @@ namespace Glitch_Wobble
                     }
 
                 }
-                
+                */
 
 
             }
@@ -792,6 +812,12 @@ namespace Glitch_Wobble
             hasJumped = false;
             onVertPlatform = false;
             onHorzPlatform = false;
+
+            onTile1 = false;
+            onTile2 = false;
+            onTile3 = false;
+            onTile4 = false;
+
             currentPlatform = null;
             currentKeyState = keyboardState.Right;
             velocity.X = 0f;
@@ -817,6 +843,12 @@ namespace Glitch_Wobble
                     onVertPlatform = false;
                     onHorzPlatform = false;
                     onGroundPlatform = true;
+
+                    onTile1 = false;
+                    onTile2 = false;
+                    onTile3 = false;
+                    onTile4 = false;
+
                     currentPlatform = null;
                     currentKeyState = keyboardState.Right;
                     velocity.X = 0f;
