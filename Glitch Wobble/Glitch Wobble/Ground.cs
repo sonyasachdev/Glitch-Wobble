@@ -31,6 +31,11 @@ namespace Glitch_Wobble
         private Rectangle hitbox3;
         private Rectangle hitbox4;
 
+        private Rectangle temp1;
+        private Rectangle temp2;
+        private Rectangle temp3;
+        private Rectangle temp4;
+
         private Texture2D tile1Skin;
         private Texture2D tile2Skin;
         private Texture2D tile3Skin;
@@ -101,6 +106,12 @@ namespace Glitch_Wobble
             hitboxList.Add(hitbox3);
             hitboxList.Add(hitbox4);
 
+            //Setting up Temp
+            temp1 = hitboxList[0];
+            temp2 = hitboxList[1];
+            temp3 = hitboxList[2];
+            temp4 = hitboxList[3];
+
             //Setting up Start positions
             startTile1 = tile1;
             startTile2 = tile2;
@@ -139,28 +150,35 @@ namespace Glitch_Wobble
             }
             if (makeHole == true)
             {
-                sizeHole = rngesus.Next(100, 201);
+                sizeHole = rngesus.Next(200, 301);
             }
 
-            hitbox1 = tile1;
-            hitbox2 = tile2;
-            hitbox3 = tile3;
-            hitbox4 = tile4;
+            //Updates Position
+            temp1.X = groundList[0].X;
+            temp2.X = groundList[1].X;
+            temp3.X = groundList[2].X;
+            temp4.X = groundList[3].X;
+
+            //Updates Position
+            hitboxList[0] = temp1;
+            hitboxList[1] = temp2;
+            hitboxList[2] = temp3;
+            hitboxList[3] = temp4;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(tile1Skin, tile1, Color.White);
-            spriteBatch.Draw(tile2Skin, tile2, Color.White);
-            spriteBatch.Draw(tile3Skin, tile3, Color.White);
-            spriteBatch.Draw(tile4Skin, tile4, Color.White);
+            spriteBatch.Draw(tile1Skin, groundList[0], Color.White);
+            spriteBatch.Draw(tile2Skin, groundList[1], Color.White);
+            spriteBatch.Draw(tile3Skin, groundList[2], Color.White);
+            spriteBatch.Draw(tile4Skin, groundList[3], Color.White);
         }
 
         public void Reset()
         {
-            tile1 = startTile1;
-            tile2 = startTile2;
-            tile3 = startTile3;
-            tile4 = startTile4;
+            groundList[0] = startTile1;
+            groundList[1] = startTile2;
+            groundList[2] = startTile3;
+            groundList[3] = startTile4;
         }
 
 
