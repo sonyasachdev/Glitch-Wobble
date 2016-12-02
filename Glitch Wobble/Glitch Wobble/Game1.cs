@@ -88,6 +88,9 @@ namespace Glitch_Wobble
         Texture2D heart;
         int counter = 0;
 
+        //Timers
+        double slimeTimer;
+
         //Monogame Methods
         public Game1()
         {
@@ -176,6 +179,10 @@ namespace Glitch_Wobble
             //health texture
             heart = Content.Load<Texture2D>("Heart");
 
+            //Timers
+            slimeTimer = 10.0;
+
+
             // TODO: use this.Content to load your game content here
             glitch.Initialize();   //initialized glitch so you can jump and get hurt
 
@@ -252,7 +259,15 @@ namespace Glitch_Wobble
                     //Each time this runs, have a reset level method and maybe a next level. Also, put all game logic into this part
                     horz1.SpawnTimer.Start();
                     vert1.SpawnTimer.Start();
-                    
+
+                    slimeTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (slimeTimer < 0)
+                    {
+                        enemyList.Add(slime1);
+                        slimeTimer = 10.0;
+                    }
+
                     //Glitch collision loop for enemies
                     for (int i = 0; i < enemyList.Count; i++)
                     {
@@ -269,7 +284,7 @@ namespace Glitch_Wobble
                     horz1.Switch();
                     vert1.Spawning();
                     horz1.Spawning();
-                    slime1.Spawning();
+                    //slime1.Spawning();
                     longSword.Switch();
                     ground.Update(gameTime);
 
@@ -312,8 +327,13 @@ namespace Glitch_Wobble
             base.Update(gameTime);
         }
 
+        private void SlimeTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         //Methods for Game
-        
+
 
 
         /// <summary>
