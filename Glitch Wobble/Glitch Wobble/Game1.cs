@@ -71,7 +71,7 @@ namespace Glitch_Wobble
         public static bool drawHitbox = false;
 
         //List
-        public static List<Enemy> enemyList;
+        public static List<Slime> enemyList;
         public static List<Horizontal_Platform> horzPlatformList;
         public static List<Vertical_Platform> vertPlatformList;
         List<Health> hearts;
@@ -134,7 +134,7 @@ namespace Glitch_Wobble
             
             //Starting Position Rectangles Platform*
             //x,y,width,height 
-            slimePos1 = new Rectangle(500, 800, 108, 108);
+            slimePos1 = new Rectangle(500, 400, 108, 108);
             vertPos1 = new Rectangle(600, 400, 400, 100);
             horzPos1 = new Rectangle(600, 500, 400, 100);
 
@@ -157,7 +157,7 @@ namespace Glitch_Wobble
             ground.LoadContent(Content);
 
             //List Initializations
-            enemyList = new List<Enemy>();
+            enemyList = new List<Slime>();
             enemyList.Add(slime1);
 
             horzPlatformList = new List<Horizontal_Platform>();
@@ -262,11 +262,13 @@ namespace Glitch_Wobble
 
                     slimeTimer -= gameTime.ElapsedGameTime.TotalSeconds;
 
-                    if (slimeTimer < 0)
+                    // Slime spawn code
+                    /*if (slimeTimer < 0)
                     {
-                        enemyList.Add(slime1);
+                        slime1.Spawn();
+                        enemyList[enemyList.Count - 1].LoadContent(Content);
                         slimeTimer = 10.0;
-                    }
+                    }*/
 
                     //Glitch collision loop for enemies
                     for (int i = 0; i < enemyList.Count; i++)
@@ -284,7 +286,6 @@ namespace Glitch_Wobble
                     horz1.Switch();
                     vert1.Spawning();
                     horz1.Spawning();
-                    //slime1.Spawning();
                     longSword.Switch();
                     ground.Update(gameTime);
 
@@ -315,6 +316,11 @@ namespace Glitch_Wobble
                     slime1.Reset();
                     ground.Reset();
 
+                    if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        currentGameState = GameState.Menu;
+                    }
+
                     //Song Reset Code
                     songStart = false;
                     currentMusicState = MusicState.Stop;
@@ -325,11 +331,6 @@ namespace Glitch_Wobble
             }
 
             base.Update(gameTime);
-        }
-
-        private void SlimeTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         //Methods for Game
@@ -365,7 +366,10 @@ namespace Glitch_Wobble
                     vert1.Draw(spriteBatch); 
                     horz1.Draw(spriteBatch);
                     glitch.Draw(spriteBatch);
-                    slime1.Draw(spriteBatch, gameTime);
+                    for (int i = 0; i < enemyList.Count; i++)
+                    {
+                        enemyList[i].Draw(spriteBatch, gameTime);
+                    }
                     longSword.Draw(spriteBatch);
 
                     //Lives
