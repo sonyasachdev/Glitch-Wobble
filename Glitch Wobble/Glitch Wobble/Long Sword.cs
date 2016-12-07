@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Timers;
 using Microsoft.Xna.Framework.Content;
 
-namespace Glitch_Wobble
+/*namespace Glitch_Wobble
 {
     enum LongSwordState
     {
@@ -161,4 +161,4 @@ namespace Glitch_Wobble
         
         }
     }
-}
+}*/

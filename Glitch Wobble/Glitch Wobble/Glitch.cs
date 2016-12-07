@@ -30,7 +30,7 @@ namespace Glitch_Wobble
         Left
     }
 
-    class Glitch : Beings
+    public class Glitch : Beings
     {
         //Fields
         SpriteBatch spriteBatch;

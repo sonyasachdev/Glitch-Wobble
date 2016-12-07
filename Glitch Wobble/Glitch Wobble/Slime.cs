@@ -214,9 +214,9 @@ namespace Glitch_Wobble
         }
 
         //Collision*
-        public void Hurt(Long_Sword longsword)
+        public void Hurt(Glitch glitch)
         {
-            if (this.Position.Intersects(longsword.Position) == true)
+            if (this.Position.Intersects(glitch.Position) == true)
             {
                 if (timesHit < 2)
                 {
