@@ -49,7 +49,6 @@ namespace Glitch_Wobble
         
         //Classes
         Glitch glitch;
-        Long_Sword longSword;
         Slime slime1;
         Vertical_Platform vert1;
         Horizontal_Platform horz1;
@@ -140,7 +139,6 @@ namespace Glitch_Wobble
             horzPos1 = new Rectangle(600, 500, 400, 100);
 
             //Class Initializations
-            longSword = new Long_Sword();
             glitch = new Glitch();
             slime1 = new Slime(slimePos1, true, 0);
             vert1 = new Vertical_Platform(vertPos1);
@@ -152,7 +150,6 @@ namespace Glitch_Wobble
             button.LoadContent(Content);
             slime1.LoadContent(Content);
             glitch.LoadContent(Content);
-            longSword.LoadContent(Content);
             vert1.LoadContent(Content);
             horz1.LoadContent(Content);
             ground.LoadContent(Content);
@@ -293,7 +290,6 @@ namespace Glitch_Wobble
                     horz1.Switch();
                     vert1.Spawning();
                     horz1.Spawning();
-                    longSword.Switch();
                     ground.Update(gameTime);
 
                     if ( key.IsKeyDown(Keys.Tab) == true)
@@ -382,7 +378,6 @@ namespace Glitch_Wobble
                             enemyList[i].Draw(spriteBatch, gameTime);
                         }
                     }
-                    longSword.Draw(spriteBatch);
                     for (int i = 0; i < enemyList.Count; i++)
                     {
                         enemyList[i].Draw(spriteBatch, gameTime);
