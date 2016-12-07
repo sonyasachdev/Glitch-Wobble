@@ -34,6 +34,7 @@ namespace Glitch_Wobble
     public class Glitch : Beings
     {
         //Fields
+        Slime slime;
         SpriteBatch spriteBatch;
         KeyboardState key;
         KeyboardState previousKeyState;
@@ -812,7 +813,10 @@ namespace Glitch_Wobble
 
             if(key.IsKeyDown(Keys.Z) && previousKeyState.IsKeyUp(Keys.Z))
             {
-
+              /*  if(swordHitBox.Intersects(slime.Hitbox))
+                {
+                    slime.Hurt(this);
+                } */
             }
         }
 
