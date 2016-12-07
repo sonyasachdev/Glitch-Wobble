@@ -33,10 +33,8 @@ namespace Glitch_Wobble
         //Constructor
         public Long_Sword()
         {
-            //Makes sure that the long sword's position follows Glitch's position
-            //this.position = glitch.Position;
+            this.position = glitch.Position;
         }
-
         
         //Monogame Methods
         public void Initialize()
@@ -52,43 +50,115 @@ namespace Glitch_Wobble
         {
             switch (currentLongSwordState)
             {
-                case LongSwordState.Idle:
+                case LongSwordState.MoveRight:
+                    flip = SpriteEffects.FlipHorizontally;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X - 280, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
                     break;
                 case LongSwordState.MoveLeft:
-                    break;
-                case LongSwordState.MoveRight:
+
+                    flip = SpriteEffects.None;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
                     break;
                 case LongSwordState.Jump:
+
+                    if (currentKeyState == keyboardState.Right)
+                    {
+                        spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X - 280, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    }
                     break;
-                case LongSwordState.Attack:
+                case LongSwordState.IdleRight:
+                    flip = SpriteEffects.FlipHorizontally;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X - 280, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    break;
+                case LongSwordState.IdleLeft:
+                    flip = SpriteEffects.None;
+
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of slime
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
                     break;
                 case LongSwordState.Hurt:
+                    //Put hurt animation, also reduce the GUI hearts by one
+                    spriteBatch.Draw(glitchSkin, // SpriteSheet
+                        pos = new Vector2(position.X, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
+                        Color.Red,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
                     break;
-                case LongSwordState.Dead:
+                case GlitchState.Dead:
+                    //Run dead animation and change state to GameOver
                     break;
             }
         }
-
-        //Methods
-        public void Switch()
+        public void Switch(GameTime gameTime)
         {
-            switch (currentLongSwordState)
-            {
-                case LongSwordState.Idle:
-                    break;
-                case LongSwordState.MoveLeft:
-                    break;
-                case LongSwordState.MoveRight:
-                    break;
-                case LongSwordState.Jump:
-                    break;
-                case LongSwordState.Attack:
-                    break;
-                case LongSwordState.Hurt:
-                    break;
-                case LongSwordState.Dead:
-                    break;
-            }
+
+        }
+        
         }
     }
 }

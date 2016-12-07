@@ -392,9 +392,9 @@ namespace Glitch_Wobble
                     spriteBatch.DrawString(text, "Next enemy spawn: " + String.Format("{0:0.00}", slimeTimer), new Vector2(100), Color.Black);
 
                     //Lives
-                    hit1 = new Health(glitch.Position.X - 225, 0, 75, 75, heart);
-                    hit2 = new Health(glitch.Position.X - 150, 0, 75, 75, heart);
-                    hit3 = new Health(glitch.Position.X - 75, 0, 75, 75, heart);
+                    hit1 = new Health(glitch.Position.X - 75, 0, 75, 75, heart);
+                    hit2 = new Health(glitch.Position.X, 0, 75, 75, heart);
+                    hit3 = new Health(glitch.Position.X + 75, 0, 75, 75, heart);
 
                     if (glitch.Lives == 2)
                     {
