@@ -319,7 +319,9 @@ namespace Glitch_Wobble
                     glitch.Reset();
                     horz1.Reset();
                     vert1.Reset();
-                    slime1.Reset();
+                    //slime1.Reset();
+                    enemyList.Clear();
+                    slimeTimer = 10.0;
                     ground.Reset();
 
                     if (key.IsKeyDown(Keys.Enter) == true)
