@@ -251,16 +251,17 @@ namespace Glitch_Wobble
             switch (currentPauseButtonState)
             {
                 case PauseButtonState.ActiveResume:
+                    /*
                     if (key.IsKeyDown(Keys.Right) == true)
                     {
                         currentPauseButtonState = PauseButtonState.ActiveQuit;
-                    }
-                    else if (key.IsKeyDown(Keys.Enter) == true)
+                    }*/
+                    if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         Game1.currentGameState = GameState.PlayGame;
                     }
                     break;
-                case PauseButtonState.ActiveQuit:
+                case PauseButtonState.ActiveQuit:/*
                     if (key.IsKeyDown(Keys.Left) == true)
                     {
                         currentPauseButtonState = PauseButtonState.ActiveResume;
@@ -268,7 +269,7 @@ namespace Glitch_Wobble
                     else if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         //take to Warning Button state. Create one.
-                    }
+                    }*/
                     break;
             }
         }
@@ -288,28 +289,28 @@ namespace Glitch_Wobble
                         previousKey = key;
                         Game1.currentGameState = GameState.Menu;
                     }
-                    else if (key.IsKeyDown(Keys.Up) == true)
+                    /*else if (key.IsKeyDown(Keys.Up) == true)
                     {
                         currentGameOverState = GameOverState.ActiveQuit;
                     }
                     else if (key.IsKeyDown(Keys.Down) == true)
                     {
                         currentGameOverState = GameOverState.ActiveQuit;
-                    }
+                    }*/
                     break;
                 case GameOverState.ActiveQuit:
                     if (key.IsKeyDown(Keys.Enter) == true)
                     {
                         //Have exit code here
                     }
-                    else if (key.IsKeyDown(Keys.Up) == true)
+                    /*else if (key.IsKeyDown(Keys.Up) == true)
                     {
                         currentGameOverState = GameOverState.ActiveRestart;
                     }
                     else if (key.IsKeyDown(Keys.Down) == true)
                     {
                         currentGameOverState = GameOverState.ActiveRestart;
-                    }
+                    }*/
                     break;
             }
         }

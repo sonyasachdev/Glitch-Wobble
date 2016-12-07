@@ -53,8 +53,8 @@ namespace Glitch_Wobble
             this.position = p;
             this.timesHit = t;
             this.active = a;
-            LeftBound = new Rectangle(100, 100, 10, 10);
-            RightBound = new Rectangle(1000, 100, 10, 10);
+            LeftBound = new Rectangle(800, 100, 10, 10);
+            RightBound = new Rectangle(1200, 100, 10, 10);
 
             startPositionX = p.X;
             startPositionY = p.Y;

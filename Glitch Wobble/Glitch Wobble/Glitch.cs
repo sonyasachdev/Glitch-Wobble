@@ -83,6 +83,9 @@ namespace Glitch_Wobble
         Vector2 velocity;
         bool hasJumped;
 
+        //Attack Fields
+        bool hasAttacked;
+
         //Enum Variables
         GlitchState currentGlitchState;
         GlitchState previousGlitchState;
@@ -151,12 +154,12 @@ namespace Glitch_Wobble
             currentFrame.X = 0;
             currentFrame.Y = 0;
             numFrames = 1;
-            frameRate = 100;
+            frameRate = 200;
             flip = SpriteEffects.None;
 
             //Animation Initializers
-            swordFrameSize.X = 580;
-            swordFrameSize.Y = 760;
+            swordFrameSize.X = 744;
+            swordFrameSize.Y = 866;
             swordNumFrames = 5;
         }
 
@@ -331,21 +334,37 @@ namespace Glitch_Wobble
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > frameRate) // time for a new frame
             {
-                timeSinceLastFrame = 0;
-                frame++;
+               
+                
 
-                //Resets Animation Loop
-                if (frame >= numFrames)
+                if(currentGlitchState == GlitchState.Attack)
                 {
-                    frame = 0;
+                    timeSinceLastFrame = 0;
+                    frame++;
+
+                    if (frame >= swordNumFrames)
+                    {
+                        frame = 0;
+                    }
+                    if (frame == 5)
+                    {
+                        if (currentKeyState == keyboardState.Right)
+                            currentGlitchState = GlitchState.IdleRight;
+                        else
+                            currentGlitchState = GlitchState.IdleLeft;
+                    }
                 }
-
-                if(frame == 5)
+                else
                 {
-                    if (currentKeyState == keyboardState.Right)
-                        currentGlitchState = GlitchState.IdleRight;
-                    else
-                        currentGlitchState = GlitchState.IdleLeft;
+
+                    timeSinceLastFrame = 0;
+                    frame++;
+
+                    //Resets Animation Loop
+                    if (frame >= numFrames)
+                    {
+                        frame = 0;
+                    }
                 }
 
                 // set the upper left corner of new frame
@@ -382,11 +401,13 @@ namespace Glitch_Wobble
                     hitbox.X = position.X;
                     hitbox.Y = position.Y;
                     Move();
+                    //Attack();
                     break;
                 case GlitchState.MoveLeft:
                     hitbox.X = position.X;
                     hitbox.Y = position.Y;
                     Move();
+                    //Attack();
                     break;
                 case GlitchState.Jump:
                     if(currentKeyState == keyboardState.Left)
@@ -401,16 +422,20 @@ namespace Glitch_Wobble
                     hitbox.X = position.X;
                     hitbox.Y = position.Y;
                     Move();
+                    //Attack();
                     break;
                 case GlitchState.IdleLeft:
                     hitbox.X = position.X;
                     hitbox.Y = position.Y;
                     Move();
+                    //Attack();
                     break;
                 case GlitchState.Hurt:
                     Move();
                     break;
                 case GlitchState.Attack:
+                    //Attack();
+                    Move();
                     break;
                 case GlitchState.Dead:
                     //Run dead animation and change state to GameOver
@@ -475,24 +500,32 @@ namespace Glitch_Wobble
             }
         }
 
+        public void Attack()
+        {
+            currentGlitchState = GlitchState.Attack;
+            for (int i = 0; i < Game1.enemyList.Count; i++)
+            {
+                if (swordHitBox.Intersects(Game1.enemyList[i].Hitbox))
+                {
+                    Game1.enemyList[i].Hurt(this);
+                }
+            }
+        }
+
         //Move*
         public void Move()
         {
             previousKeyState = key;
             key = Keyboard.GetState();
             
+            if (key.IsKeyDown(Keys.Z) && previousKeyState.IsKeyUp(Keys.Z))
+            {
+                Attack();
+            }
+
             //Moving Right*
             if (key.IsKeyDown(Keys.Right) == true)
             {
-                //Makes sure that the hitbox matches up to the image before switching Glitch's state
-                /*if (currentKeyState == keyboardState.Left)
-                {
-                    if (position.X < 0)
-                        position.X = 0;
-                    else
-                        position.X += 175;
-                }*/
-
                 //Changes the KeyState to Right
                 currentKeyState = keyboardState.Right;
 
@@ -518,12 +551,7 @@ namespace Glitch_Wobble
             //Moving Left*
             else if (key.IsKeyDown(Keys.Left) == true)
             {
-                //Makes sure that the hitbox matches up to the image before switching Glitch's state
-                /*if (currentKeyState == keyboardState.Right)
-                {
-                    position.X -= 175;
-                }
-                */
+                
                 //Changes the KeyState to Right
                 currentKeyState = keyboardState.Left;
 
@@ -859,19 +887,7 @@ namespace Glitch_Wobble
             }
         }
 
-        public void Attack()
-        {
-            previousKeyState = key;
-            key = Keyboard.GetState();
-
-            if(key.IsKeyDown(Keys.Z) && previousKeyState.IsKeyUp(Keys.Z))
-            {
-              /*  if(swordHitBox.Intersects(slime.Hitbox))
-                {
-                    slime.Hurt(this);
-                } */
-            }
-        }
+        
 
         //Reset* Method
         public void Reset()
