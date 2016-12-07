@@ -43,6 +43,7 @@ namespace Glitch_Wobble
         //Fields
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont text;
         KeyboardState key;
         KeyboardState previousKey;
         
@@ -71,7 +72,7 @@ namespace Glitch_Wobble
         public static bool drawHitbox = false;
 
         //List
-        public static List<Enemy> enemyList;
+        public static List<Slime> enemyList;
         public static List<Horizontal_Platform> horzPlatformList;
         public static List<Vertical_Platform> vertPlatformList;
         List<Health> hearts;
@@ -134,7 +135,7 @@ namespace Glitch_Wobble
             
             //Starting Position Rectangles Platform*
             //x,y,width,height 
-            slimePos1 = new Rectangle(500, 800, 108, 108);
+            slimePos1 = new Rectangle(500, 425, 108, 108);
             vertPos1 = new Rectangle(600, 400, 400, 100);
             horzPos1 = new Rectangle(600, 500, 400, 100);
 
@@ -157,7 +158,7 @@ namespace Glitch_Wobble
             ground.LoadContent(Content);
 
             //List Initializations
-            enemyList = new List<Enemy>();
+            enemyList = new List<Slime>();
             enemyList.Add(slime1);
 
             horzPlatformList = new List<Horizontal_Platform>();
@@ -181,6 +182,7 @@ namespace Glitch_Wobble
 
             //Timers
             slimeTimer = 10.0;
+            text = Content.Load<SpriteFont>("Time");
 
 
             // TODO: use this.Content to load your game content here
@@ -235,7 +237,7 @@ namespace Glitch_Wobble
                     //Song Start Code
                     if(currentMusicState == MusicState.Stop)
                     {
-                        MediaPlayer.Play(song);
+                        //MediaPlayer.Play(song);
                         //MediaPlayer.Volume This controls volume, so lower it when EMP goes off
                         songStart = true;
                         currentMusicState = MusicState.Play;
@@ -264,7 +266,8 @@ namespace Glitch_Wobble
 
                     if (slimeTimer < 0)
                     {
-                        enemyList.Add(slime1);
+                        enemyList.Add(new Slime(slimePos1, true, 0));
+                        enemyList[enemyList.Count - 1].slimeSkin = Content.Load<Texture2D>("Slime-Sheet.png");
                         slimeTimer = 10.0;
                     }
 
@@ -279,12 +282,15 @@ namespace Glitch_Wobble
 
                     //Class switches
                     glitch.Switch(gameTime);
-                    slime1.Switch(gameTime);
+                    //slime1.Switch(gameTime);
+                    for (int i = 0; i < enemyList.Count; i++)
+                    {
+                        enemyList[i].Switch(gameTime);
+                    }
                     vert1.Switch();
                     horz1.Switch();
                     vert1.Spawning();
                     horz1.Spawning();
-                    //slime1.Spawning();
                     longSword.Switch();
                     ground.Update(gameTime);
 
@@ -365,8 +371,15 @@ namespace Glitch_Wobble
                     vert1.Draw(spriteBatch); 
                     horz1.Draw(spriteBatch);
                     glitch.Draw(spriteBatch);
-                    slime1.Draw(spriteBatch, gameTime);
+                    //slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
+                    for (int i = 0; i < enemyList.Count; i++)
+                    {
+                        enemyList[i].Draw(spriteBatch, gameTime);
+                    }
+
+                    //For debugging; Monitoring spawn timing in-game
+                    spriteBatch.DrawString(text, "Next enemy spawn: " + String.Format("{0:0.00}", slimeTimer), new Vector2(100), Color.Black);
 
                     //Lives
                     hit1 = new Health(glitch.Position.X - 225, 0, 75, 75, heart);

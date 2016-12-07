@@ -30,7 +30,7 @@ namespace Glitch_Wobble
         Rectangle RightBound;
         Timer hurtTimer;
         Timer spawnTimer;
-        Texture2D slimeSkin;
+        public Texture2D slimeSkin;
         Texture2D hitboxSkin;
 
         //Reset ints
@@ -71,12 +71,6 @@ namespace Glitch_Wobble
             hurtTimer = new Timer();
             hurtTimer.Interval = 2000;
             hurtTimer.Elapsed += HurtTimerState;
-
-            //Spawns a new enemy every second
-            /*spawnTimer = new Timer();
-            spawnTimer.Interval = 1000;
-            spawnTimer.Elapsed += Spawn;
-            spawnTimer.Start();*/
 
             //Animation Initializers
             frameSize.X = 108;
