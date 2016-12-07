@@ -218,7 +218,7 @@ namespace Glitch_Wobble
             previousKey = key;
             key = Keyboard.GetState();
 
-            if (key.IsKeyDown(Keys.Space) && previousKey.IsKeyUp(Keys.Space) == true)
+            if (key.IsKeyDown(Keys.Tab) && previousKey.IsKeyUp(Keys.Tab) == true)
                 Process.Start("Game2.exe");
 
             key = Keyboard.GetState();
