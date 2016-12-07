@@ -190,7 +190,6 @@ namespace Glitch_Wobble
 
             /*
             button.Initialize();
-            glitch.Initialize();
             longSword.Initialize();
             slime1.Initialize();   
             horz1.Initialize();
@@ -237,7 +236,7 @@ namespace Glitch_Wobble
                     //Song Start Code
                     if(currentMusicState == MusicState.Stop)
                     {
-                        //MediaPlayer.Play(song);
+                        MediaPlayer.Play(song);
                         //MediaPlayer.Volume This controls volume, so lower it when EMP goes off
                         songStart = true;
                         currentMusicState = MusicState.Play;
@@ -269,7 +268,7 @@ namespace Glitch_Wobble
                     {
                         enemyList.Add(new Slime(slimePos1, true, 0));
                         enemyList[enemyList.Count - 1].slimeSkin = Content.Load<Texture2D>("Slime-Sheet.png");
-                        slimeTimer = 10.0;
+                        slimeTimer = 3.0;
                     }
 
                     //Glitch collision loop for enemies
@@ -283,11 +282,13 @@ namespace Glitch_Wobble
 
                     //Class switches
                     glitch.Switch(gameTime);
-                    //slime1.Switch(gameTime);
+                    slime1.Switch(gameTime);
+
                     for (int i = 0; i < enemyList.Count; i++)
                     {
                         enemyList[i].Switch(gameTime);
                     }
+
                     vert1.Switch();
                     horz1.Switch();
                     vert1.Spawning();
@@ -319,9 +320,9 @@ namespace Glitch_Wobble
                     glitch.Reset();
                     horz1.Reset();
                     vert1.Reset();
-                    //slime1.Reset();
+                    slime1.Reset();
                     enemyList.Clear();
-                    slimeTimer = 10.0;
+                    slimeTimer = 0;
                     ground.Reset();
 
                     if (key.IsKeyDown(Keys.Enter) == true)
@@ -371,10 +372,16 @@ namespace Glitch_Wobble
                     //Note: Order matters! The last thing called is in the front.
                     //Background sprite goes here
                     ground.Draw(spriteBatch);
-                    vert1.Draw(spriteBatch); 
+                    vert1.Draw(spriteBatch);
                     horz1.Draw(spriteBatch);
                     glitch.Draw(spriteBatch);
-                    slime1.Draw(spriteBatch, gameTime);
+                    for (int i = 0; i < enemyList.Count; i++)
+                    {
+                        if (enemyList[i].Active == true)
+                        {
+                            enemyList[i].Draw(spriteBatch, gameTime);
+                        }
+                    }
                     longSword.Draw(spriteBatch);
                     for (int i = 0; i < enemyList.Count; i++)
                     {

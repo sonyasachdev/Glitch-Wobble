@@ -78,7 +78,7 @@ namespace Glitch_Wobble
             currentFrame.X = 0;
             currentFrame.Y = 0;
             numFrames = 4;
-            frameRate = 100;
+            frameRate = 200;
         }
 
         //Timer Function
@@ -194,7 +194,7 @@ namespace Glitch_Wobble
         {
             if (position.X < RightBound.X)
             {
-                position.X += 3;
+                position.X += 2;
             }
             else if (position.X >= RightBound.X)
             {
@@ -205,7 +205,7 @@ namespace Glitch_Wobble
         {
             if (position.X > LeftBound.X)
             {
-                position.X -= 3;
+                position.X -= 2;
             }
             else if (position.X <= LeftBound.X)
             {
@@ -237,13 +237,13 @@ namespace Glitch_Wobble
             position.X = startPositionX;
             position.Y = startPositionY;
         }
-
+        /*
         public void Spawn()
         {
             Slime slime = new Slime(new Rectangle(500, 425, 108, 108), true, 0);
             Game1.enemyList.Add(slime);
             slime.slimeSkin = slimeSkin;
-        }
+        }*/
 
         /*
         //Takes count how many times hitbox has been touched by the weapon's attack state
