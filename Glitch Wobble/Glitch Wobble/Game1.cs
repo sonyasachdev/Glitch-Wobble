@@ -220,7 +220,7 @@ namespace Glitch_Wobble
             previousKey = key;
             key = Keyboard.GetState();
 
-            if (key.IsKeyDown(Keys.Space) && previousKey.IsKeyUp(Keys.Space) == true)
+            if (key.IsKeyDown(Keys.Tab) && previousKey.IsKeyUp(Keys.Tab) == true)
                 Process.Start("Game2.exe");
 
             key = Keyboard.GetState();
@@ -264,6 +264,7 @@ namespace Glitch_Wobble
 
                     slimeTimer -= gameTime.ElapsedGameTime.TotalSeconds;
 
+                    // Slime spawn code
                     if (slimeTimer < 0)
                     {
                         enemyList.Add(new Slime(slimePos1, true, 0));
@@ -321,6 +322,11 @@ namespace Glitch_Wobble
                     slime1.Reset();
                     ground.Reset();
 
+                    if (key.IsKeyDown(Keys.Enter) == true)
+                    {
+                        currentGameState = GameState.Menu;
+                    }
+
                     //Song Reset Code
                     songStart = false;
                     currentMusicState = MusicState.Stop;
@@ -331,11 +337,6 @@ namespace Glitch_Wobble
             }
 
             base.Update(gameTime);
-        }
-
-        private void SlimeTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         //Methods for Game
@@ -371,7 +372,7 @@ namespace Glitch_Wobble
                     vert1.Draw(spriteBatch); 
                     horz1.Draw(spriteBatch);
                     glitch.Draw(spriteBatch);
-                    //slime1.Draw(spriteBatch, gameTime);
+                    slime1.Draw(spriteBatch, gameTime);
                     longSword.Draw(spriteBatch);
                     for (int i = 0; i < enemyList.Count; i++)
                     {
