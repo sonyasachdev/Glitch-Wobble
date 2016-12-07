@@ -63,6 +63,8 @@ namespace Glitch_Wobble
 
         //Menu Textures
         Texture2D menuSkin;
+        Texture2D pause;
+        Texture2D gameOver;
 
         //Menu Rectangles
         Rectangle menuPos;
@@ -166,6 +168,8 @@ namespace Glitch_Wobble
 
             //Menu Textures
             menuSkin = Content.Load<Texture2D>("logoSkin.png");
+            pause = Content.Load<Texture2D>("pause.png");
+            gameOver = Content.Load<Texture2D>("gameover.png");
             //Menu Rectangle
             menuPos = new Rectangle(0, 0, 1024, 720);
 
@@ -292,7 +296,7 @@ namespace Glitch_Wobble
                     horz1.Spawning();
                     ground.Update(gameTime);
 
-                    if ( key.IsKeyDown(Keys.Tab) == true)
+                    if ( key.IsKeyDown(Keys.P) == true)
                     {
                         currentGameState = GameState.Pause;
                     }
@@ -407,12 +411,17 @@ namespace Glitch_Wobble
 
                     break;
                 case GameState.Pause:
+                    spriteBatch.Begin();
                     button.DrawPause(spriteBatch);
+                    spriteBatch.Draw(pause, new Rectangle(0, 0, 1024, 768), Color.White);
                     break;
                 case GameState.Win:
+                    spriteBatch.Begin();
                     break;
                 case GameState.GameOver:
+                    spriteBatch.Begin();
                     button.DrawGameOver(spriteBatch);
+                    spriteBatch.Draw(gameOver, new Rectangle (0, 0, 1024, 768), Color.White);
                     break;
             }
             
