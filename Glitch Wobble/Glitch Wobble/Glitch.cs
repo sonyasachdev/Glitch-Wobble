@@ -18,6 +18,7 @@ namespace Glitch_Wobble
         MoveRight,
         MoveLeft,
         Jump,
+        Attack,
         IdleLeft,
         IdleRight,
         Hurt,
@@ -354,6 +355,8 @@ namespace Glitch_Wobble
                     break;
                 case GlitchState.Hurt:
                     Move();
+                    break;
+                case GlitchState.Attack:
                     break;
                 case GlitchState.Dead:
                     //Run dead animation and change state to GameOver
@@ -802,6 +805,16 @@ namespace Glitch_Wobble
             }
         }
 
+        public void Attack()
+        {
+            previousKeyState = key;
+            key = Keyboard.GetState();
+
+            if(key.IsKeyDown(Keys.Z) && previousKeyState.IsKeyUp(Keys.Z))
+            {
+
+            }
+        }
 
         //Reset* Method
         public void Reset()
