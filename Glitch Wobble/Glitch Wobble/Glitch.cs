@@ -40,6 +40,7 @@ namespace Glitch_Wobble
         private int lives;
         private Rectangle hitbox;
         private Rectangle bottomHitBox;
+        private Rectangle swordHitBox;
 
         private Platform currentPlatform = null;
 
@@ -69,9 +70,13 @@ namespace Glitch_Wobble
         private int frameRate;
         SpriteEffects flip;
 
+        private Point swordFrameSize;
+        private int swordNumFrames;
+
         //Texture
         Texture2D glitchSkin;
         Texture2D hitboxSkin;
+        Texture2D attackAnim;
 
         //Jump Fields
         Vector2 velocity;
@@ -115,6 +120,7 @@ namespace Glitch_Wobble
             //Setting Hitbox
             hitbox = new Rectangle(position.X, position.Y, 125, 400);
             bottomHitBox = new Rectangle(position.X, position.Y, 125, 10);
+            swordHitBox = new Rectangle(position.X, position.Y+ 20, 760, 580);
 
             //Setting Life Count
             lives = 2;
@@ -146,6 +152,11 @@ namespace Glitch_Wobble
             numFrames = 1;
             frameRate = 100;
             flip = SpriteEffects.None;
+
+            //Animation Initializers
+            swordFrameSize.X = 580;
+            swordFrameSize.Y = 760;
+            swordNumFrames = 5;
         }
 
         //Monogame Methods
@@ -160,6 +171,7 @@ namespace Glitch_Wobble
         {
             glitchSkin = Content.Load<Texture2D>("glitchSkin.png");
             hitboxSkin = Content.Load <Texture2D>("playactive.png");
+            attackAnim = Content.Load<Texture2D>("attackAnim.png");
         }
 
         //Draw*
@@ -186,7 +198,7 @@ namespace Glitch_Wobble
                     flip = SpriteEffects.FlipHorizontally;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X - 280, position.Y), // position of Glitch
+                        pos = new Vector2(position.X - 100, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -201,7 +213,7 @@ namespace Glitch_Wobble
                     flip = SpriteEffects.None;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X, position.Y), // position of Glitch
+                        pos = new Vector2(position.X - 180, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -216,7 +228,7 @@ namespace Glitch_Wobble
                     if(currentKeyState == keyboardState.Right)
                     {
                         spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X - 280, position.Y), // position of Glitch
+                        pos = new Vector2(position.X - 100, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -229,7 +241,7 @@ namespace Glitch_Wobble
                     else
                     {
                         spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X, position.Y), // position of Glitch
+                        pos = new Vector2(position.X - 180, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -240,11 +252,23 @@ namespace Glitch_Wobble
                         );
                     }
                     break;
+                case GlitchState.Attack:
+                    spriteBatch.Draw(attackAnim, // SpriteSheet
+                        pos = new Vector2(position.X - 100, position.Y), // position of Glitch
+                        new Rectangle(currentFrame.X, currentFrame.Y, swordFrameSize.X, swordFrameSize.Y), // size of frame in spritesheet
+                        Color.White,
+                        0, // don't rotate the image
+                        Vector2.Zero, // rotation center (not used)
+                        .4f, // scaling factor - dont change image size
+                        flip, // Flip or not
+                        0//Current Layer
+                        );
+                    break;
                 case GlitchState.IdleRight:
                     flip = SpriteEffects.FlipHorizontally;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X - 280, position.Y), // position of Glitch
+                        pos = new Vector2(position.X - 100, position.Y), // position of Glitch
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -258,7 +282,7 @@ namespace Glitch_Wobble
                     flip = SpriteEffects.None;
 
                     spriteBatch.Draw(glitchSkin, // SpriteSheet
-                        pos = new Vector2(position.X, position.Y), // position of slime
+                        pos = new Vector2(position.X - 180, position.Y), // position of slime
                         new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y), // size of frame in spritesheet
                         Color.White,
                         0, // don't rotate the image
@@ -293,11 +317,40 @@ namespace Glitch_Wobble
             //Dynamically sets hitbox
             hitbox.X = position.X;
             hitbox.Y = position.Y;
+
+            swordHitBox.X = position.X;
+            swordHitBox.Y = position.Y + 20;//change*
             
             bottomHitBox.X = position.X;
 
             //Fix this method, for some reason it crashes visual studio
             Loop(); //change*
+
+            //Animation Logic
+            timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+            if (timeSinceLastFrame > frameRate) // time for a new frame
+            {
+                timeSinceLastFrame = 0;
+                frame++;
+
+                //Resets Animation Loop
+                if (frame >= numFrames)
+                {
+                    frame = 0;
+                }
+
+                if(frame == 5)
+                {
+                    if (currentKeyState == keyboardState.Right)
+                        currentGlitchState = GlitchState.IdleRight;
+                    else
+                        currentGlitchState = GlitchState.IdleLeft;
+                }
+
+                // set the upper left corner of new frame
+                currentFrame.X = frameSize.X * frame;
+            }
+
 
             if (currentGlitchState == GlitchState.IdleLeft || currentGlitchState == GlitchState.MoveLeft)
                 bottomHitBox.X = position.X; //change*
