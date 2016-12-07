@@ -238,19 +238,11 @@ namespace Glitch_Wobble
             position.Y = startPositionY;
         }
 
-        public void Spawn(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            Spawn();
-        }
-
         public void Spawn()
         {
-            Game1.enemyList.Add(new Slime(new Rectangle(500, 425, 108, 108), true, 0));
-        }
-
-        public void Spawning()
-        {
-            spawnTimer.Elapsed += Spawn;
+            Slime slime = new Slime(new Rectangle(500, 425, 108, 108), true, 0);
+            Game1.enemyList.Add(slime);
+            slime.slimeSkin = slimeSkin;
         }
 
         /*
